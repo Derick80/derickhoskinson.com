@@ -1,0 +1,49 @@
+---
+title: 'First post'
+author: 'Derick Hoskinson PhD'
+date: 2020-07-01
+published: true
+categories: [Coding, Documentation]
+---
+
+# First post
+
+## Introduction
+
+- This is a test post
+
+## Markdown Tables
+
+| Name     | Age  | City       |
+|----------|------|------------|
+| John     | 25   | New York   |
+| Sarah    | 30   | San Diego  |
+| Michael  | 35   | Los Angeles|
+
+
+| First Header                | Second Header                |
+| --------------------------- | ---------------------------- |
+| Content from cell 1         | Content from cell 2          |
+| Content in the first column | Content in the second column |
+
+
+## Code
+
+```typescript
+print("Hello, World!")
+```
+## Conclusion
+
+- This is the end of the post
+
+
+```typescript
+import BlogPost, { metadata } from '@/content/blog-post.mdx'
+
+export default function Page() {
+  console.log('metadata: ', metadata)
+  //=> { author: 'John Doe' }
+  return <BlogPost />
+}
+```
+
