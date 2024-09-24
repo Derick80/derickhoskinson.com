@@ -13,7 +13,7 @@ const blogPostSchema = z.object({
 });
 export type BlogPost = z.infer<typeof blogPostSchema>;
 
-export default async function BlogPost({
+export default async function BlogPost ({
   params,
 }: {
   params: {
@@ -26,7 +26,7 @@ export default async function BlogPost({
   }
 
   const post = await getAllBlogPosts().then((posts) => {
-    return posts.find((post) => post.metadata.slug === slug);
+    return posts.find((post) => post.slug === slug);
   });
 
   if (!post) {
@@ -41,23 +41,23 @@ export default async function BlogPost({
   return (
     <div className="prose min-w-full p-4 dark:prose-invert prose-a:no-underline">
       <MDXRemote
-        source={post.content}
-        components={{
+        source={ post.content }
+        components={ {
           h1: (props) => (
-            <h1 style={{ color: "red", fontSize: "48px" }}>{props.children}</h1>
+            <h1 style={ { color: "red", fontSize: "48px" } }>{ props.children }</h1>
           ),
           pre: (props) => (
             <MDXPre className="bg-content1 max-h-[400px]">
-              {props.children}
+              { props.children }
             </MDXPre>
           ),
-          code: (props) => <CodeBlock code={props.children} />,
-        }}
-        options={{
+          code: (props) => <CodeBlock code={ props.children } />,
+        } }
+        options={ {
           mdxOptions: {
             remarkPlugins: [remarkGfm],
           },
-        }}
+        } }
       />
     </div>
   );

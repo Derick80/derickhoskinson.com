@@ -59,7 +59,10 @@ const NavData = [
     title: "CV",
     url: "/cv",
   },
-
+  {
+    title: "Genetics",
+    url: "/genetics",
+  },
   {
     title: "About",
     url: "/about",

@@ -5,6 +5,7 @@ export type MDXFrontMatter = {
   author: string;
   date: string;
   published: boolean;
+  description: string;
   slug: string;
   readingTime: string;
   wordCount: number;

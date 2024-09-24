@@ -1,7 +1,7 @@
 "use server";
 import path from "path";
 import fs from "fs";
-import { MDXFrontMatter } from "@/lib/types";
+import { CategoryFilterType, MDXFrontMatter } from "@/lib/types";
 import readingTime from "reading-time";
 import { createHighlighter } from "shiki";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
@@ -27,7 +27,7 @@ const parseTheFrontmatter = (fileContent: string) => {
         ?.split(": ")[1]
         .replace("[", "")
         .replace("]", "")
-        .split(",");
+        .split(", ");
 
     frontMatterLines.pop();
     // loop through the front matter lines
@@ -113,44 +113,29 @@ const getAllBlogPosts = async () => {
             fs.readFileSync(path.join(POSTS_FOLTER, file), "utf-8"),
         );
         return {
-            metadata,
+            ...metadata,
             content,
         };
     });
 };
 
-interface CategoryDetails {
-    category: string;
-    related: string[];
-    categoryCount: number;
-}
-
-const reorganizePosts = (data: { slug: string; categories: string[] }[]) => { };
-
-//
-// {
-//     Coding: { related: [Array], categoryCount: 2 },
-//     ' Documentation': { related: [Array], categoryCount: 2 },
-//     ' Testing': { related: [Array], categoryCount: 1 }
-// }
 
 const getSlugsAndCategories = async () => {
-    const files = fs
-        .readdirSync(POSTS_FOLTER)
-        .filter((file) => path.extname(file) === ".mdx");
+    const posts = await getAllBlogPosts();
+    const myData = transformArray({ posts });
+    return myData;
 
-    const metadata = files.map((file) => {
-        const metadata = parseTheFrontmatter(
-            fs.readFileSync(path.join(POSTS_FOLTER, file), "utf-8"),
-        );
-        return metadata.metadata;
-    });
+};
 
-    const categories = metadata.map((post) => post.categories).flat();
+
+
+const transformArray = ({ posts }: {
+    posts: MDXFrontMatter[];
+}) => {
+    const categories = posts.flatMap((post) => post.categories);
     const uniqueCategories = [...new Set(categories)];
-
     const myData = uniqueCategories.map((category) => {
-        const related = metadata
+        const related = posts
             .filter((post) => post.categories.includes(category))
             .map((post) => post.slug);
         return {
@@ -160,15 +145,10 @@ const getSlugsAndCategories = async () => {
         };
     });
     return myData;
-};
+}
 
-export {
-    getAllBlogPosts,
-    CodeBlock,
-    MDXPre,
-    TableComponent,
-    getSlugsAndCategories,
-};
+
+
 
 // return {
 //     Coding: { related: ['slug1', 'slug2'], categoryCount: 2 },
@@ -193,3 +173,40 @@ export {
 //         categoryCount: 1
 //     }
 // ] data from categories container
+
+
+
+const getFilteredPosts = async ({
+    searchParams
+}: {
+    searchParams?: { category: string }
+}) => {
+    console.log(searchParams, 'searchParams');
+
+    const files = fs
+        .readdirSync(POSTS_FOLTER)
+        .filter((file) => path.extname(file) === ".mdx");
+    return files.map((file) => {
+        const metadata = parseTheFrontmatter(
+            fs.readFileSync(path.join(POSTS_FOLTER, file), "utf-8"),
+        );
+        const post = metadata.metadata;
+        //    if there is a search param filter the posts
+        if (searchParams?.category) {
+            return post.categories.includes(searchParams.category);
+        }
+        return post;
+    }
+    );
+};
+
+
+
+export {
+    getAllBlogPosts,
+    CodeBlock,
+    MDXPre,
+    TableComponent,
+    getSlugsAndCategories,
+    getFilteredPosts
+};

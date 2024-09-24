@@ -1,17 +1,13 @@
-import { getUser, logout } from '@/app/actions/auth';
+import { getUser } from '@/app/actions/auth';
 import {
     DropdownMenu,
     DropdownMenuTrigger,
     DropdownMenuItem,
-    DropdownMenuContent,
-
-
-
+    DropdownMenuContent
 } from '../ui/dropdown-menu';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useFormState } from 'react-dom';
-import { LogOutButton } from '../auth/logout-button';
+import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 
 
 const UserLoginMenu = async ({
@@ -29,13 +25,12 @@ const UserLoginMenu = async ({
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 { user.image && user.name ? (
-                    <Image
-                        src={ user.image }
-                        alt={ user.name }
-                        className="w-8 h-8 rounded-full"
-                        width={ 400 }
-                        height={ 400 }
-                    />
+                    <Avatar>
+                        <AvatarImage src={ user.image } alt={ user.name } />
+                        <AvatarFallback>{ user.name.charAt(0) }
+                        </AvatarFallback>
+                    </Avatar>
+
                 ) : (
                     <span>{ user.name }</span>
 

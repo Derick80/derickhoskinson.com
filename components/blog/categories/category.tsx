@@ -1,3 +1,4 @@
+'use client'
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -9,51 +10,72 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CategoryFilterType } from "@/lib/types";
-import { ExternalLinkIcon } from "lucide-react";
+import { ExternalLinkIcon, KeyRound } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React from "react";
+import { useFormState } from 'react-dom';
 
 const Category = ({
   data,
-  onCategorySelect,
   activeCategories,
+  setActiveCategories
 }: {
-  data: CategoryFilterType;
+  data: CategoryFilterType[]
   activeCategories: string[];
-  onCategorySelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setActiveCategories: (categories: string[]) => void;
+
 }) => {
-  const searchParams = useSearchParams();
 
-  const isActive = activeCategories.includes(data.category);
 
-  data.category = data.category.replace(/-/g, " ");
+
   return (
     <>
-      {onCategorySelect && (
-        <Input
-          type="checkbox"
-          checked={activeCategories.includes(data.category)}
-          onChange={onCategorySelect}
-          className="absolute -left-[99999px] opacity-0"
-          id={`cat-${data.category}`}
-          value={data.category}
-        />
-      )}
-      <Label
-        className={`flex cursor-pointer items-center gap-1 ${isActive ? "text-4xl" : "text-content1"}`}
-        htmlFor={data.category && `cat-${data.category}`}
-      >
-        <Badge
-          variant="outline"
-          className={`text-content1 ${isActive ? "bg-red-500" : "bg-content2"}`}
-        >
-          {data.category}
-        </Badge>
+      {
+        data.map((category, index) => (
+          <div
+            key={ index }
+          >
 
-        <CategoryDropdown count={data.categoryCount} related={data.related} />
-      </Label>
+            <Input
+              key={ category.category }
+              type="checkbox"
+              className="absolute -left-[99999px] opacity-0"
+              id={ category.category }
+              name="category"
+              value={ category.category }
+              defaultChecked={ activeCategories.includes(category.category) }
+
+              onChange={
+                (e) => {
+                  const { value } = e.target;
+                  const newCategories = selectedCategories.includes(value)
+                    ? selectedCategories.filter((category) => category !== value)
+                    : [...selectedCategories, value];
+                  const newSearchParams = {
+                    ...searchParams,
+                    categories: newCategories.join(','),
+                  };
+                  window.location.search = new URLSearchParams(newSearchParams as any).toString();
+
+                  setActiveCategories(newCategories);
+                }
+
+              }
+
+            />
+            <Label htmlFor={ category.category }
+              className={ `relative inline-block cursor-pointer border text-base font-semibold p-1 rounded-sm hover:bg-primary-foreground/80 ${selectedCategories.includes(category.category) ? "" : ""}` }
+
+            >{ category.category }
+              <CategoryDropdown count={ category.categoryCount } related={ category.related } />
+            </Label>
+          </div>
+        ))
+      }
+
     </>
+
   );
 };
 
@@ -68,22 +90,23 @@ const CategoryDropdown = ({
 }) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="border text-sm">
-        {count}
+      <DropdownMenuTrigger>
+        { count ? <span className="ml-1 text-sm">{ count }</span> : null }
+
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Related Posts</DropdownMenuLabel>
         <DropdownMenuItem className="flex flex-col items-start gap-1">
-          {related.map((rel) => (
+          { related.map((rel) => (
             <Link
-              key={rel}
-              href={`/blog/${rel}`}
+              key={ rel }
+              href={ `/blog/${rel}` }
               className="flex items-center justify-between gap-1"
             >
-              {rel}
+              { rel }
               <ExternalLinkIcon />
             </Link>
-          ))}
+          )) }
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

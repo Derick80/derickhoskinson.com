@@ -44,6 +44,7 @@ model Post {
   slug        String    @unique
   date        String
   author      String
+  description String
   wordCount   Int
   readingTime Int
   categories  String[]
