@@ -166,6 +166,7 @@ export const verifySession = cache(async () => {
 
 export const deleteSession = () => {
   cookies().delete("session-token");
+  redirect("/");
 };
 
 export const createUserSession = async (userId: string) => {
@@ -201,8 +202,14 @@ export const createUserSession = async (userId: string) => {
 };
 
 export const logout = async () => {
+  const cookie = cookies().get("session-token");
+  if (!cookie) {
+    return;
+  }
+
   try {
-    deleteSession();
+    cookies().delete("session-token");
+    cookies().set("session-token", "")
   } catch (error) {
     console.error("Error in logout:", error);
     throw new Error("Unable to logout");
