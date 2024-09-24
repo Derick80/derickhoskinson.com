@@ -4,6 +4,8 @@ import { z } from "zod";
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
+import { cache } from 'react';
+import { sendEmailVerification } from '@/components/auth/send-verification-email';
 
 const schema = z.object({
   // username: z.string(
@@ -15,6 +17,7 @@ const schema = z.object({
   // shield should be empty to prevent spam bots
   shield: z.string().max(0),
 });
+
 export const sendEmail = async (prevState: any, formData: FormData) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const validatedFields = schema.safeParse({
@@ -274,3 +277,4 @@ export const getSession = async (sessionToken: string) => {
   }
   return session;
 };
+``

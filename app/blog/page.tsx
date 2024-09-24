@@ -2,7 +2,7 @@ import React from "react";
 import { getAllBlogPosts, getSlugsAndCategories } from "../actions/mdx-server";
 import CategoriesContainer from "@/components/blog/categories/categories-container";
 
-export default async function Blog({
+export default async function Blog ({
   searchParams,
 }: {
   searchParams: {
@@ -16,15 +16,15 @@ export default async function Blog({
   const categories = await getSlugsAndCategories();
 
   if (!categories) {
-    throw new Error("No categories        found");
+    throw new Error("No categories found");
   }
 
   return (
     <div className="prose min-w-full dark:prose-invert prose-a:no-underline">
       <CategoriesContainer
-        data={categories}
-        posts={posts.map((post) => post.metadata)}
-        searchParams={searchParams}
+        data={ categories }
+        posts={ posts.map((post) => post.metadata) }
+        searchParams={ searchParams }
       />
     </div>
   );
