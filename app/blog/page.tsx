@@ -29,43 +29,49 @@ export default async function Blog ({
   }
 
   const posts = await getAllBlogPosts();
-
-  const mypost = posts.filter((post) => post.slug === `continuous-dhdotcom-development`)
-
-
   // get unique categories
   const categories = posts.map((post) => post.categories).flat();
 
   const uniqueCategories = [...new Set(categories)];
-  console.log(uniqueCategories, 'uniqueCategories');
+  // transform into an object with category, related posts and count
+  const categoryData = uniqueCategories.map((category) => {
+    const related = posts
+      .filter((post) => post.categories.includes(category))
+      .map((post) => post.slug);
+    return {
+      category,
+      related,
+      categoryCount: related.length,
+    };
+  });
 
   return (
-    <main className="flex  flex-col gap-4 justify-center mt-4 prose min-w-full dark:prose-invert prose-a:no-underline">
+    <main className="flex flex-col border-2 border-purple-500 gap-4 justify-center mt-4 prose min-w-full dark:prose-invert prose-a:no-underline">
       <div
-        className="flex flex-row items-center">
-        { uniqueCategories.map((post) => (
-          <Badge
-            key={ post }
-            className="mr-2">
+        className="flex flex-col border border-red-500">
+        <h1
+          className="text-4xl font-bold">
+          Blog
+        </h1>
+        <p
+          className="text-lg">
+          Welcome to the blog page. Browse by category, search for a specific post or just scroll through the posts.
+        </p>
 
-            { post }
-            <CategoryCount
-              posts={ posts }
-              categoryId={ post }
-            />
-          </Badge>
-        ))
-        }
       </div>
 
-      { posts.map((post) => (
+      <div
+        className='flex flex-col gap-4'>
 
-        <BlogList
-          key={ post.slug }
-          imageUrl={ post.imageUrl }
-          { ...post }
-        />
-      )) }
+
+        { posts.map((post) => (
+
+          <BlogList
+            key={ post.slug }
+            { ...post }
+          />
+        )) }
+      </div>
     </main>
   );
 }

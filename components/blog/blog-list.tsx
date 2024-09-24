@@ -2,14 +2,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
 import { Separator } from '@radix-ui/react-dropdown-menu';
-import { Badge, ShareIcon, MessageCircleIcon } from 'lucide-react';
+import { ShareIcon, MessageCircleIcon } from 'lucide-react';
 import { MDXFrontMatter } from '@/lib/types';
+import { Badge } from '../ui/badge';
 
 
-interface PostPreviewProps extends MDXFrontMatter {
-  imageUrl: string;
-}
-export const BlogList = (props: PostPreviewProps) => {
+export const BlogList = (props: MDXFrontMatter) => {
   const {
     title,
     date,
@@ -18,7 +16,6 @@ export const BlogList = (props: PostPreviewProps) => {
     wordCount,
     readingTime,
     categories,
-    published,
     slug,
     imageUrl
   } = props
@@ -36,7 +33,7 @@ export const BlogList = (props: PostPreviewProps) => {
             </p>
           </CardHeader>
           <CardContent className="p-4">
-            <p className="text-muted-foreground">{ description }</p>
+            <p className="text-muted-foreground italic">{ description }</p>
             <div className="mt-4 text-sm text-muted-foreground">
               <span>{ wordCount } words</span>
               <span className="mx-2">•</span>
@@ -45,13 +42,27 @@ export const BlogList = (props: PostPreviewProps) => {
           </CardContent>
         </div>
         <div className="md:w-1/3 md:flex md:items-center">
-          <Image
-            src={ imageUrl }
-            alt={ title }
-            width={ 300 }
-            height={ 200 }
-            className="w-full h-48 md:h-full object-cover"
-          />
+          {
+            imageUrl ? (
+
+              <Image
+                src={ imageUrl }
+                alt={ title }
+                width={ 300 }
+                height={ 200 }
+                className="w-full h-48 md:h-full object-cover"
+              />
+            ) : (
+              <Image
+                src="/assets/images/placeholder-user.jpg"
+                alt="Placeholder"
+                width={ 300 }
+                height={ 200 }
+                className="w-full h-48 md:h-full object-cover"
+              />
+
+            )
+          }
         </div>
       </div>
 
@@ -59,11 +70,19 @@ export const BlogList = (props: PostPreviewProps) => {
         <div className="flex flex-col gap-1 md:gap-2 w-full justify-between">
           <div className="flex flex-wrap gap-1 md:gap-2">
             { categories.map((category, index) => (
-              <Badge key={ index }>{ category }</Badge>
+              <Badge
+                variant='outline'
+                key={ index }
+                className="mr-2 hover:bg-accent hover:cursor-pointer">
+                <Link
+                  prefetch
+                  href={ `/blog/category/${category}` }>
+                  { category }
+                </Link>
+              </Badge>
             )) }
           </div>
 
-          { !published && <Badge variant="destructive">Unpublished</Badge> }
 
           <Separator className="my-2" />
           <div className="flex gap-4 items-center justify-between mt-2">
