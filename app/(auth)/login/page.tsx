@@ -1,9 +1,9 @@
-import EmailForm from '../components/auth/email-form'
+import EmailForm from "../components/auth/email-form";
 
-export default async function Login () {
-    return (
-        <div className='flex items-center justify-center h-screen'>
-            <EmailForm />
-        </div>
-    )
+export default async function Login() {
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <EmailForm />
+    </div>
+  );
 }
