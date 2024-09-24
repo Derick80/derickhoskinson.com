@@ -40,20 +40,23 @@ export default async function Blog ({
   console.log(uniqueCategories, 'uniqueCategories');
 
   return (
-    <div className="prose min-w-full dark:prose-invert prose-a:no-underline">
-      { uniqueCategories.map((post) => (
-        <Badge
-          key={ post }
-          className="mr-2">
+    <main className="flex  flex-col gap-4 justify-center mt-4 prose min-w-full dark:prose-invert prose-a:no-underline">
+      <div
+        className="flex flex-row items-center">
+        { uniqueCategories.map((post) => (
+          <Badge
+            key={ post }
+            className="mr-2">
 
-          { post }
-          <CategoryCount
-            posts={ posts }
-            categoryId={ post }
-          />
-        </Badge>
-      ))
-      }
+            { post }
+            <CategoryCount
+              posts={ posts }
+              categoryId={ post }
+            />
+          </Badge>
+        ))
+        }
+      </div>
 
       { posts.map((post) => (
 
@@ -63,7 +66,7 @@ export default async function Blog ({
           { ...post }
         />
       )) }
-    </div>
+    </main>
   );
 }
 

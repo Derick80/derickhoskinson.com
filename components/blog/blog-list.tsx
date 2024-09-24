@@ -27,11 +27,11 @@ export const BlogList = (props: PostPreviewProps) => {
     <Card className="max-w-4xl shadow-2xl overflow-hidden">
       <div className="md:flex">
         <div className="md:flex-1">
-          <CardHeader className="p-4 pb-2">
+          <CardHeader className="p-4 pb-0">
             <Link prefetch href={ `/blog/${slug}` } className="text-lg font-semibold hover:underline">
               { title }
             </Link>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground mt-1">
               { date } • { author }
             </p>
           </CardHeader>
