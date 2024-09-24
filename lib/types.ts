@@ -7,6 +7,7 @@ export type MDXFrontMatter = {
   published: boolean;
   description: string;
   slug: string;
+  imageUrl?: string;
   readingTime: string;
   wordCount: number;
   categories: string[];

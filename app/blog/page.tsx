@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { MDXFrontMatter } from '@/lib/types';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { BlogList } from '@/components/blog/blog-list';
 
 export default async function Blog ({
   searchParams,
@@ -27,6 +29,10 @@ export default async function Blog ({
   }
 
   const posts = await getAllBlogPosts();
+
+  const mypost = posts.filter((post) => post.slug === `continuous-dhdotcom-development`)
+
+
   // get unique categories
   const categories = posts.map((post) => post.categories).flat();
 
@@ -48,6 +54,15 @@ export default async function Blog ({
         </Badge>
       ))
       }
+
+      { posts.map((post) => (
+
+        <BlogList
+          key={ post.slug }
+          imageUrl={ post.imageUrl }
+          { ...post }
+        />
+      )) }
     </div>
   );
 }

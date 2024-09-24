@@ -7,6 +7,7 @@ import {
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { z } from "zod";
 import remarkGfm from "remark-gfm";
+import Image, { ImageProps } from 'next/image';
 
 const blogPostSchema = z.object({
   slug: z.string(),
@@ -52,6 +53,17 @@ export default async function BlogPost ({
             </MDXPre>
           ),
           code: (props) => <CodeBlock code={ props.children } />,
+          img: (props) => (
+            <Image
+              sizes="100vw"
+              width={ 500 }
+              height={ 500 }
+              style={ { width: '100%', height: 'auto' } }
+              { ...(props as ImageProps) }
+            />
+          ),
+
+
         } }
         options={ {
           mdxOptions: {
