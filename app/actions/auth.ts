@@ -4,8 +4,8 @@ import { z } from "zod";
 import crypto from "crypto";
 import { cookies } from "next/headers";
 import prisma from "@/lib/prisma";
-import { cache } from 'react';
-import { sendEmailVerification } from '@/components/auth/send-verification-email';
+import { cache } from "react";
+import { sendEmailVerification } from "@/components/auth/send-verification-email";
 
 const schema = z.object({
   // username: z.string(
@@ -209,7 +209,7 @@ export const logout = async () => {
 
   try {
     cookies().delete("session-token");
-    cookies().set("session-token", "")
+    cookies().set("session-token", "");
   } catch (error) {
     console.error("Error in logout:", error);
     throw new Error("Unable to logout");
@@ -284,4 +284,4 @@ export const getSession = async (sessionToken: string) => {
   }
   return session;
 };
-``
+``;

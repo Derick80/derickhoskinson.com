@@ -1,13 +1,3 @@
-
-
-
-export default async function KDB () {
-
-    return (
-        <div
-            className=''
-        >
-
-        </div>
-    )
+export default async function KDB() {
+  return <div className=""></div>;
 }
