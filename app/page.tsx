@@ -1,38 +1,45 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { count } from 'console';
-import { FileText } from 'lucide-react';
-import Image from "next/image";
+import CategorySelect from './_components/categories/custom-checkbox'
+import { getSlugsAndCategories } from './actions/mdx-server'
+import type { Metadata } from 'next'
 
-export default function Home () {
+export const metadata: Metadata = {
+  title: "Dr. Hoskinson's Blog",
+  description: 'A personal web app for Dr. Hoskinson',
+  keywords: ['clinical genetics', 'genetics phd', 'acmg', 'variant classification', 'somatic', 'germline', 'tufts genetids phd']
+
+}
+
+
+
+export default async function Home (
+  { searchParams }: {
+    searchParams: { [key: string]: string | string[] | undefined }
+  }
+) {
+  const categoriesMap = await getSlugsAndCategories()
+  if (!categoriesMap) return null
+  console.log(categoriesMap)
+
+  const filteredCategories = categoriesMap.filter((cat) => {
+    return cat.category === searchParams.category
+
+  }
+  )
+  console.log(filteredCategories)
   return (
-    <section
-      className='mt-4'
-    >
-      <h2
-        className='flex justify-center text-3xl font-bold'>
-        Welcome to the Next.js + TypeScript + Tailwind CSS Starter
-      </h2>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div
+      className="flex flex-col items-center mt-10  min-h-screen py-2">
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total posts
-            </CardTitle>
-            <FileText />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              1445
-            </div>
-            <p className="text-xs text-muted-foreground">
-              perhaps add increase or decrease from
-              last month
-            </p>
-          </CardContent>
-        </Card>
+
+      <div
+        className='flex flex-wrap'>
+        <CategorySelect
+          categories={ categoriesMap }
+        />
+
+
       </div>
-    </section>
+    </div>
   )
 }
 

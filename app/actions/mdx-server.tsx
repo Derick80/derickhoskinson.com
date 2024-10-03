@@ -63,13 +63,13 @@ const highlighter = createHighlighter({
   themes: ["nord"],
   langs: ["typescript"],
 });
-async function CodeBlock({ code }: { code: string }) {
+async function CodeBlock ({ code }: { code: string }) {
   const out = (await highlighter).codeToHtml(code, {
     lang: "typescript",
     theme: "nord",
   });
   highlighter.then((h) => h.dispose());
-  return <div dangerouslySetInnerHTML={{ __html: out }} />;
+  return <div dangerouslySetInnerHTML={ { __html: out } } />;
 }
 
 const MDXPre = (
@@ -83,10 +83,10 @@ const MDXPre = (
   return (
     <div className="group relative">
       <pre
-        {...rest}
+        { ...rest }
         className="scrollbar-thin scrollbar-thumb-secondary scrollbar-thumb-rounded-full my-7 w-full overflow-x-auto rounded-xl p-4 text-primary transition ease-in-out"
       >
-        {children}
+        { children }
       </pre>
     </div>
   );
@@ -95,13 +95,24 @@ const MDXPre = (
 const TableComponent = ({ children }: { children: React.ReactNode }) => {
   return (
     <table className="not-prose bg-content1 rounded-large shadow-small my-10 h-auto w-full min-w-full table-auto overflow-auto">
-      {children}
+      { children }
     </table>
   );
 };
 
+
+
 const POSTS_FOLTER = path.join(process.cwd(), "app/blog/content");
 
+const sortPostsByDate = (posts: MDXFrontMatter) => {
+  return posts.sort((a, b) => {
+    if (a.date < b.date) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+}
 // Write a function to get all front matter and content
 
 const getAllBlogPosts = async () => {
@@ -118,6 +129,8 @@ const getAllBlogPosts = async () => {
     };
   });
 };
+
+
 
 const getSlugsAndCategories = async () => {
   const posts = await getAllBlogPosts();
