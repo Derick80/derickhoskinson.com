@@ -2,6 +2,7 @@
   "name": "wwwdhcom",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -29,6 +30,7 @@
     "next": "14.2.13",
     "next-mdx-remote": "^5.0.0",
     "next-themes": "^0.3.0",
+    "prisma": "^5.20.0",
     "react": "^18",
     "react-dom": "^18",
     "reading-time": "^1.5.0",
@@ -36,6 +38,7 @@
     "shiki": "^1.18.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "tsx": "^4.19.1",
     "vaul": "^0.9.4",
     "zod": "^3.23.8"
   },

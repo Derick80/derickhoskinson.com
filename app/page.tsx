@@ -18,21 +18,24 @@ export const metadata: Metadata = {
   ],
 };
 
-export default async function Home({
+export default async function Home ({
   searchParams,
 }: {
   searchParams: { category: string };
 }) {
   const allPosts = await getAllBlogPosts();
   if (!allPosts) return null;
+  // sort the posts by date
+  const sortedPosts = allPosts.sort((a, b) => {
+    return new Date(b.date).getTime() - new Date(a.date).getTime();
+  });
 
-  const filteredPosts = allPosts.filter((post) => {
+  const filteredPosts = sortedPosts.filter((post) => {
     return searchParams.category
       ? post.categories.includes(searchParams.category)
       : true;
   });
 
-  console.log(filteredPosts.length, "filteredPosts");
   const postcategories = allPosts.flatMap((post) => post.categories);
   const uniqueCategories = [...new Set(postcategories)];
   console.log(uniqueCategories, "uniqueCategories");
@@ -40,13 +43,13 @@ export default async function Home({
   if (!categoriesMap) return null;
 
   return (
-    <div className="mt-10 flex min-h-screen flex-col items-center py-2">
-      <div className="flex flex-wrap">
-        <CategoryContainer params={searchParams} />
-
-        {filteredPosts.map((post) => (
-          <BlogCard key={post.slug} {...post} />
-        ))}
+    <div className="flex min-h-screen flex-col py-2">
+      <CategoryContainer params={ searchParams } />
+      <div
+        className="prose mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
+        { filteredPosts.map((post) => (
+          <BlogCard key={ post.slug } { ...post } />
+        )) }
       </div>
     </div>
   );

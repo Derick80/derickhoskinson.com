@@ -12,7 +12,7 @@ import {
 import { MDXFrontMatter } from "@/lib/types";
 import BlogList from "@/components/blog/blog-list";
 
-export default async function Blog({}) {
+export default async function Blog ({ }) {
   const sessionData = await verifySession();
 
   const isAuthenticated = sessionData?.isAuthenticated;
@@ -27,11 +27,11 @@ export default async function Blog({}) {
   }
 
   const posts = await getAllBlogPosts();
-
+  // console.log(posts, "posts");
   return (
     <main className="prose mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
       <div className="flex flex-col gap-4">
-        <BlogList posts={posts} />
+        <BlogList posts={ posts } />
       </div>
     </main>
   );

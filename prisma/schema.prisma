@@ -46,7 +46,7 @@ model Post {
   author      String
   description String
   wordCount   Int
-  readingTime Int
+  readingTime String
   categories  String[]
   content     String
   published   Boolean   @default(false)

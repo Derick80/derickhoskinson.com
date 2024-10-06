@@ -19,6 +19,7 @@ const parseTheFrontmatter = (fileContent: string) => {
   const frontMatterblock = match![1];
   // split the front matter into an array of lines
   const frontMatterLines = frontMatterblock.trim().split("\n");
+  console.log(frontMatterLines, "frontMatterLines");
   // create an object to store the front matter
   const metadata: Partial<MDXFrontMatter> = {};
   // Wrangle the categories line in the front matter and remove []
@@ -45,13 +46,17 @@ const parseTheFrontmatter = (fileContent: string) => {
   });
 
   const slug = metadata.title?.replace(/\s+/gu, "-").toLowerCase();
-
+  // change the publication status to a boolean
+  metadata.published = 'string' === typeof metadata.published ? metadata.published === 'true' : metadata.published;
   // create the readingTime and wordCount properties
   metadata.slug = slug;
   metadata.readingTime = readingTime(content).text;
   metadata.wordCount = content.split(/\s+/gu).length;
   // wrangle the categories line in the front matter.  Make sure it's a single array
   metadata.categories = categories || [];
+
+  // organize the metadata and content by date.
+
   return {
     metadata: metadata as MDXFrontMatter,
     content,
@@ -63,13 +68,13 @@ const highlighter = createHighlighter({
   themes: ["nord"],
   langs: ["typescript"],
 });
-async function CodeBlock({ code }: { code: string }) {
+async function CodeBlock ({ code }: { code: string }) {
   const out = (await highlighter).codeToHtml(code, {
     lang: "typescript",
     theme: "nord",
   });
   highlighter.then((h) => h.dispose());
-  return <div dangerouslySetInnerHTML={{ __html: out }} />;
+  return <div dangerouslySetInnerHTML={ { __html: out } } />;
 }
 
 const MDXPre = (
@@ -83,10 +88,10 @@ const MDXPre = (
   return (
     <div className="group relative">
       <pre
-        {...rest}
+        { ...rest }
         className="scrollbar-thin scrollbar-thumb-secondary scrollbar-thumb-rounded-full my-7 w-full overflow-x-auto rounded-xl p-4 text-primary transition ease-in-out"
       >
-        {children}
+        { children }
       </pre>
     </div>
   );
@@ -95,14 +100,14 @@ const MDXPre = (
 const TableComponent = ({ children }: { children: React.ReactNode }) => {
   return (
     <table className="not-prose bg-content1 rounded-large shadow-small my-10 h-auto w-full min-w-full table-auto overflow-auto">
-      {children}
+      { children }
     </table>
   );
 };
 
 const POSTS_FOLTER = path.join(process.cwd(), "app/blog/content");
 
-const sortPostsByDate = (posts: MDXFrontMatter) => {
+const sortPostsByDate = (posts: MDXFrontMatter[]) => {
   return posts.sort((a, b) => {
     if (a.date < b.date) {
       return 1;
@@ -121,6 +126,7 @@ const getAllBlogPosts = async () => {
     const { metadata, content } = parseTheFrontmatter(
       fs.readFileSync(path.join(POSTS_FOLTER, file), "utf-8"),
     );
+    // sort the posts by date
     return {
       ...metadata,
       content,
