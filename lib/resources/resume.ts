@@ -204,11 +204,9 @@ export const education = [
     field: "Genetics",
     startDate: "2006",
     endDate: "2014",
+    primaryProject: `Genetic & Genomic Analysis of the mRNA 3's End Processing Subunit Pcf11 Suggests an Expanded Role in Gene Expression.`,
     duties: [
-      {
-        description:
-          "Dissertation: Genetic & Genomic Analysis of the mRNA 3's End Processing Subunit Pcf11 Suggests an Expanded Role in Gene Expressio",
-      },
+
       {
         description:
           "Utilized next generation RNA sequencing to generate a large genome wide data set to measure changes in gene expression and potential impacts in cell viability under stress conditions",
@@ -237,11 +235,9 @@ export const education = [
     field: "Biology",
     startDate: "2002",
     endDate: "2006",
+    primaryProject: 'The function of Rom2 GDP/GTP exchange factor on RHO1 during sporulation in the budding yeast, Saccharomyces Cerevisiae.',
     duties: [
-      {
-        description:
-          "Honors Thesis: The function of Rom2 GDP/GTP exchange factor on RHO1 during sporulation in the budding yeast, Saccharomyces Cerevisiae.",
-      },
+
       {
         description:
           "Performed genetic analysis including gene knockout and gene tagging of regulators of cell wall components",
@@ -256,10 +252,12 @@ export const publications = [
     year: "2024",
     journal: " Genetics",
     authors:
-      "Graber JH, Hoskinson D, Lui H, Micheals KK, Benson PS, Maki NJ, Wilson CL, McGrath C, Puelo F, Pearson E, Kuehner, JN, Moore C",
+      "Graber JH., Hoskinson D., Lui H., Micheals KK., Benson PS., Maki NJ., Wilson CL., McGrath C., Puelo F., Pearson E., Kuehner, JN., Moore C.",
     edition: `2024 Feb 7;226(2):iyad199. PMID:37967370; PMCID: PMC10847720.`,
     type: "published",
-    url: `https://doi.org/10.1093/genetics/iyad199`,
+    doi: `https://doi.org/10.1093/genetics/iyad199`,
+    pmid: "37967370",
+    pmcid: "PMC10847720",
     pdf: "",
   },
   {
@@ -268,10 +266,12 @@ export const publications = [
     year: "2020",
     journal: "JAMA",
     authors:
-      "Parikh K, Huether R, White K, Hoskinson D, Beaubier N, Dong H, Adjei AA, Mansfield AS",
+      "Parikh K., Huether R., White K., Hoskinson D., Beaubier N., Dong H., Adjei AA., Mansfield AS.",
     edition: `2020 Feb 5;3(2):e200202. PMID: 32108894; PMCID: PMC7049088.`,
     type: "published",
-    url: `https://doi.org/10.1001/jamanetworkopen.2020.0202`,
+    doi: `https://doi.org/10.1001/jamanetworkopen.2020.0202`,
+    pmid: "32108894",
+    pmcid: "PMC7049088",
     pdf: `https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2762022`,
   },
 
@@ -281,10 +281,12 @@ export const publications = [
     year: "2020",
     journal: "Nature Biotechnology",
     authors:
-      "Beaubier, N., Bontrager, M., Huether, R., Igartua, C., Lau, D., Tell, R., Bobe, A. M., Bush, S., Chang, A. L., Hoskinson, D. C., Khan, A. A., Kudalkar, E., Leibowitz, B. D., Lozachmeur, A., Michuda, J., Parsons, J., Perera, J. F., Salahudeen, A., Shah, K. P., Taxter, T., White, K. P.",
+      "Beaubier, N., Bontrager M., Huether R., Igartua, C., Lau D., Tell R., Bobe AM., Bush, S., Chang, AL., Hoskinson DC., Khan, A.A., Kudalkar, E., Leibowitz, B.D., Lozachmeur, A., Michuda, J., Parsons, J., Perera, J.F., Salahudeen, A., Shah, K.P., Taxter, T., White, K.P.",
     edition: `37(11), 1351 - 1360`,
     type: "published",
-    url: `https://www.nature.com/articles/s41587-019-0259-z`,
+    doi: `https://www.nature.com/articles/s41587-019-0259-z`,
+    pmid: "31570899",
+    pmcid: "",
     pdf: "",
   },
   {
@@ -292,10 +294,12 @@ export const publications = [
     year: "2019",
     journal: "Genetics in Medicine",
     authors:
-      "Manickam, K, Buchanan, AH, Schwartz, M, Hallquist, M, Williams, JL, Kulchak, A, Rahm, A, Rocha, H, Savatt, J, Evans, A, Butry, L, Lazzeri, A, Lindbuchler, DM, Flansburg, C, Leeming, R, Vogel, V, Lebo, M, Mason-Suares, H, Hoskinson, DC, Abul-Husn, NS, Dewey, F, Willard, H, Mccormick, CZ, Hartzel, N, Kost, KA, Lavage, DR, Sturm, AC, Frisbie, LR, Person, TN, Metpally, RP, Giovanni, MA, Lowry, LE, Leader, JB, Ritchie, MD, Carey, D, Kirchner, HL, Faucett, W, Williams, S,  Ledbetter, D, Murray M.",
+      "Manickam, K., Buchanan, AH., Schwartz, M, Hallquist, M, Williams, JL, Kulchak, A, Rahm, A, Rocha, H, Savatt, J, Evans, A, Butry, L, Lazzeri, A, Lindbuchler, DM, Flansburg, C, Leeming, R, Vogel, V, Lebo, M, Mason-Suares, H, Hoskinson DC, Abul-Husn, NS, Dewey, F, Willard, H, Mccormick, CZ, Hartzel, N, Kost, KA, Lavage, DR, Sturm, AC, Frisbie, LR, Person, TN, Metpally, RP, Giovanni, MA, Lowry, LE, Leader, JB, Ritchie, MD, Carey, D, Kirchner, HL, Faucett, W, Williams, S, Ledbetter, D, Murray M.",
     edition: `7;1(5)`,
     type: "published",
-    url: `https://doi.org/10.1038/s41436-019-0560-8`,
+    doi: `https://doi.org/10.1038/s41436-019-0560-8`,
+    pmid: " 31147632",
+    pmcid: "",
     pdf: "",
   },
 ];
@@ -304,7 +308,7 @@ export const resume_basics = {
   title: "Derick Hoskinson, PhD",
   phoneNumber: 312 - 871 - 8067,
   email: "derickchoskinson@gmail.com",
-  website: "https://derickchoskinson.com",
+  website: "https://derickhoskinson.com",
   location: "Chicago, IL 60640",
   summary:
     "I am a senior clinical scientist keen on using my expertise in variant curation and analysis to help patients and families. I am also a software developer focused on learning fundamental web technologies such as JavaScript, TypeScript, and React. I am open to new opportunities in the field of variant curation and analysis with a focus on developing web applications to work with genomic data.",

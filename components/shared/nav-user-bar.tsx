@@ -6,7 +6,6 @@ import {
   DropdownMenuContent,
 } from "../ui/dropdown-menu";
 import Link from "next/link";
-import Image from "next/image";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 const UserLoginMenu = async ({ userId }: { userId: string }) => {
@@ -18,14 +17,14 @@ const UserLoginMenu = async ({ userId }: { userId: string }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        {user.image && user.name ? (
+        { user.image && user.name ? (
           <Avatar>
-            <AvatarImage src={user.image} alt={user.name} />
-            <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+            <AvatarImage src={ user.image } alt={ user.name } />
+            <AvatarFallback>{ user.name.charAt(0) }</AvatarFallback>
           </Avatar>
         ) : (
-          <span>{user.name}</span>
-        )}
+          <span>{ user.name }</span>
+        ) }
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
