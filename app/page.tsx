@@ -2,7 +2,7 @@ import { BlogCard } from "@/components/blog/blog-card";
 import CategorySelect from "./_components/categories/custom-checkbox";
 import { getAllBlogPosts, getSlugsAndCategories } from "./actions/mdx-server";
 import type { Metadata } from "next";
-import CategoryContainer from './_components/categories/category-container';
+import CategoryContainer from "./_components/categories/category-container";
 
 export const metadata: Metadata = {
   title: "Dr. Hoskinson's Blog",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   ],
 };
 
-export default async function Home ({
+export default async function Home({
   searchParams,
 }: {
   searchParams: { category: string };
@@ -42,11 +42,11 @@ export default async function Home ({
   return (
     <div className="mt-10 flex min-h-screen flex-col items-center py-2">
       <div className="flex flex-wrap">
-        <CategoryContainer params={ searchParams } />
+        <CategoryContainer params={searchParams} />
 
-        { filteredPosts.map((post) => (
-          <BlogCard key={ post.slug } { ...post } />
-        )) }
+        {filteredPosts.map((post) => (
+          <BlogCard key={post.slug} {...post} />
+        ))}
       </div>
     </div>
   );

@@ -206,7 +206,6 @@ export const education = [
     endDate: "2014",
     primaryProject: `Genetic & Genomic Analysis of the mRNA 3's End Processing Subunit Pcf11 Suggests an Expanded Role in Gene Expression.`,
     duties: [
-
       {
         description:
           "Utilized next generation RNA sequencing to generate a large genome wide data set to measure changes in gene expression and potential impacts in cell viability under stress conditions",
@@ -235,9 +234,9 @@ export const education = [
     field: "Biology",
     startDate: "2002",
     endDate: "2006",
-    primaryProject: 'The function of Rom2 GDP/GTP exchange factor on RHO1 during sporulation in the budding yeast, Saccharomyces Cerevisiae.',
+    primaryProject:
+      "The function of Rom2 GDP/GTP exchange factor on RHO1 during sporulation in the budding yeast, Saccharomyces Cerevisiae.",
     duties: [
-
       {
         description:
           "Performed genetic analysis including gene knockout and gene tagging of regulators of cell wall components",

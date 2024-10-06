@@ -97,7 +97,6 @@ html.dark .shiki span {
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
 
-
 .print-no-border {
   border: none !important;
   box-shadow: none !important;

@@ -1,20 +1,19 @@
-'use client'
-import { Download } from 'lucide-react'
-import { Button } from '../ui/button'
-import React from 'react'
+"use client";
+import { Download } from "lucide-react";
+import { Button } from "../ui/button";
+import React from "react";
 
 type ASTResume = {
-    type: string
-    value?: string
-    children?: ASTResume[]
-}
+  type: string;
+  value?: string;
+  children?: ASTResume[];
+};
 
 const DownloadResumeButton = () => {
-
-    const downloadPDF = () => {
-        // Add a temporary stylesheet for printing
-        const style = document.createElement('style')
-        style.textContent = `
+  const downloadPDF = () => {
+    // Add a temporary stylesheet for printing
+    const style = document.createElement("style");
+    style.textContent = `
       @media print {
         body * {
           visibility: hidden;
@@ -36,26 +35,26 @@ const DownloadResumeButton = () => {
         }
 
       }
-    `
-        document.head.appendChild(style)
+    `;
+    document.head.appendChild(style);
 
-        // Trigger print dialog
-        window.print()
+    // Trigger print dialog
+    window.print();
 
-        // Remove the temporary stylesheet after printing
-        document.head.removeChild(style)
-    }
-    return (
-        <Button
-            variant="outline"
-            size="sm"
-            onClick={ downloadPDF }
-            className="text-xs"
-        >
-            <Download className="h-4 w-4 mr-1" />
-            PDF
-        </Button>
-    )
-}
+    // Remove the temporary stylesheet after printing
+    document.head.removeChild(style);
+  };
+  return (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={downloadPDF}
+      className="text-xs"
+    >
+      <Download className="mr-1 h-4 w-4" />
+      PDF
+    </Button>
+  );
+};
 
-export default DownloadResumeButton
+export default DownloadResumeButton;

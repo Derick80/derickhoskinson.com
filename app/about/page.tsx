@@ -1,14 +1,9 @@
-import ContactForm from '../_components/contact/contact-form';
+import ContactForm from "../_components/contact/contact-form";
 
-
-
-export default function AboutPage () {
-    return (
-        <div
-            className="flex flex-col items-center mt-4 min-h-screen py-2"
-        >
-
-            <ContactForm />
-        </div>
-    )
+export default function AboutPage() {
+  return (
+    <div className="mt-4 flex min-h-screen flex-col items-center py-2">
+      <ContactForm />
+    </div>
+  );
 }
