@@ -1,5 +1,4 @@
 import { BlogCard } from "@/components/blog/blog-card";
-import CategorySelect from "./_components/categories/custom-checkbox";
 import { getAllBlogPosts, getSlugsAndCategories } from "./actions/mdx-server";
 import type { Metadata } from "next";
 import CategoryContainer from "./_components/categories/category-container";
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
     "variant classification",
     "somatic",
     "germline",
-    "tufts genetids phd",
+    "tufts genetics phd",
   ],
 };
 

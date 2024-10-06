@@ -76,11 +76,11 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-  .h1 {
-    @apply text-4xl font-bold;
+  h1 {
+    @apply scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl;
   }
   .h2 {
-    @apply text-3xl font-bold;
+    @apply scroll-m-20 border-b border-primary pb-2 text-3xl tracking-tight transition-colors font-bold first:mt-0;
   }
   .h3 {
     @apply text-2xl font-bold;

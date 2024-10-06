@@ -5,7 +5,21 @@ import { MDXFrontMatter } from "@/lib/types";
 import readingTime from "reading-time";
 import { createHighlighter } from "shiki";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
+import { z } from "zod";
 
+const frontMatterSchema = z.object({
+  title: z.string(),
+  date: z.string(),
+  author: z.string(),
+  description: z.string(),
+  imageUrl: z.string().optional(),
+  published: z.boolean(),
+  categories: z.array(z.string()),
+  slug: z.string().optional(),
+  readingTime: z.string().optional(),
+  wordCount: z.number().optional(),
+
+})
 /* Parsing front matter */
 
 const parseTheFrontmatter = (fileContent: string) => {
@@ -19,7 +33,6 @@ const parseTheFrontmatter = (fileContent: string) => {
   const frontMatterblock = match![1];
   // split the front matter into an array of lines
   const frontMatterLines = frontMatterblock.trim().split("\n");
-  console.log(frontMatterLines, "frontMatterLines");
   // create an object to store the front matter
   const metadata: Partial<MDXFrontMatter> = {};
   // Wrangle the categories line in the front matter and remove []
@@ -73,7 +86,7 @@ async function CodeBlock ({ code }: { code: string }) {
     lang: "typescript",
     theme: "nord",
   });
-  highlighter.then((h) => h.dispose());
+
   return <div dangerouslySetInnerHTML={ { __html: out } } />;
 }
 

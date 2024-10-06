@@ -1,15 +1,6 @@
 import React from "react";
 import { getAllBlogPosts } from "../actions/mdx-server";
 import { verifySession } from "../actions/auth";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MDXFrontMatter } from "@/lib/types";
 import BlogList from "@/components/blog/blog-list";
 
 export default async function Blog ({ }) {
