@@ -26,30 +26,31 @@ It's not that easy.
 
 ![DNA Sequencing](/assets/images/dnaseq.jpg)
 
-I am somewhat happy with how things are turning out in this app.  But I'm about to enter a few weeks of focused working which will limit my timem to work on this project.
+I am somewhat happy with how things are turning out in this app. But I'm about to enter a few weeks of focused working which will limit my timem to work on this project.
 
 ### Purpose
+
 I think I may just try to write stream of concsiousness....but I really need to figure out how to turn off predictive text in vscode.
 
+I want to learn how to generate metdatat for this site better. I started this site to learn Nextjs app router and use server actions and server components. It's been fun but a littl hectic. I would say I was a moderately knowledgable remix coder. If you call my DIY apps as actual coding.
 
-I want to learn how to generate metdatat for this site better.  I started this site to learn Nextjs app router and use server actions and server components.  It's been fun but a littl hectic.  I would say I was a moderately knowledgable remix coder. If you call my DIY apps as actual coding.
-
-I am interested in exploring more aspects of genetics and variant classification.  What's next for the field?  I am actually not sure.  While I have learned a great deal of things in my current position I haven't spent much time planning for the future. I will do that now.
+I am interested in exploring more aspects of genetics and variant classification. What's next for the field? I am actually not sure. While I have learned a great deal of things in my current position I haven't spent much time planning for the future. I will do that now.
 
 But it looks like I did finally solve it
 
-### Code to turn off text prediction  in vscode
+### Code to turn off text prediction in vscode
 
-    ```json
+```json
     "[mdx]": {
-  "editor.suggest.showWords": false,
   "editor.quickSuggestions": {
     "other": false,
     "comments": false,
     "strings": false
   },
+  "editor.suggest.showWords": false,
+  "editor.inlineSuggest.enabled": false
 }
-    ```
+```
 
 ### Worked on
 
@@ -69,6 +70,7 @@ But it looks like I did finally solve it
 
 - [ ] Add a category bar
 - [ ] Add a search bar
+- [ ] Scope a User Forums
 - [ ] Find someone to help me with the design
 - [ ] Add a contact form
 - [ ] Add a newsletter
@@ -78,6 +80,15 @@ But it looks like I did finally solve it
 - [x] Add a about section
 - [ ] Add a contact section
 - [ ] Add a footer
-- [] Add an Overlay bar
+- [ ] Add an Overlay ba
+- [ ] Add a forums section
 
-- [] Add a forums section
+
+### Categories
+The categories are obtained from the top of the FrontMatter of the MDX files. During the initial development I thought that I would confirm that these are dynammic and can be made up of many different tags. I'm not sure about this approach.
+
+Maybe I should not rely on static category tags but instead come up with a basic set and expand upon those in the future.
+
+### Search Bar
+
+

@@ -28,30 +28,30 @@ const Category = ({
 
   return (
     <div className="relative m-1 inline-block">
-      { " " }
-      { onCategorySelect && (
+      {" "}
+      {onCategorySelect && (
         <Input
           type="checkbox"
           name="category"
-          onChange={ onCategorySelect }
+          onChange={onCategorySelect}
           className="sr-only"
-          id={ category }
-          value={ category }
-          checked={ isSelected(category) }
+          id={category}
+          value={category}
+          checked={isSelected(category)}
         />
-      ) }
+      )}
       <Label
-        className={ cn(
+        className={cn(
           "inline-flex cursor-pointer items-center rounded-full px-3 py-1 transition-colors",
           "border border-primary hover:bg-primary/70 hover:text-primary-foreground",
           isSelected(category)
             ? "bg-primary text-primary-foreground"
             : "bg-background text-foreground",
-        ) }
-        htmlFor={ category }
+        )}
+        htmlFor={category}
       >
-        { category }
-        <CategoryCount { ...categories } />
+        {category}
+        <CategoryCount {...categories} />
       </Label>
     </div>
   );
@@ -65,16 +65,16 @@ const CategoryCount = (props: CategoryFilterType) => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Badge variant="secondary" className="ml-2 cursor-pointer">
-          { categoryCount }
+          {categoryCount}
         </Badge>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem className="flex flex-col gap-2 p-2">
-          { related.map((rel) => (
-            <Link key={ rel } href={ `/blog/${rel}` } className="w-full">
-              { rel }
+          {related.map((rel) => (
+            <Link key={rel} href={`/blog/${rel}`} className="w-full">
+              {rel}
             </Link>
-          )) }
+          ))}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

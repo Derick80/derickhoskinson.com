@@ -9,20 +9,17 @@ import { z } from "zod";
 import remarkGfm from "remark-gfm";
 import Image, { ImageProps } from "next/image";
 
-
-
 export const revalidate = 3600;
-export async function generateStaticParams () {
-  const posts = await getAllBlogPosts()
-  return posts.map(post => ({ params: { slug: post.slug } }))
-
+export async function generateStaticParams() {
+  const posts = await getAllBlogPosts();
+  return posts.map((post) => ({ params: { slug: post.slug } }));
 }
 const blogPostSchema = z.object({
   slug: z.string(),
 });
 export type BlogPost = z.infer<typeof blogPostSchema>;
 
-export default async function BlogPost ({
+export default async function BlogPost({
   params,
 }: {
   params: {
@@ -50,32 +47,32 @@ export default async function BlogPost ({
   return (
     <div className="prose min-w-full p-4 dark:prose-invert prose-a:no-underline">
       <MDXRemote
-        source={ post.content }
-        components={ {
+        source={post.content}
+        components={{
           h1: (props) => (
-            <h1 style={ { color: "red", fontSize: "48px" } }>{ props.children }</h1>
+            <h1 style={{ color: "red", fontSize: "48px" }}>{props.children}</h1>
           ),
           pre: (props) => (
             <MDXPre className="bg-content1 max-h-[400px]">
-              { props.children }
+              {props.children}
             </MDXPre>
           ),
-          code: (props) => <CodeBlock code={ props.children } />,
+          code: (props) => <CodeBlock code={props.children} />,
           img: (props) => (
             <Image
               sizes="100vw"
-              width={ 500 }
-              height={ 500 }
-              style={ { width: "100%", height: "auto" } }
-              { ...(props as ImageProps) }
+              width={500}
+              height={500}
+              style={{ width: "100%", height: "auto" }}
+              {...(props as ImageProps)}
             />
           ),
-        } }
-        options={ {
+        }}
+        options={{
           mdxOptions: {
             remarkPlugins: [remarkGfm],
           },
-        } }
+        }}
       />
     </div>
   );

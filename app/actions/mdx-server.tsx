@@ -1,7 +1,7 @@
 "use server";
 import path from "path";
 import fs from "fs";
-import { CategoryFilterType, MDXFrontMatter } from "@/lib/types";
+import { MDXFrontMatter } from "@/lib/types";
 import readingTime from "reading-time";
 import { createHighlighter } from "shiki";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
@@ -100,8 +100,6 @@ const TableComponent = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-
-
 const POSTS_FOLTER = path.join(process.cwd(), "app/blog/content");
 
 const sortPostsByDate = (posts: MDXFrontMatter) => {
@@ -112,7 +110,7 @@ const sortPostsByDate = (posts: MDXFrontMatter) => {
       return -1;
     }
   });
-}
+};
 // Write a function to get all front matter and content
 
 const getAllBlogPosts = async () => {
@@ -129,8 +127,6 @@ const getAllBlogPosts = async () => {
     };
   });
 };
-
-
 
 const getSlugsAndCategories = async () => {
   const posts = await getAllBlogPosts();

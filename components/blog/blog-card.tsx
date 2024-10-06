@@ -26,59 +26,59 @@ export const BlogCard = (props: MDXFrontMatter) => {
           <CardHeader className="p-4 pb-0">
             <Link
               prefetch
-              href={ `/blog/${slug}` }
+              href={`/blog/${slug}`}
               className="text-lg font-semibold hover:underline"
             >
-              { title }
+              {title}
             </Link>
             <p className="mt-1 text-sm text-muted-foreground">
-              { date } • { author }
+              {date} • {author}
             </p>
           </CardHeader>
           <CardContent className="p-4">
-            <p className="italic text-muted-foreground">{ description }</p>
+            <p className="italic text-muted-foreground">{description}</p>
             <div className="mt-4 text-sm text-muted-foreground">
-              <span>{ wordCount } words</span>
+              <span>{wordCount} words</span>
               <span className="mx-2">•</span>
-              <span>{ readingTime } min read</span>
+              <span>{readingTime} min read</span>
             </div>
           </CardContent>
         </div>
         <div className="md:flex md:w-1/3 md:items-center">
-          { imageUrl ? (
+          {imageUrl ? (
             <Image
-              src={ imageUrl }
-              alt={ title }
-              width={ 300 }
-              height={ 200 }
+              src={imageUrl}
+              alt={title}
+              width={300}
+              height={200}
               className="h-48 w-full object-cover md:h-full"
             />
           ) : (
             <Image
               src="/assets/images/placeholder-user.jpg"
               alt="Placeholder"
-              width={ 300 }
-              height={ 200 }
+              width={300}
+              height={200}
               className="h-48 w-full object-cover md:h-full"
             />
-          ) }
+          )}
         </div>
       </div>
 
       <CardFooter className="p-4">
         <div className="flex w-full flex-col justify-between gap-1 md:gap-2">
           <div className="flex flex-wrap gap-1 md:gap-2">
-            { categories.map((category, index) => (
+            {categories.map((category, index) => (
               <Badge
                 variant="outline"
-                key={ index }
+                key={index}
                 className="mr-2 hover:cursor-pointer hover:bg-accent"
               >
-                <Link prefetch href={ `/blog/category/${category}` }>
-                  { category }
+                <Link prefetch href={`/blog/category/${category}`}>
+                  {category}
                 </Link>
               </Badge>
-            )) }
+            ))}
           </div>
 
           <Separator className="my-2" />

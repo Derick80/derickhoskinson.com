@@ -22,14 +22,14 @@ const CategoryContainer = ({
         or just scroll through the posts.
       </p>
       <div className="flex flex-wrap gap-4 p-2">
-        {categories.map((category) => (
+        { categories.map((category, index) => (
           <Category
-            key={category.category}
-            categories={category}
-            onCategorySelect={onCategorySelect}
-            selectedCategories={selectedCategories}
+            key={ index }
+            categories={ category }
+            onCategorySelect={ onCategorySelect }
+            selectedCategories={ selectedCategories }
           />
-        ))}
+        )) }
       </div>
     </div>
   );
