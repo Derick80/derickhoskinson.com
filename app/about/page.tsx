@@ -8,11 +8,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Github, Linkedin, Mail, Twitter } from "lucide-react";
 import Socials from "../_components/about/socials";
 import HobbyComponent from "../_components/about/hobbies";
 import Biography from "../_components/about/bio";
 import ProfessionalSummary from "../_components/about/professiona-summary";
+
+
+
 
 export default function AboutMePage () {
     // helped by v0

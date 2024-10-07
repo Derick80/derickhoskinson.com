@@ -1,30 +1,32 @@
-import React from "react";
-import { getAllBlogPosts } from "../actions/mdx-server";
+import React, { Suspense } from "react";
+import { getAllBlogPosts, getAllPosts } from "../actions/mdx-server";
 import { verifySession } from "../actions/auth";
 import BlogList from "@/components/blog/blog-list";
+import CategorySelector from '../_components/categories/category-container';
 
-export default async function Blog({}) {
-  const sessionData = await verifySession();
+export default async function Blog ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
 
-  const isAuthenticated = sessionData?.isAuthenticated;
+  const categoriesParam = searchParams.categories;
 
-  if (!isAuthenticated) {
-    return (
-      <div>
-        <h1>Not authenticated</h1>
-        <p>You need to be authenticated to view this page</p>
-      </div>
-    );
-  }
+  const categories =
+    typeof categoriesParam === "string"
+      ? categoriesParam.split(",")
+      : categoriesParam || [];
 
-  const posts = await getAllBlogPosts();
+  const posts = await getAllPosts();
   if (!posts) return null;
-  // console.log(posts, "posts");
   return (
-    <main className="prose mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
-      <div className="flex flex-col gap-4">
-        <BlogList posts={posts} />
-      </div>
-    </main>
+    <div className="flex min-h-screen flex-col py-2">
+      <CategorySelector posts={ posts } />
+      <Suspense fallback={ <p>Loading results...</p> }>
+        <div className="prose prose-neutral mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
+          <BlogList categories={ categories } />
+        </div>
+      </Suspense>
+    </div>
   );
 }
