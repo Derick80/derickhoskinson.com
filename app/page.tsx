@@ -26,22 +26,7 @@ export const metadata: Metadata = {
   ],
 };
 
-// This is a Server Component
-async function SearchResults({ categories }: { categories?: string[] }) {
-  // Simulate a database query or API call
-  const posts = await getAllPosts(categories);
-
-  if (posts.length === 0) {
-    return <p>No posts found.</p>;
-  }
-
-  return (
-    <ul>
-      <BlogList posts={posts} />
-    </ul>
-  );
-}
-export default async function Home({
+export default async function Home ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -56,11 +41,11 @@ export default async function Home({
   const allPosts = await getAllPosts(categories);
   return (
     <div className="flex min-h-screen flex-col py-2">
-      {/* <CategoryBadges posts={ allPosts } /> */}
-      <CategorySelector posts={allPosts} />
-      <Suspense fallback={<p>Loading results...</p>}>
+      {/* <CategoryBadges posts={ allPosts } /> */ }
+      <CategorySelector posts={ allPosts } />
+      <Suspense fallback={ <p>Loading results...</p> }>
         <div className="prose mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
-          <SearchResults categories={categories} />
+          <BlogList categories={ categories } />
         </div>
       </Suspense>
     </div>
