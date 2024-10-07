@@ -1,19 +1,19 @@
-import { getAllBlogPosts } from '@/app/actions/mdx-server';
+import { getAllBlogPosts } from "@/app/actions/mdx-server";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-
 const syncwithDb = async () => {
-
   const posts = await getAllBlogPosts();
 
-  if (!posts) return {
-    message: "No posts were found",
-  };
+  if (!posts)
+    return {
+      message: "No posts were found",
+    };
 
-  if (posts === null) return {
-    message: "No posts were found",
-  };
+  if (posts === null)
+    return {
+      message: "No posts were found",
+    };
 
   const updated = await Promise.all(
     posts.map(async (post) => {
@@ -46,13 +46,13 @@ const syncwithDb = async () => {
       });
     }),
   );
-  if (!updated) return {
-    message: "No posts were updated",
-  }
+  if (!updated)
+    return {
+      message: "No posts were updated",
+    };
   return {
     message: `Updated ${updated.length} posts`,
-
-  }
+  };
 };
 
 await syncwithDb();

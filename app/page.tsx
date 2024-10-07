@@ -1,7 +1,16 @@
 import { BlogCard } from "@/components/blog/blog-card";
-import { getAllBlogPosts, getSlugsAndCategories } from "./actions/mdx-server";
+import {
+  getAllBlogPosts,
+  getAllPosts,
+  getSlugsAndCategories,
+} from "./actions/mdx-server";
 import type { Metadata } from "next";
 import CategoryContainer from "./_components/categories/category-container";
+import BlogList from "@/components/blog/blog-list";
+import CategoryBadges from "./_components/categories/category-badges";
+import CategorySelector from "./_components/categories/category-container";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Dr. Hoskinson's Blog",
@@ -17,39 +26,43 @@ export const metadata: Metadata = {
   ],
 };
 
-export default async function Home ({
-  searchParams,
-}: {
-  searchParams: { category: string };
-}) {
-  const allPosts = await getAllBlogPosts();
-  if (!allPosts) return null;
-  // sort the posts by date
-  const sortedPosts = allPosts.sort((a, b) => {
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
+// This is a Server Component
+async function SearchResults({ categories }: { categories?: string[] }) {
+  // Simulate a database query or API call
+  const posts = await getAllPosts(categories);
 
-  const filteredPosts = sortedPosts.filter((post) => {
-    return searchParams.category
-      ? post.categories.includes(searchParams.category)
-      : true;
-  });
-
-  const postcategories = allPosts.flatMap((post) => post.categories);
-  const uniqueCategories = [...new Set(postcategories)];
-  console.log(uniqueCategories, "uniqueCategories");
-  const categoriesMap = await getSlugsAndCategories();
-  if (!categoriesMap) return null;
+  if (posts.length === 0) {
+    return <p>No posts found.</p>;
+  }
 
   return (
+    <ul>
+      <BlogList posts={posts} />
+    </ul>
+  );
+}
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const categoriesParam = searchParams.categories;
+
+  const categories =
+    typeof categoriesParam === "string"
+      ? categoriesParam.split(",")
+      : categoriesParam || [];
+
+  const allPosts = await getAllPosts(categories);
+  return (
     <div className="flex min-h-screen flex-col py-2">
-      <CategoryContainer params={ searchParams } />
-      <div
-        className="prose mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
-        { filteredPosts.map((post) => (
-          <BlogCard key={ post.slug } { ...post } />
-        )) }
-      </div>
+      {/* <CategoryBadges posts={ allPosts } /> */}
+      <CategorySelector posts={allPosts} />
+      <Suspense fallback={<p>Loading results...</p>}>
+        <div className="prose mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
+          <SearchResults categories={categories} />
+        </div>
+      </Suspense>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 "use server";
 import path from "path";
 import fs from "fs";
-import { MDXFrontMatter } from "@/lib/types";
 import readingTime from "reading-time";
 import { createHighlighter } from "shiki";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
@@ -15,11 +14,13 @@ const frontMatterSchema = z.object({
   imageUrl: z.string().optional(),
   published: z.boolean(),
   categories: z.array(z.string()),
-  slug: z.string().optional(),
-  readingTime: z.string().optional(),
-  wordCount: z.number().optional(),
+  slug: z.string(),
+  readingTime: z.string(),
+  wordCount: z.number(),
+  content: z.string(),
+});
+export type MDXFrontMatter = z.infer<typeof frontMatterSchema>;
 
-})
 /* Parsing front matter */
 
 const parseTheFrontmatter = (fileContent: string) => {
@@ -29,50 +30,48 @@ const parseTheFrontmatter = (fileContent: string) => {
   const match = frontmatterRegex.exec(fileContent);
   // trim content
   const content = fileContent.replace(frontmatterRegex, "").trim();
+  if (!match) {
+    throw new Error("No front matter found in the file");
+  }
+
   // if ther eis a match return the front matter
   const frontMatterblock = match![1];
   // split the front matter into an array of lines
   const frontMatterLines = frontMatterblock.trim().split("\n");
   // create an object to store the front matter
   const metadata: Partial<MDXFrontMatter> = {};
-  // Wrangle the categories line in the front matter and remove []
-  const categories = frontMatterLines
-    .find((line) => line.includes("categories"))
-    ?.split(": ")[1]
-    .replace("[", "")
-    .replace("]", "")
-    .split(", ");
-
-  frontMatterLines.pop();
   // loop through the front matter lines
   frontMatterLines.forEach((line) => {
     // split each line into key and value
     const [key, ...valueArr] = line.split(": ");
-    let value = valueArr.join(": ").trim();
-
-    // remove quotes from the value
-    value = value.replace(/^['"](.*)['"]$/, "$1");
-    // store the key and value in the front matter object
-    // what if metadata is undefined?
-    const keyName = key as keyof MDXFrontMatter;
-    metadata[keyName] = value as any;
+    const value = valueArr.join(": ").trim();
+    if (key === "categories") {
+      metadata.categories = value
+        .replace("[", "")
+        .replace("]", "")
+        .split(", ")
+        .map((cat) => cat.trim());
+    } else if (key === "published") {
+      metadata.published = value === "true";
+    } else {
+      (metadata as any)[key] = value;
+    }
   });
 
-  const slug = metadata.title?.replace(/\s+/gu, "-").toLowerCase();
-  // change the publication status to a boolean
-  metadata.published = 'string' === typeof metadata.published ? metadata.published === 'true' : metadata.published;
-  // create the readingTime and wordCount properties
-  metadata.slug = slug;
+  metadata.slug = metadata.title?.replace(/\s+/g, "-").toLowerCase();
   metadata.readingTime = readingTime(content).text;
-  metadata.wordCount = content.split(/\s+/gu).length;
-  // wrangle the categories line in the front matter.  Make sure it's a single array
-  metadata.categories = categories || [];
+  metadata.wordCount = content.split(/\s+/g).length;
+  metadata.content = content;
 
-  // organize the metadata and content by date.
+  // Validate using Zod schema
+  const parsedFrontMatter = frontMatterSchema.safeParse(metadata);
+
+  if (!parsedFrontMatter.success) {
+    throw new Error("Invalid front matter format");
+  }
 
   return {
-    metadata: metadata as MDXFrontMatter,
-    content,
+    metadata: parsedFrontMatter.data,
   };
 };
 
@@ -120,31 +119,47 @@ const TableComponent = ({ children }: { children: React.ReactNode }) => {
 
 const POSTS_FOLTER = path.join(process.cwd(), "app/blog/content");
 
-const sortPostsByDate = (posts: MDXFrontMatter[]) => {
-  return posts.sort((a, b) => {
-    if (a.date < b.date) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
-};
 // Write a function to get all front matter and content
 
 const getAllBlogPosts = async () => {
   const files = fs
     .readdirSync(POSTS_FOLTER)
     .filter((file) => path.extname(file) === ".mdx");
+
   return files.map((file) => {
-    const { metadata, content } = parseTheFrontmatter(
+    const { metadata } = parseTheFrontmatter(
       fs.readFileSync(path.join(POSTS_FOLTER, file), "utf-8"),
     );
-    // sort the posts by date
-    return {
-      ...metadata,
-      content,
-    };
+    return metadata;
   });
+  // sort
+};
+
+const getAllPosts = async (category?: string[]): Promise<MDXFrontMatter[]> => {
+  const selectedCategory = category;
+  console.log(selectedCategory, "selectedCategory");
+  //
+
+  const files = fs
+    .readdirSync(POSTS_FOLTER)
+    .filter((file) => path.extname(file) === ".mdx");
+
+  const metadata = files.map((file) => {
+    const { metadata } = parseTheFrontmatter(
+      fs.readFileSync(path.join(POSTS_FOLTER, file), "utf-8"),
+    );
+    // Modify the metadata here if needed
+    return metadata;
+  });
+
+  // if there is a category filter the posts
+  if (selectedCategory && selectedCategory.length > 0) {
+    const filteredPosts = metadata.filter((post) =>
+      selectedCategory.some((cat) => post.categories.includes(cat)),
+    );
+    return filteredPosts;
+  }
+  return metadata;
 };
 
 const getSlugsAndCategories = async () => {
@@ -168,30 +183,6 @@ const transformArray = ({ posts }: { posts: MDXFrontMatter[] }) => {
   });
   return myData;
 };
-
-// return {
-//     Coding: { related: ['slug1', 'slug2'], categoryCount: 2 },
-//     ' Documentation': { related: ['slug1', 'slug2'], categoryCount: 2 },
-//     ' Testing': { related: ['slug1'], categoryCount: 1 }
-// }
-
-// [
-//     {
-//         category: 'Coding',
-//         related: ['first-post', 'second-post'],
-//         categoryCount: 2
-//     },
-//     {
-//         category: ' Documentation',
-//         related: ['first-post', 'second-post'],
-//         categoryCount: 2
-//     },
-//     {
-//         category: ' Testing',
-//         related: ['second-post'],
-//         categoryCount: 1
-//     }
-// ] data from categories container
 
 const getFilteredPosts = async ({
   searchParams,
@@ -223,4 +214,5 @@ export {
   TableComponent,
   getSlugsAndCategories,
   getFilteredPosts,
+  getAllPosts,
 };
