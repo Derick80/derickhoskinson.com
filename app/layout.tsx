@@ -29,13 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} mx-auto flex min-h-screen max-w-screen-lg flex-col antialiased`}
       >
         <ThemeProvider attribute="class">
           <NavigationBar />
-          <main className="mx-auto mt-10 max-w-screen-lg px-4 py-10 md:py-20">
-            {children}
-          </main>
+          <main className="mt-10 px-4 py-20">{children}</main>
         </ThemeProvider>
       </body>
     </html>

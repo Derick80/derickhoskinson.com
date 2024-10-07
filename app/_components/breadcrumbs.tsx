@@ -9,7 +9,7 @@ const Breadcrumbs = () => {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="mb-4 ml-2 text-sm text-muted-foreground"
+      className="mb-4 ml-2 mt-1 text-sm text-muted-foreground"
     >
       <ol className="inline-flex list-none p-0">
         <li className="flex items-center">
@@ -28,9 +28,12 @@ const Breadcrumbs = () => {
 
           return (
             <li key={href} className="flex items-center">
-              <ChevronRight className="mx-2 h-4 w-4" />
+              <ChevronRight className="mx-1 h-4 w-4" />
               {isLast ? (
-                <span aria-current="page" className="font-medium text-gray-700">
+                <span
+                  aria-current="page"
+                  className="font-medium text-muted-foreground"
+                >
                   {label}
                 </span>
               ) : (

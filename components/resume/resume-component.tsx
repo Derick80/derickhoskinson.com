@@ -70,7 +70,7 @@ const ResumeCard = ({ cv }: CV) => {
   return (
     <div className="mx-auto max-w-4xl space-y-8 p-4">
       <h1 className="text-3xl font-bold">
-        Derick Hoskinson's Curriculum Vitae'
+        Derick Hoskinson's Curriculum Vitae
       </h1>
       <div className="flex justify-between">
         <p className="text-muted-foreground">
