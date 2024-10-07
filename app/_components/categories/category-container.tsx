@@ -17,89 +17,99 @@ type CategorySelectorProps = {
 const CategorySelector = ({ posts }: CategorySelectorProps) => {
     const categories = posts.flatMap((post) => post.categories);
     const uniqueCategories = [...new Set(categories)];
+    const categorySummary = uniqueCategories.map((category) => ({
+        category: category,
+        selected: false,
+        count: posts.filter((post) => post.categories.includes(category)).length,
+        selectedCount: posts.filter((post) => post.categories.includes(category))
+            .length,
+    }));
 
-    // build a new array from the unique categories array. This new array will contain the category name, the number of posts in that category, and the slugs of the posts in that category.
-    const postDataByCategory = uniqueCategories.map((category) => {
-        const postsInCategory = posts.filter((post) => post.categories.includes(category));
-        return {
-            category,
-            count: postsInCategory.length,
-            slugs: postsInCategory.map((post) => post.slug),
-        };
-    }
+    // Convert categories to objects with category name and selection status
+    const [categoryData, setCategoryData] = React.useState(
+        categorySummary.map((cat) => ({
+            category: cat.category,
+            selected: cat.selected,
+            count: cat.count,
+            selectedCount: cat.selectedCount,
+        })),
     );
-    // now reduce.
-    const categoryData = postDataByCategory.reduce((acc: { category: string, count: number; slugs: string[] }[], post) => {
-        const existingCategory = acc.find((cat) => cat.category === post.category);
-        if (existingCategory) {
-            existingCategory.count += post.count;
-            existingCategory.slugs.push(...post.slugs);
-        } else {
-            acc.push({ category: post.category, count: post.count, slugs: post.slugs });
-        }
-        return acc;
-    }, []);
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // Initialize selected categories from URL params
-    const [selectedCategories, setSelectedCategories] = React.useState<string[]>(
-        searchParams.get("categories")?.split(",") || []
-    );
-
+    // Toggle category selection
     const toggleCategory = (categoryId: string) => {
-        const updatedCategories = selectedCategories.includes(categoryId)
-            ? selectedCategories.filter((id) => id !== categoryId)
-            : [...selectedCategories, categoryId];
-
-        setSelectedCategories(updatedCategories);
+        const updatedCategories = categoryData.map((cat) =>
+            cat.category === categoryId
+                ? {
+                    ...cat,
+                    selected: !cat.selected,
+                    selectedCount: posts.filter((post) =>
+                        post.categories.includes(cat.category),
+                    ).length,
+                }
+                : cat,
+        );
+        setCategoryData(updatedCategories);
         updateURLParams(updatedCategories);
     };
 
-    const updateURLParams = (categories: string[]) => {
+    const updateURLParams = (
+        categories: { category: string; selected: boolean }[],
+    ) => {
+        const selectedCategories = categories
+            .filter((cat) => cat.selected)
+            .map((cat) => cat.category);
+
         const params = new URLSearchParams(searchParams.toString());
-        if (categories.length > 0) {
-            params.set("categories", categories.join(","));
+        if (selectedCategories.length > 0) {
+            params.set("categories", selectedCategories.join(","));
         } else {
             params.delete("categories");
         }
         router.push(`?${params.toString()}`, { scroll: false });
     };
 
-    // Update component state when URL params change
+    // Initialize selected categories from URL params on mount
     React.useEffect(() => {
-        const params = new URLSearchParams(searchParams.toString());
-        const urlCategories = params.get("categories")?.split(",") || [];
-        setSelectedCategories(urlCategories);
+        const urlCategories = searchParams.get("categories")?.split(",") || [];
+        const updatedCategories = categoryData.map((cat) => ({
+            ...cat,
+            selected: urlCategories.includes(cat.category),
+            selectedCount: posts.filter((post) =>
+                post.categories.includes(cat.category),
+            ).length,
+        }));
+        setCategoryData(updatedCategories);
     }, [searchParams]);
 
     return (
         <div className="space-y-4">
             <h2 className="text-lg font-semibold">Select Categories</h2>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-                { uniqueCategories.map((cat) => (
-                    <div key={ cat } className="flex items-center space-x-2">
-                        <Checkbox
-                            id={ cat }
-                            checked={ selectedCategories.includes(cat) }
-                            onCheckedChange={ () => toggleCategory(cat) }
+                { categoryData.map((cat) => (
+                    <label
+                        htmlFor={ cat.category }
+                        className={ `flex flex-row items-center justify-between rounded-md border-2 px-2 py-2 transition-colors hover:bg-primary/10 ${cat.selected ? "border-primary bg-primary/20 text-primary" : "border-input"} ` }
+                    >
+                        <input
+                            type="checkbox"
+                            key={ cat.category }
+                            id={ cat.category }
+                            checked={ cat.selected }
+                            onChange={ () => toggleCategory(cat.category) }
                             className="sr-only"
-                            disabled={ categoryData.find((c) => c.category === cat)?.count === 0 }
+                            disabled={ cat.selectedCount === 0 }
                         />
-                        <Label
-                            htmlFor={ cat }
-                            className={ `flex-1 rounded-md border-2 px-4 py-2 text-center transition-colors hover:bg-primary/10 ${selectedCategories.includes(cat)
-                                ? "border-primary bg-primary/20 text-primary"
-                                : "border-input"
-                                }` }
-                        >
-                            { cat }
 
-                            <span className="text-sm text-muted-foreground">({ categoryData.find((c) => c.category === cat)?.count })</span>
+                        <span
+                            className='flex items-center jusityf-between'>
+                            { cat.category }
+                        </span>
+                        <p>{ cat.selectedCount }</p>
 
-                        </Label>
-                    </div>
+                    </label>
                 )) }
             </div>
         </div>
