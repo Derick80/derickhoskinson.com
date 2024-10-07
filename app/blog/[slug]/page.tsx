@@ -1,4 +1,5 @@
 import {
+  Callout,
   CodeBlock,
   getAllBlogPosts,
   getSlugsAndCategories,
@@ -8,6 +9,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { z } from "zod";
 import remarkGfm from "remark-gfm";
 import Image, { ImageProps } from "next/image";
+import { cn } from '@/lib/utils';
 
 export async function generateStaticParams () {
   const posts = await getAllBlogPosts();
@@ -53,16 +55,22 @@ export default async function BlogPost ({
               { props.children }
             </MDXPre>
           ),
+          Callout,
           code: (props) => <CodeBlock code={ props.children } />,
-          img: (props) => (
-            <Image
-              sizes="100vw"
-              width={ 500 }
-              height={ 500 }
-              style={ { width: "100%", height: "auto" } }
-              { ...(props as ImageProps) }
+          img: ({
+            className,
+            alt,
+            ...props
+          }: React.ImgHTMLAttributes<HTMLImageElement>) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className={ cn("rounded-md border", className) }
+              alt={ alt }
+              { ...props }
             />
           ),
+          Image: (props: ImageProps) => <Image { ...props } alt="blog image" />,
+
         } }
         options={ {
           mdxOptions: {
