@@ -3,11 +3,11 @@ import {
 } from "./actions/mdx-server";
 import type { Metadata } from "next";
 import BlogList from "@/components/blog/blog-list";
-import CategorySelector from "./_components/categories/category-container";
+import CategorySelector from "../components/blog/categories/categories/category-container";
 import { Suspense } from "react";
 import LandingAbout from "@/components/shared/landing-about";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import ContactForm from './_components/about/contact-form';
+import ContactForm from '../components/about/contact-form';
 import PageOverLayBar from '@/components/shared/page-overlay-bar';
 
 export const metadata: Metadata = {

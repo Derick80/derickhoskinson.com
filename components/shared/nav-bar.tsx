@@ -3,7 +3,7 @@ import { ModeToggle } from "../theme/theme-toggle";
 import { verifySession } from "@/app/actions/auth";
 import UserLoginMenu from "./nav-user-bar";
 import NavLinks from "./nav-links";
-import Breadcrumbs from "@/app/_components/breadcrumbs";
+import Breadcrumbs from "@/components/shared/breadcrumbs";
 import React from "react";
 import { Separator } from "../ui/separator";
 
