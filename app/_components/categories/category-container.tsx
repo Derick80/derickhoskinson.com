@@ -43,12 +43,12 @@ const CategorySelector = ({ posts }: CategorySelectorProps) => {
     const updatedCategories = categoryData.map((cat) =>
       cat.category === categoryId
         ? {
-            ...cat,
-            selected: !cat.selected,
-            selectedCount: posts.filter((post) =>
-              post.categories.includes(cat.category),
-            ).length,
-          }
+          ...cat,
+          selected: !cat.selected,
+          selectedCount: posts.filter((post) =>
+            post.categories.includes(cat.category),
+          ).length,
+        }
         : cat,
     );
     setCategoryData(updatedCategories);
@@ -85,30 +85,33 @@ const CategorySelector = ({ posts }: CategorySelectorProps) => {
   }, [searchParams]);
 
   return (
-    <div className="space-y-4">
+    <div
+      id='category-filter'
+      className="space-y-4">
       <h2 className="text-lg font-semibold">Select Categories</h2>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-        {categoryData.map((cat) => (
+        { categoryData.map((cat) => (
           <label
-            htmlFor={cat.category}
-            className={`flex flex-row items-center justify-between rounded-md border-2 px-2 py-2 transition-colors hover:bg-primary/10 ${cat.selected ? "border-primary bg-primary/20 text-primary" : "border-input"} `}
+            key={ cat.category }
+            htmlFor={ cat.category }
+            className={ `flex flex-row items-center justify-between rounded-md border-2 px-2 py-2 transition-colors hover:bg-primary/10 ${cat.selected ? "border-primary bg-primary/20 text-primary" : "border-input"} ` }
           >
             <input
               type="checkbox"
-              key={cat.category}
-              id={cat.category}
-              checked={cat.selected}
-              onChange={() => toggleCategory(cat.category)}
+              key={ cat.category }
+              id={ cat.category }
+              checked={ cat.selected }
+              onChange={ () => toggleCategory(cat.category) }
               className="sr-only"
-              disabled={cat.selectedCount === 0}
+              disabled={ cat.selectedCount === 0 }
             />
 
             <span className="jusityf-between flex items-center">
-              {cat.category}
+              { cat.category }
             </span>
-            <p>{cat.selectedCount}</p>
+            <p>{ cat.selectedCount }</p>
           </label>
-        ))}
+        )) }
       </div>
     </div>
   );

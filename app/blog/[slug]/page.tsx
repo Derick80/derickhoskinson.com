@@ -9,9 +9,9 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { z } from "zod";
 import remarkGfm from "remark-gfm";
 import Image, { ImageProps } from "next/image";
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
-export async function generateStaticParams () {
+export async function generateStaticParams() {
   const posts = await getAllBlogPosts();
   return posts.map((post) => ({ params: { slug: post.slug } }));
 }
@@ -20,7 +20,7 @@ const blogPostSchema = z.object({
 });
 export type BlogPost = z.infer<typeof blogPostSchema>;
 
-export default async function BlogPost ({
+export default async function BlogPost({
   params,
 }: {
   params: {
@@ -48,15 +48,15 @@ export default async function BlogPost ({
   return (
     <div className="prose prose-neutral min-w-full p-4 dark:prose-invert prose-a:no-underline">
       <MDXRemote
-        source={ post.content }
-        components={ {
+        source={post.content}
+        components={{
           pre: (props) => (
             <MDXPre className="bg-content1 max-h-[400px]">
-              { props.children }
+              {props.children}
             </MDXPre>
           ),
           Callout,
-          code: (props) => <CodeBlock code={ props.children } />,
+          code: (props) => <CodeBlock code={props.children} />,
           img: ({
             className,
             alt,
@@ -64,19 +64,18 @@ export default async function BlogPost ({
           }: React.ImgHTMLAttributes<HTMLImageElement>) => (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              className={ cn("rounded-md border", className) }
-              alt={ alt }
-              { ...props }
+              className={cn("rounded-md border", className)}
+              alt={alt}
+              {...props}
             />
           ),
-          Image: (props: ImageProps) => <Image { ...props } alt="blog image" />,
-
-        } }
-        options={ {
+          Image: (props: ImageProps) => <Image {...props} alt="blog image" />,
+        }}
+        options={{
           mdxOptions: {
             remarkPlugins: [remarkGfm],
           },
-        } }
+        }}
       />
     </div>
   );

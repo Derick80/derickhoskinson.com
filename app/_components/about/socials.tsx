@@ -1,20 +1,23 @@
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { LinkedinIcon, MailIcon } from "lucide-react";
+import { GitHubLogoIcon, LinkedInLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 const Socials = () => {
   return (
     <div className="flex items-center space-x-4">
-      {socialsArray.map((soc, socialIndex) => (
+      { socialsArray.map((soc) => (
         <Link
-          key={soc.social}
-          href={soc.link}
-          rel="noopener noreferrer"
+          key={ soc.social }
+          href={ soc.link }
           target="_blank"
         >
-          {soc.icon}
+
+          { soc.icon }
+          <p
+            className='text-xs text-muted-foreground'>
+            { soc.social }
+          </p>
         </Link>
-      ))}
+      )) }
     </div>
   );
 };
@@ -25,7 +28,7 @@ const socialsArray = [
   {
     social: "LinkedIn",
     link: "https://www.linkedin.com/in/dhoskinson/",
-    icon: <LinkedinIcon />,
+    icon: <LinkedInLogoIcon />,
   },
   {
     social: "GitHub",
@@ -33,8 +36,8 @@ const socialsArray = [
     icon: <GitHubLogoIcon />,
   },
   {
-    social: "Email",
-    link: "mailto:iderick@gmail.com",
-    icon: <MailIcon />,
+    social: "Twitter",
+    link: "https://www.twitter.com/GeneticsStar",
+    icon: <TwitterLogoIcon />,
   },
 ];

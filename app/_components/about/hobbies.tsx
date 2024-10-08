@@ -1,45 +1,19 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import { hobbies } from "./about";
-import { DotIcon } from "lucide-react";
+import Image from 'next/image';
 
 const HobbyComponent = () => {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Hobbies</CardTitle>
-        <CardDescription>
-          Here are some things that I think are fun!
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-4">
-        {hobbies.map((hobby, hobbyIndex) => (
-          <div className="flex items-center space-x-2" key={hobbyIndex}>
-            <HoverCard key={hobbyIndex}>
-              <HoverCardTrigger>
-                <div className="flex items-center">
-                  <DotIcon />
-                  <h3>{hobby.hobby}</h3>
-                </div>
-              </HoverCardTrigger>
-              <HoverCardContent>
-                <p>{hobby.description}</p>
-              </HoverCardContent>
-            </HoverCard>
-          </div>
-        ))}
-      </CardContent>
-    </Card>
+    <div
+      className="grid gap-8">
+
+      <Image
+        src="/assets/images/dch_24_blot.jpeg"
+        alt="Hobbies"
+        width={ 500 }
+        height={ 500 }
+        className='mt-0 md:mt-2'
+      />
+
+    </div>
   );
 };
 
