@@ -18,7 +18,7 @@ const schema = z.object({
   shield: z.string().max(0),
 });
 
-export const sendEmail = async (prevState: any, formData: FormData) => {
+export const sendEmail = async (prevState: Record<string, unknown>, formData: FormData) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const validatedFields = schema.safeParse({
     email: formData.get("email"),
@@ -284,4 +284,3 @@ export const getSession = async (sessionToken: string) => {
   }
   return session;
 };
-``;
