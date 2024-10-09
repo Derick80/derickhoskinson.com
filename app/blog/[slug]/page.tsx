@@ -56,7 +56,7 @@ export default async function BlogPost({
             </MDXPre>
           ),
           Callout,
-          code: (props) => <CodeBlock code={props.children} />,
+          code: (props) => <CodeBlock code={String(props.children)} />,
           img: ({
             className,
             alt,

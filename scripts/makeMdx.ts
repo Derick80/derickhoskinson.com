@@ -72,6 +72,7 @@ const checkFileAndCreate = (
 const createFile = (
   directory: string,
   filename: string,
+  description: string,
   categories: string[],
   published: boolean,
 ) => {
@@ -80,6 +81,7 @@ const createFile = (
 title: ${filename.replace(".mdx", "")}
 date: ${new Date().toISOString()}
 author: Derick Hoskinson PhD
+description: ${description}
 published: ${published}
 categories: [${categories.map((tag) => `${tag}`).join(", ")}]
 ---

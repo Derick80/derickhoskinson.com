@@ -1,14 +1,18 @@
-import {
-  getAllPosts,
-} from "./actions/mdx-server";
+import { getAllPosts } from "./actions/mdx-server";
 import type { Metadata } from "next";
 import BlogList from "@/components/blog/blog-list";
 import CategorySelector from "../components/blog/categories/categories/category-container";
 import { Suspense } from "react";
 import LandingAbout from "@/components/shared/landing-about";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import ContactForm from '../components/about/contact-form';
-import PageOverLayBar from '@/components/shared/page-overlay-bar';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import ContactForm from "../components/about/contact-form";
+import PageOverLayBar from "@/components/shared/page-overlay-bar";
 
 export const metadata: Metadata = {
   title: "Dr. Hoskinson's Blog",
@@ -24,7 +28,7 @@ export const metadata: Metadata = {
   ],
 };
 
-export default async function Home ({
+export default async function Home({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -38,20 +42,16 @@ export default async function Home ({
 
   const allPosts = await getAllPosts(categories);
   return (
-    <div
-      id="home"
-      className="flex min-h-screen flex-col py-2">
+    <div id="home" className="flex min-h-screen flex-col py-2">
       <LandingAbout />
-      {/* <CategoryBadges posts={ allPosts } /> */ }
-      <CategorySelector posts={ allPosts } />
-      <Suspense fallback={ <p>Loading results...</p> }>
+      {/* <CategoryBadges posts={ allPosts } /> */}
+      <CategorySelector posts={allPosts} />
+      <Suspense fallback={<p>Loading results...</p>}>
         <div className="prose prose-neutral mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
-          <BlogList categories={ categories } />
+          <BlogList categories={categories} />
         </div>
       </Suspense>
-      <div
-        id="contact"
-        className="mt-12 space-y-6">
+      <div id="contact" className="mt-12 space-y-6">
         <h2 className="text-2xl font-bold tracking-tighter">Get in Touch</h2>
         <Card>
           <CardHeader>
@@ -64,8 +64,7 @@ export default async function Home ({
         </Card>
       </div>
       <PageOverLayBar
-        sectionIds={ ["home", "Introduction", "category-filter", "contact"] }
-
+        sectionIds={["home", "Introduction", "category-filter", "contact"]}
       />
     </div>
   );

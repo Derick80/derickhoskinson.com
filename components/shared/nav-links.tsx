@@ -8,17 +8,17 @@ const NavLinks = () => {
   console.log(pathname, "pathname");
   return (
     <>
-      { NavData.map((item, index) => (
-        <li key={ index }>
+      {NavData.map((item, index) => (
+        <li key={index}>
           <Link
             prefetch
-            href={ item.url }
-            className={ `${pathname === item.url ? "underline" : ""}` }
+            href={item.url}
+            className={`${pathname === item.url ? "underline" : ""}`}
           >
-            { item.title }
+            {item.title}
           </Link>
         </li>
-      )) }
+      ))}
     </>
   );
 };
@@ -44,7 +44,6 @@ const NavData = [
     title: "Genetics",
     url: "/genetics",
   },
-
 ];
 
 export default NavLinks;
