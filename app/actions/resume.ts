@@ -1,4 +1,3 @@
-"use server";
 
 import { resume_basics } from "@/lib/resources/resume";
 

@@ -176,7 +176,7 @@ export const verifySession = cache(async () => {
   } as AuthCookie;
 });
 
-export const deleteSession = () => {
+export const deleteSession = async () => {
   (cookies() as unknown as UnsafeUnwrappedCookies).delete("session-token");
   redirect("/");
 };

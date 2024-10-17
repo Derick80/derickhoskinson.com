@@ -1,7 +1,7 @@
 import { resume_basics } from "@/lib/resources/resume";
 import { Metadata } from "next";
 
-const generateResumeMetadata = () => {
+export const generateResumeMetadata = () => {
   const { title, summary, skills } = resume_basics;
   const metadata: Metadata = {
     title: title,
@@ -22,4 +22,3 @@ const generateResumeMetadata = () => {
   return metadata;
 };
 
-export { generateResumeMetadata };

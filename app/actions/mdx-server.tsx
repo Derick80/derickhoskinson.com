@@ -3,28 +3,13 @@ import path from "path";
 import fs from "fs";
 import readingTime from "reading-time";
 import { createHighlighter } from "shiki";
-import { DetailedHTMLProps, HTMLAttributes } from "react";
-import { z } from "zod";
 import { cn } from '@/lib/utils';
+import { frontMatterSchema, MDXFrontMatter } from '@/lib/types';
 
-const frontMatterSchema = z.object({
-  title: z.string(),
-  date: z.string(),
-  author: z.string(),
-  description: z.string(),
-  imageUrl: z.string().optional(),
-  published: z.boolean(),
-  categories: z.array(z.string()),
-  slug: z.string(),
-  readingTime: z.string(),
-  wordCount: z.number(),
-  content: z.string(),
-});
-export type MDXFrontMatter = z.infer<typeof frontMatterSchema>;
 
 /* Parsing front matter */
 
-export const parseTheFrontmatter = (fileContent: string) => {
+const parseTheFrontmatter = (fileContent: string) => {
   // extract the front matter from the content
   const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
   // look for matches in the content
@@ -80,7 +65,7 @@ export const parseTheFrontmatter = (fileContent: string) => {
 
 // Create a code block component
 
-export const highlighter = createHighlighter({
+const highlighter = createHighlighter({
   themes: ["nord"],
   langs: ["typescript"],
 });
@@ -96,53 +81,9 @@ export const CodeBlock = async ({ code }: { code: string }) => {
 }
 
 
-export const MDXPre = (
-  MDXPreProps: DetailedHTMLProps<
-    HTMLAttributes<HTMLPreElement>,
-    HTMLPreElement
-  >,
-) => {
-  const { children, ...rest } = MDXPreProps;
-
-  return (
-    <div className="group relative">
-      <pre
-        { ...rest }
-        className="scrollbar-thin scrollbar-thumb-secondary scrollbar-thumb-rounded-full my-7 w-full overflow-x-auto rounded-xl p-4 text-primary transition ease-in-out"
-      >
-        { children }
-      </pre>
-    </div>
-  );
-};
 
 
 
-interface CalloutProps {
-  icon?: string;
-  children?: React.ReactNode;
-  type?: "default" | "warning" | "danger";
-}
-
-export const Callout = ({
-  children,
-  icon,
-  type = "default",
-  ...props
-}: CalloutProps) => {
-  return (
-    <div
-      className={ cn("my-6 flex items-start rounded-md border border-l-4 p-4", {
-        "border-red-900 bg-red-50": type === "danger",
-        "border-yellow-900 bg-yellow-50": type === "warning",
-      }) }
-      { ...props }
-    >
-      { icon && <span className="mr-4 text-2xl">{ icon }</span> }
-      <div>{ children }</div>
-    </div>
-  );
-};
 
 const POSTS_FOLTER = path.join(process.cwd(), "app/blog/content");
 
