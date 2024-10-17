@@ -77,17 +77,25 @@ export const createEmailVerificationToken = async (email: string) => {
     Math.random().toString(36).substring(2, 15);
   // expire 24 hours from now
   const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
-  await prisma.verificationToken.create({
-    data: {
-      identifier: email,
-      token,
-      expires,
-    },
-  });
-  return token;
+  try {
+    await prisma.verificationToken.create({
+      data: {
+        token,
+        identifier: email,
+        expires,
+      },
+    });
+    return token;
+  } catch (error) {
+    console.error("Error in createEmailVerificationToken:", error);
+    throw new Error("Unable to create verification token");
+  }
 };
 
 export const verifyToken = async (token: string, email: string) => {
+
+  // Need to convert iderick%40gmail.com to iderick@gmail.com
+  email = decodeURIComponent(email);
   // Find the token and return it so additional checks can be made
   const verificationToken = await prisma.verificationToken.findUnique({
     where: {
@@ -170,6 +178,7 @@ export const deleteSession = () => {
 };
 
 export const createUserSession = async (userId: string) => {
+  console.log("Creating session for user", userId);
   const sessionToken = crypto.randomBytes(32).toString("hex");
   const sessionExpires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 0y days
   await prisma.session.create({

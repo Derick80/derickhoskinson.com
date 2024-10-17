@@ -5,7 +5,7 @@ export async function GET (request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const token = searchParams.get("token");
   const email = searchParams.get("email");
-
+  console.log(token, email, "token and email in route handler");
   if (!token || !email) {
     // Use NextResponse to send a proper Response object
     return NextResponse.json(
@@ -13,24 +13,6 @@ export async function GET (request: NextRequest) {
       { status: 400 }
     );
   }
-
-  try {
-    await verifyToken(token, email);
-  } catch (error) {
-    // Handle token verification errors and respond accordingly
-    return NextResponse.json(
-      { message: "Verification failed", error: (error as Error).message },
-      { status: 401 }
-    );
-  }
-
-  // If successful, you can respond with whatever is needed
-  // Log the cookie
-  const sessionCookie = request.cookies.get("session-token");
-  console.log(sessionCookie, "cookie in route handler");
-
-  return NextResponse.json(
-    { message: "Verification successful" },
-    { status: 200 }
-  );
+  await verifyToken(token, email);
+  return NextResponse.redirect("/");
 }

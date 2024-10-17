@@ -164,8 +164,6 @@ const getAllBlogPosts = async () => {
 
 const getAllPosts = async (category?: string[]): Promise<MDXFrontMatter[]> => {
   const selectedCategory = category;
-  console.log(selectedCategory, "selectedCategory");
-  //
 
   const files = fs
     .readdirSync(POSTS_FOLTER)

@@ -10,14 +10,13 @@ const ClearSearchParamsButton = ({
   };
 }) => {
   const categories = searchParams.category;
-  console.log(categories, "categories");
   const handleClearSearchParams = () => {
     // remove search params
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.delete("category");
     window.location.search = searchParams.toString();
   };
-  return <Button onClick={handleClearSearchParams}>Clear search</Button>;
+  return <Button onClick={ handleClearSearchParams }>Clear search</Button>;
 };
 
 export default ClearSearchParamsButton;
