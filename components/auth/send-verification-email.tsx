@@ -10,8 +10,9 @@ export async function sendEmailVerification (
   theme: Theme = {},
 ) {
   const token = await createEmailVerificationToken(email);
-  const url = process.env.NEXT_PUBLIC_BASE_URL;
-  if (!url) throw new Error("NEXT_PUBLIC_SITE_URL is not set");
+  const url = process.env.NEXT_PUBLIC_BASE_URL
+  if (!url) throw new Error("NEXT_PUBLIC_BASE_URL is not set");
+
 
   const { host } = new URL(url);
   console.log("host", host);
