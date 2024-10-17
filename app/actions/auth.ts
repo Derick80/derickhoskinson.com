@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import crypto from "crypto";
-import { cookies } from "next/headers";
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 import prisma from "@/lib/prisma";
 import { cache } from "react";
 import { sendEmailVerification } from "@/components/auth/send-verification-email";
@@ -18,7 +18,10 @@ const schema = z.object({
   shield: z.string().max(0),
 });
 
-export const sendEmail = async (prevState: Record<string, unknown>, formData: FormData) => {
+export const sendEmail = async (
+  prevState: Record<string, unknown>,
+  formData: FormData,
+) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const validatedFields = schema.safeParse({
     email: formData.get("email"),
@@ -50,7 +53,9 @@ export const sendEmail = async (prevState: Record<string, unknown>, formData: Fo
   };
 };
 
-const getOrCreateUser = async (email: string) => {
+
+
+export const getOrCreateUser = async (email: string) => {
   try {
     await prisma.user.upsert({
       where: { email },
@@ -93,7 +98,6 @@ export const createEmailVerificationToken = async (email: string) => {
 };
 
 export const verifyToken = async (token: string, email: string) => {
-
   // Need to convert iderick%40gmail.com to iderick@gmail.com
   email = decodeURIComponent(email);
   // Find the token and return it so additional checks can be made
@@ -136,7 +140,7 @@ interface AuthCookie {
 }
 
 export const verifySession = cache(async () => {
-  const cookie = cookies().get("session-token");
+  const cookie = (await cookies()).get("session-token");
 
   if (!cookie) {
     return null;
@@ -172,8 +176,8 @@ export const verifySession = cache(async () => {
   } as AuthCookie;
 });
 
-export const deleteSession = () => {
-  cookies().delete("session-token");
+export const deleteSession = async () => {
+  (cookies() as unknown as UnsafeUnwrappedCookies).delete("session-token");
   redirect("/");
 };
 
@@ -206,19 +210,19 @@ export const createUserSession = async (userId: string) => {
   };
 
   // set the session cookie
-  cookies().set("session-token", sessionData, cookieOptions);
+  (await cookies()).set("session-token", sessionData, cookieOptions);
   redirect("/");
 };
 
 export const logout = async () => {
-  const cookie = cookies().get("session-token");
+  const cookie = (await cookies()).get("session-token");
   if (!cookie) {
     return;
   }
 
   try {
-    cookies().delete("session-token");
-    cookies().set("session-token", "");
+    (await cookies()).delete("session-token");
+    (await cookies()).set("session-token", "");
   } catch (error) {
     console.error("Error in logout:", error);
     throw new Error("Unable to logout");
@@ -226,37 +230,6 @@ export const logout = async () => {
   redirect("/");
 };
 
-export const isAuthenticated = async (sessionToken: string, userId: string) => {
-  const session = await prisma.session.findUnique({
-    where: {
-      sessionToken,
-      userId,
-    },
-  });
-  if (!session || session.expires < new Date()) {
-    return false;
-  }
-  return true;
-};
-
-export const checkSession = async (sessionToken: string) => {
-  const session = await prisma.session.findUnique({
-    where: {
-      sessionToken,
-    },
-    include: {
-      user: {
-        select: {
-          name: true,
-        },
-      },
-    },
-  });
-  if (!session || session.expires < new Date()) {
-    return false;
-  }
-  return session;
-};
 
 export const getUser = async (userId: string) => {
   const user = await prisma.user.findUnique({
@@ -268,28 +241,4 @@ export const getUser = async (userId: string) => {
     return null;
   }
   return user;
-};
-
-export const getUserByEmail = async (email: string) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-  if (!user) {
-    return null;
-  }
-  return user;
-};
-
-export const getSession = async (sessionToken: string) => {
-  const session = await prisma.session.findUnique({
-    where: {
-      sessionToken,
-    },
-  });
-  if (!session) {
-    return null;
-  }
-  return session;
 };

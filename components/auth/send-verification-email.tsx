@@ -1,7 +1,7 @@
 import { createEmailVerificationToken } from "@/app/actions/auth";
 import { redirect } from "next/navigation";
 
-export async function sendEmailVerification (
+export async function sendEmailVerification(
   email: string,
   provider: {
     apiKey: string;
@@ -10,13 +10,12 @@ export async function sendEmailVerification (
   theme: Theme = {},
 ) {
   const token = await createEmailVerificationToken(email);
-  const url = process.env.NEXT_PUBLIC_BASE_URL
+  const url = process.env.NEXT_PUBLIC_BASE_URL;
   if (!url) throw new Error("NEXT_PUBLIC_BASE_URL is not set");
-
 
   const { host } = new URL(url);
   console.log("host", host);
-
+  console.log("url", url);
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -44,7 +43,7 @@ type Theme = {
   buttonText?: string;
 };
 
-function html (params: {
+function html(params: {
   email?: string;
   url: string;
   host: string;
@@ -53,7 +52,10 @@ function html (params: {
 }) {
   const { email, url, host, theme, token } = params;
 
-  const httpUrl = process.env.NODE_ENV === "production" ? `https://${host}` : "http://localhost:3000";
+  const httpUrl =
+    process.env.NODE_ENV === "production"
+      ? `https://${host}`
+      : "http://localhost:3000";
   const confirmLink = `${httpUrl}/verify-email?token=${token}&email=${encodeURIComponent(email || "")}`;
   const escapedHost = host.replace(/\./g, "&#8203;.");
   console.log("escapedHost", escapedHost);
@@ -75,7 +77,7 @@ function html (params: {
       <td align="center"
         style="padding: 10px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
         Verify your email <strong>
-
+${confirmLink}
 
         </strong>
       </td>
@@ -101,15 +103,15 @@ function html (params: {
     </tr>
   </table>
   ${params}
-   ${escapedHost}
-        ${host}
-        ${confirmLink}
-        ${url}
+   ${escapedHost} escape host
+        ${host} host
+        ${confirmLink} confirm link
+        ${url} url
 </body>
 `;
 }
 
 // Email Text body (fallback for email clients that don't render HTML, e.g. feature phones)
-function text ({ url, host }: { url: string; host: string }) {
+function text({ url, host }: { url: string; host: string }) {
   return `Sign in to ${host}\n${url}\n\n`;
 }

@@ -1,10 +1,11 @@
 "use client";
-import { getAllPosts, MDXFrontMatter } from "@/app/actions/mdx-server";
+import { getAllPosts, } from "@/app/actions/mdx-server";
 import { Badge } from "@/components/ui/badge";
 import CategoryButton from "./category-button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { cn } from "@/lib/utils";
+import { MDXFrontMatter } from '@/lib/types';
 
 const CategoryBadges = ({ posts }: { posts: MDXFrontMatter[] }) => {
   const searchParams = useSearchParams();
@@ -37,24 +38,24 @@ const CategoryBadges = ({ posts }: { posts: MDXFrontMatter[] }) => {
 
   return (
     <div className="mt-4 flex flex-wrap gap-2">
-      {" "}
-      {filteredCategories.map((cat) => (
+      { " " }
+      { filteredCategories.map((cat) => (
         <div
-          key={cat.category}
-          className={cn(
+          key={ cat.category }
+          className={ cn(
             "flex gap-2",
             selectedCategories.includes(cat.category)
               ? "border-2 border-primary-foreground bg-primary-foreground/90"
               : "",
-          )}
+          ) }
         >
           <CategoryButton
-            category={cat.category}
-            count={cat.count}
-            onCategorySelect={handleCategorySelect}
+            category={ cat.category }
+            count={ cat.count }
+            onCategorySelect={ handleCategorySelect }
           />
         </div>
-      ))}
+      )) }
     </div>
   );
 };

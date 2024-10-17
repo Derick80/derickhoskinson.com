@@ -1,8 +1,7 @@
 "use client";
 import {
-  getAllBlogPosts,
   getAllPosts,
-  MDXFrontMatter,
+
 } from "@/app/actions/mdx-server";
 import CategorySelect from "./custom-checkbox";
 import CategoryBadges from "./category-badges";
@@ -10,6 +9,7 @@ import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { MDXFrontMatter } from '@/lib/types';
 
 type CategorySelectorProps = {
   posts: MDXFrontMatter[];

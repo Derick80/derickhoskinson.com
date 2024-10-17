@@ -18,25 +18,23 @@ const UserLoginMenu = async ({ userId }: { userId: string }) => {
   }
 
   return (
-    <DropdownMenu
-      modal={ false }
-    >
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          { user.image ? (
+          {user.image ? (
             <Avatar className="h-8 w-8">
-              <AvatarImage src={ user.image } alt={ user.name || "User avatar" } />
+              <AvatarImage src={user.image} alt={user.name || "User avatar"} />
               <AvatarFallback>
-                { user.name ? user.name.charAt(0).toUpperCase() : <User /> }
+                {user.name ? user.name.charAt(0).toUpperCase() : <User />}
               </AvatarFallback>
             </Avatar>
           ) : (
             <Avatar className="h-8 w-8">
               <AvatarFallback>
-                { user.name ? user.name.charAt(0).toUpperCase() : <User /> }
+                {user.name ? user.name.charAt(0).toUpperCase() : <User />}
               </AvatarFallback>
             </Avatar>
-          ) }
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

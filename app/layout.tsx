@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import NavigationBar from "@/components/shared/nav-bar";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "A personal web app for Derick Hoskinson with a blog, curriculum vitae, and other resources.",
 };
 
-export default function RootLayout ({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -30,12 +30,12 @@ export default function RootLayout ({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={ `${geistSans.variable} ${geistMono.variable} container mx-auto flex min-h-screen max-w-screen-lg flex-col antialiased` }
+        className={`${geistSans.variable} ${geistMono.variable} container mx-auto flex min-h-screen max-w-screen-lg flex-col antialiased`}
       >
         <Analytics />
         <ThemeProvider attribute="class">
           <NavigationBar />
-          <main className="mt-10 px-4 py-20">{ children }</main>
+          <main className="mt-10 px-4 py-20">{children}</main>
         </ThemeProvider>
       </body>
     </html>

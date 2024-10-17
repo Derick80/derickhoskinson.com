@@ -14,7 +14,7 @@ import Biography from "../../components/about/bio";
 import ProfessionalSummary from "../../components/about/professiona-summary";
 import ContactForm from "../../components/about/contact-form";
 
-export default function AboutMePage () {
+export default function AboutMePage() {
   // helped by v0
   return (
     <div className="container mx-auto px-4 py-8">

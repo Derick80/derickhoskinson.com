@@ -1,7 +1,8 @@
+'use server'
 import { MetadataRoute } from "next";
-import { getAllPosts } from "./actions/mdx-server";
+import { getAllPosts } from './actions/mdx-server';
 
-export function getSiteUrl(path = "") {
+function getSiteUrl (path = "") {
   return new URL(
     path,
     process.env.NODE_ENV === "development"
@@ -9,9 +10,9 @@ export function getSiteUrl(path = "") {
       : "https://derickhoskinson.com",
   );
 }
-export const revalidate = 60;
+const revalidate = 60;
 
-export default async function sitemap() {
+export default async function sitemap () {
   const staticMap = [
     {
       url: getSiteUrl("/").href,
@@ -50,4 +51,5 @@ export default async function sitemap() {
   })) satisfies MetadataRoute.Sitemap;
 
   return [...staticMap, ...dynamicMap];
+
 }
