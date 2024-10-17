@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   ],
 };
 
-export default async function Home({
+export default async function Home ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -44,11 +44,20 @@ export default async function Home({
   return (
     <div id="home" className="flex min-h-screen flex-col py-2">
       <LandingAbout />
-      {/* <CategoryBadges posts={ allPosts } /> */}
-      <CategorySelector posts={allPosts} />
-      <Suspense fallback={<p>Loading results...</p>}>
+      <div id="Introduction" className="mt-12 space-y-6">
+        <h2 className="text-2xl font-bold tracking-tighter">
+          Welcome to my blog
+        </h2>
+        <p className="text-lg">
+          This blog is a collection of thoughts and ideas on clinical genetics,
+          variant classification, and other topics related to my work.
+        </p>
+      </div>
+      {/* <CategoryBadges posts={ allPosts } /> */ }
+      <CategorySelector posts={ allPosts } />
+      <Suspense fallback={ <p>Loading results...</p> }>
         <div className="prose prose-neutral mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
-          <BlogList categories={categories} />
+          <BlogList categories={ categories } />
         </div>
       </Suspense>
       <div id="contact" className="mt-12 space-y-6">
@@ -64,7 +73,7 @@ export default async function Home({
         </Card>
       </div>
       <PageOverLayBar
-        sectionIds={["home", "Introduction", "category-filter", "contact"]}
+        sectionIds={ ["home", "Introduction", "category-filter", "contact"] }
       />
     </div>
   );

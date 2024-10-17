@@ -5,7 +5,7 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import { ShareIcon, MessageCircleIcon } from "lucide-react";
 import { MDXFrontMatter } from "@/lib/types";
 import { Badge } from "../ui/badge";
-
+// inspo https://www.leohuynh.dev/
 export const BlogCard = (props: MDXFrontMatter) => {
   const {
     title,
@@ -20,81 +20,38 @@ export const BlogCard = (props: MDXFrontMatter) => {
   } = props;
 
   return (
-    <Card className="max-w-4xl overflow-hidden shadow-2xl">
-      <div className="md:flex">
-        <div className="md:flex-1">
-          <CardHeader className="p-4 pb-0">
-            <Link
-              prefetch
-              href={`/blog/${slug}`}
-              className="text-lg font-semibold hover:underline"
-            >
-              {title}
-            </Link>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {date} • {author}
-            </p>
-          </CardHeader>
-          <CardContent className="p-4">
-            <p className="italic text-muted-foreground">{description}</p>
-            <div className="mt-4 text-sm text-muted-foreground">
-              <span>{wordCount} words</span>
-              <span className="mx-2">•</span>
-              <span>{readingTime} min read</span>
-            </div>
-          </CardContent>
+    <article
+      className='border-2'
+
+    >
+      <div
+        className="flex flex-col gap-5 md:flex-row overflow-hidden"
+      >
+        <div
+          id='blog-card-image'
+          className="flex relative h-auto w-full md:h-80 md:w-72 pb-3 pl-0 pr-3 pt-0 transition-all ease-in-out hover:pb-2 hover:pl-1 hover:pr-2 hover:pt-1"
+        >
+          {
+            imageUrl && (
+              <Image
+                src={ imageUrl }
+                alt={ title }
+                width={ 500 }
+                height={ 300 }
+                className="aspect-video h-full w-full rounded-xl object-cover object-cenkkter shadow-2xl"
+                priority
+              />
+            )
+          }
         </div>
-        <div className="md:flex md:w-1/3 md:items-center">
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={title}
-              width={300}
-              height={200}
-              className="h-48 w-full object-cover md:h-full"
-            />
-          ) : (
-            <Image
-              src="/assets/images/placeholder-user.jpg"
-              alt="Placeholder"
-              width={300}
-              height={200}
-              className="h-48 w-full object-cover md:h-full"
-            />
-          )}
+        <div
+          className="flex flex-col justify-between spac4">
+          <div
+            className="text-2xl font-bold">
+            { title }
+          </div>
         </div>
       </div>
-
-      <CardFooter className="p-4">
-        <div className="flex w-full flex-col justify-between gap-1 md:gap-2">
-          <div className="flex flex-wrap gap-1 md:gap-2">
-            {categories.map((category, index) => (
-              <Badge
-                variant="outline"
-                key={index}
-                className="mr-2 hover:cursor-pointer hover:bg-accent"
-              >
-                <Link prefetch href={`/blog/category/${category}`}>
-                  {category}
-                </Link>
-              </Badge>
-            ))}
-          </div>
-
-          <Separator className="my-2" />
-          <div className="mt-2 flex items-center justify-between gap-4">
-            <button className="flex items-center gap-1 text-sm">
-              <ShareIcon className="h-4 w-4" />
-              Share
-            </button>
-            <button className="flex items-center gap-1 text-sm">
-              <MessageCircleIcon className="h-4 w-4" />
-              Comment
-            </button>
-          </div>
-          <Separator className="my-2" />
-        </div>
-      </CardFooter>
-    </Card>
+    </article>
   );
 };
