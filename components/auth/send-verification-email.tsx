@@ -14,6 +14,7 @@ export async function sendEmailVerification (
   if (!url) throw new Error("NEXT_PUBLIC_SITE_URL is not set");
 
   const { host } = new URL(url);
+  console.log("host", host);
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -51,9 +52,10 @@ function html (params: {
 }) {
   const { email, url, host, theme, token } = params;
 
+  const httpUrl = process.env.NODE_ENV === "production" ? `https://${host}` : "http://localhost:3000";
+  const confirmLink = `${httpUrl}/verify-email?token=${token}&email=${encodeURIComponent(email || "")}`;
   const escapedHost = host.replace(/\./g, "&#8203;.");
-  const httpUrl = process.env.NODE_ENV === "production" ? "https" : "http";
-  const confirmLink = `${httpUrl}://${escapedHost}/verify-email?token=${token}&email=${encodeURIComponent(email || "")}`;
+  console.log("escapedHost", escapedHost);
   const brandColor = theme.brandColor || "#346df1";
   const color = {
     background: "#f9f9f9",
@@ -71,7 +73,10 @@ function html (params: {
     <tr>
       <td align="center"
         style="padding: 10px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
-        Verify your email <strong>${confirmLink}</strong>
+        Verify your email <strong>
+
+
+        </strong>
       </td>
     </tr>
     <tr>
@@ -95,6 +100,10 @@ function html (params: {
     </tr>
   </table>
   ${params}
+   ${escapedHost}
+        ${host}
+        ${confirmLink}
+        ${url}
 </body>
 `;
 }
