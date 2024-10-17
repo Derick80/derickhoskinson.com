@@ -16,7 +16,7 @@ export async function sendEmailVerification (
 
   const { host } = new URL(url);
   console.log("host", host);
-
+  console.log("url", url);
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -75,7 +75,7 @@ function html (params: {
       <td align="center"
         style="padding: 10px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
         Verify your email <strong>
-
+${confirmLink}
 
         </strong>
       </td>
@@ -101,10 +101,10 @@ function html (params: {
     </tr>
   </table>
   ${params}
-   ${escapedHost}
-        ${host}
-        ${confirmLink}
-        ${url}
+   ${escapedHost} escape host
+        ${host} host
+        ${confirmLink} confirm link
+        ${url} url
 </body>
 `;
 }
