@@ -7,7 +7,7 @@ type ASTResume = {
   value?: string;
   children?: ASTResume[];
 };
-const generateASTResume = async () => {
+export const generateASTResume = async () => {
   const cv = resume_basics;
   const generateResumeAST = (): ASTResume => {
     return {
@@ -142,4 +142,4 @@ const generateASTResume = async () => {
   return downloadResumeAST;
 };
 
-export { generateASTResume };
+

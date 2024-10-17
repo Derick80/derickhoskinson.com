@@ -21,7 +21,7 @@ if (!apiKey) {
 
 type aboutEmailType = z.infer<typeof schema>;
 
-export async function sendContactEmail(
+export async function sendContactEmail (
   prevState: Record<string, unknown>,
   formData: FormData,
 ) {
@@ -44,6 +44,7 @@ export async function sendContactEmail(
       message: "Invalid form submission",
     };
   }
+
   const result = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {

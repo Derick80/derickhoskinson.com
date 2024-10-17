@@ -53,7 +53,9 @@ export const sendEmail = async (
   };
 };
 
-const getOrCreateUser = async (email: string) => {
+
+
+export const getOrCreateUser = async (email: string) => {
   try {
     await prisma.user.upsert({
       where: { email },
@@ -228,37 +230,6 @@ export const logout = async () => {
   redirect("/");
 };
 
-export const isAuthenticated = async (sessionToken: string, userId: string) => {
-  const session = await prisma.session.findUnique({
-    where: {
-      sessionToken,
-      userId,
-    },
-  });
-  if (!session || session.expires < new Date()) {
-    return false;
-  }
-  return true;
-};
-
-export const checkSession = async (sessionToken: string) => {
-  const session = await prisma.session.findUnique({
-    where: {
-      sessionToken,
-    },
-    include: {
-      user: {
-        select: {
-          name: true,
-        },
-      },
-    },
-  });
-  if (!session || session.expires < new Date()) {
-    return false;
-  }
-  return session;
-};
 
 export const getUser = async (userId: string) => {
   const user = await prisma.user.findUnique({
@@ -270,28 +241,4 @@ export const getUser = async (userId: string) => {
     return null;
   }
   return user;
-};
-
-export const getUserByEmail = async (email: string) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
-  if (!user) {
-    return null;
-  }
-  return user;
-};
-
-export const getSession = async (sessionToken: string) => {
-  const session = await prisma.session.findUnique({
-    where: {
-      sessionToken,
-    },
-  });
-  if (!session) {
-    return null;
-  }
-  return session;
 };

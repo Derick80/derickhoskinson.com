@@ -5,6 +5,7 @@ import readingTime from "reading-time";
 import { createHighlighter } from "shiki";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 import { z } from "zod";
+import { cn } from '@/lib/utils';
 
 const frontMatterSchema = z.object({
   title: z.string(),
@@ -23,7 +24,7 @@ export type MDXFrontMatter = z.infer<typeof frontMatterSchema>;
 
 /* Parsing front matter */
 
-const parseTheFrontmatter = (fileContent: string) => {
+export const parseTheFrontmatter = (fileContent: string) => {
   // extract the front matter from the content
   const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
   // look for matches in the content
@@ -76,21 +77,26 @@ const parseTheFrontmatter = (fileContent: string) => {
   };
 };
 
+
 // Create a code block component
-const highlighter = createHighlighter({
+
+export const highlighter = createHighlighter({
   themes: ["nord"],
   langs: ["typescript"],
 });
-async function CodeBlock({ code }: { code: string }) {
+
+
+export const CodeBlock = async ({ code }: { code: string }) => {
   const out = (await highlighter).codeToHtml(code, {
     lang: "typescript",
     theme: "nord",
   });
 
-  return <div dangerouslySetInnerHTML={{ __html: out }} />;
+  return <div dangerouslySetInnerHTML={ { __html: out } } />;
 }
 
-const MDXPre = (
+
+export const MDXPre = (
   MDXPreProps: DetailedHTMLProps<
     HTMLAttributes<HTMLPreElement>,
     HTMLPreElement
@@ -101,30 +107,24 @@ const MDXPre = (
   return (
     <div className="group relative">
       <pre
-        {...rest}
+        { ...rest }
         className="scrollbar-thin scrollbar-thumb-secondary scrollbar-thumb-rounded-full my-7 w-full overflow-x-auto rounded-xl p-4 text-primary transition ease-in-out"
       >
-        {children}
+        { children }
       </pre>
     </div>
   );
 };
 
-const TableComponent = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <table className="not-prose bg-content1 rounded-large shadow-small my-10 h-auto w-full min-w-full table-auto overflow-auto">
-      {children}
-    </table>
-  );
-};
-import { cn } from "@/lib/utils";
+
 
 interface CalloutProps {
   icon?: string;
   children?: React.ReactNode;
   type?: "default" | "warning" | "danger";
 }
-const Callout = ({
+
+export const Callout = ({
   children,
   icon,
   type = "default",
@@ -132,14 +132,14 @@ const Callout = ({
 }: CalloutProps) => {
   return (
     <div
-      className={cn("my-6 flex items-start rounded-md border border-l-4 p-4", {
+      className={ cn("my-6 flex items-start rounded-md border border-l-4 p-4", {
         "border-red-900 bg-red-50": type === "danger",
         "border-yellow-900 bg-yellow-50": type === "warning",
-      })}
-      {...props}
+      }) }
+      { ...props }
     >
-      {icon && <span className="mr-4 text-2xl">{icon}</span>}
-      <div>{children}</div>
+      { icon && <span className="mr-4 text-2xl">{ icon }</span> }
+      <div>{ children }</div>
     </div>
   );
 };
@@ -148,7 +148,7 @@ const POSTS_FOLTER = path.join(process.cwd(), "app/blog/content");
 
 // Write a function to get all front matter and content
 
-const getAllPosts = async (category?: string[]): Promise<MDXFrontMatter[]> => {
+export const getAllPosts = async (category?: string[]): Promise<MDXFrontMatter[]> => {
   const selectedCategory = category;
 
   const files = fs
@@ -173,34 +173,3 @@ const getAllPosts = async (category?: string[]): Promise<MDXFrontMatter[]> => {
   return metadata;
 };
 
-const getFilteredPosts = async ({
-  searchParams,
-}: {
-  searchParams?: { category: string };
-}) => {
-  console.log(searchParams, "searchParams");
-
-  const files = fs
-    .readdirSync(POSTS_FOLTER)
-    .filter((file) => path.extname(file) === ".mdx");
-  return files.map((file) => {
-    const metadata = parseTheFrontmatter(
-      fs.readFileSync(path.join(POSTS_FOLTER, file), "utf-8"),
-    );
-    const post = metadata.metadata;
-    //    if there is a search param filter the posts
-    if (searchParams?.category) {
-      return post.categories.includes(searchParams.category);
-    }
-    return post;
-  });
-};
-
-export {
-  CodeBlock,
-  MDXPre,
-  TableComponent,
-  getFilteredPosts,
-  getAllPosts,
-  Callout,
-};
