@@ -1,10 +1,8 @@
-export default async function CategoryPage(
-  props: {
-    params: Promise<{
-      category: string;
-    }>;
-  }
-) {
+export default async function CategoryPage(props: {
+  params: Promise<{
+    category: string;
+  }>;
+}) {
   const params = await props.params;
   return (
     <div>

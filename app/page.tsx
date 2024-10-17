@@ -33,16 +33,13 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-    }
-
-  }
+    },
+  },
 };
 
-export default async function Home (
-  props: {
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-  }
-) {
+export default async function Home(props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const searchParams = await props.searchParams;
   const categoriesParam = searchParams.categories;
 
@@ -64,11 +61,11 @@ export default async function Home (
           variant classification, and other topics related to my work.
         </p>
       </div>
-      {/* <CategoryBadges posts={ allPosts } /> */ }
-      <CategorySelector posts={ allPosts } />
-      <Suspense fallback={ <p>Loading results...</p> }>
+      {/* <CategoryBadges posts={ allPosts } /> */}
+      <CategorySelector posts={allPosts} />
+      <Suspense fallback={<p>Loading results...</p>}>
         <div className="prose prose-neutral mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
-          <BlogList categories={ categories } />
+          <BlogList categories={categories} />
         </div>
       </Suspense>
       <div id="contact" className="mt-12 space-y-6">
@@ -84,7 +81,7 @@ export default async function Home (
         </Card>
       </div>
       <PageOverLayBar
-        sectionIds={ ["home", "Introduction", "category-filter", "contact"] }
+        sectionIds={["home", "Introduction", "category-filter", "contact"]}
       />
     </div>
   );

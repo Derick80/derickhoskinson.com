@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-
 const initialState = {
   name: "",
   from: "",
@@ -13,9 +12,12 @@ const initialState = {
 };
 
 const ContactForm = () => {
-  const [state, action, isPending] = useActionState(sendContactEmail, initialState);
+  const [state, action, isPending] = useActionState(
+    sendContactEmail,
+    initialState,
+  );
   return (
-    <form className="space-y-4" action={ action }>
+    <form className="space-y-4" action={action}>
       <input type="hidden" name="shield" value="" />
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
@@ -55,7 +57,7 @@ const ContactForm = () => {
           placeholder="Enter your message"
         />
       </div>
-      <Button className="w-full" disabled={ isPending } type="submit">
+      <Button className="w-full" disabled={isPending} type="submit">
         Send Message
       </Button>
     </form>

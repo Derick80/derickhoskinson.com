@@ -1,9 +1,9 @@
-import { getAllBlogPosts } from "@/app/actions/mdx-server";
+import { getAllPosts } from "@/app/actions/mdx-server";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const syncwithDb = async () => {
-  const posts = await getAllBlogPosts();
+  const posts = await getAllPosts();
 
   if (!posts)
     return {

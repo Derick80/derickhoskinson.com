@@ -18,7 +18,10 @@ const schema = z.object({
   shield: z.string().max(0),
 });
 
-export const sendEmail = async (prevState: Record<string, unknown>, formData: FormData) => {
+export const sendEmail = async (
+  prevState: Record<string, unknown>,
+  formData: FormData,
+) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const validatedFields = schema.safeParse({
     email: formData.get("email"),
@@ -93,7 +96,6 @@ export const createEmailVerificationToken = async (email: string) => {
 };
 
 export const verifyToken = async (token: string, email: string) => {
-
   // Need to convert iderick%40gmail.com to iderick@gmail.com
   email = decodeURIComponent(email);
   // Find the token and return it so additional checks can be made

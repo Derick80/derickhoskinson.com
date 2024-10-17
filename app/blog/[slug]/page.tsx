@@ -1,8 +1,7 @@
 import {
   Callout,
   CodeBlock,
-  getAllBlogPosts,
-  getSlugsAndCategories,
+  getAllPosts,
   MDXPre,
 } from "@/app/actions/mdx-server";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -12,7 +11,7 @@ import Image, { ImageProps } from "next/image";
 import { cn } from "@/lib/utils";
 
 export async function generateStaticParams() {
-  const posts = await getAllBlogPosts();
+  const posts = await getAllPosts();
   return posts.map((post) => ({ params: { slug: post.slug } }));
 }
 const blogPostSchema = z.object({
@@ -20,20 +19,18 @@ const blogPostSchema = z.object({
 });
 export type BlogPost = z.infer<typeof blogPostSchema>;
 
-export default async function BlogPost(
-  props0: {
-    params: Promise<{
-      slug: string;
-    }>;
-  }
-) {
+export default async function BlogPost(props0: {
+  params: Promise<{
+    slug: string;
+  }>;
+}) {
   const params = await props0.params;
   const { slug } = blogPostSchema.parse(params);
   if (!slug) {
     throw new Error("No slug provided");
   }
 
-  const post = await getAllBlogPosts().then((posts) => {
+  const post = await getAllPosts().then((posts) => {
     return posts.find((post) => post.slug === slug);
   });
 
@@ -41,13 +38,8 @@ export default async function BlogPost(
     throw new Error("No post found");
   }
 
-  const categories = await getSlugsAndCategories();
-  if (!categories) {
-    throw new Error("No data found");
-  }
-
   return (
-    (<div className="prose prose-neutral min-w-full p-4 dark:prose-invert prose-a:no-underline">
+    <div className="prose prose-neutral min-w-full p-4 dark:prose-invert prose-a:no-underline">
       <MDXRemote
         source={post.content}
         components={{
@@ -64,11 +56,11 @@ export default async function BlogPost(
             ...props
           }: React.ImgHTMLAttributes<HTMLImageElement>) => (
             // eslint-disable-next-line @next/next/no-img-element
-            (<img
+            <img
               className={cn("rounded-md border", className)}
               alt={alt}
               {...props}
-            />)
+            />
           ),
           Image: (props: ImageProps) => <Image {...props} alt="blog image" />,
         }}
@@ -78,6 +70,6 @@ export default async function BlogPost(
           },
         }}
       />
-    </div>)
+    </div>
   );
 }

@@ -13,22 +13,22 @@ const EmailForm = () => {
   const [state, action, isPending] = useActionState(sendEmail, initialState);
 
   return (
-    <form className="flex flex-col gap-4" action={ action }>
-      <div style={ { display: "none" } }>
+    <form className="flex flex-col gap-4" action={action}>
+      <div style={{ display: "none" }}>
         <input type="hidden" name="shield" value="" />
       </div>
       <Label htmlFor="email">
         Email
         <Input name="email" type="email" required />
       </Label>
-      { state?.message && (
+      {state?.message && (
         <p className="animate-in fade-in mt-1 border border-blue-500 text-xs font-medium text-red-500">
-          { typeof state?.message === "string"
+          {typeof state?.message === "string"
             ? state.message
-            : JSON.stringify(state?.message) }
+            : JSON.stringify(state?.message)}
         </p>
-      ) }
-      <Button name="sendEmail" type="submit" disabled={ isPending }>
+      )}
+      <Button name="sendEmail" type="submit" disabled={isPending}>
         Send Email
       </Button>
     </form>

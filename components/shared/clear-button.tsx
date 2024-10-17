@@ -16,7 +16,7 @@ const ClearSearchParamsButton = ({
     searchParams.delete("category");
     window.location.search = searchParams.toString();
   };
-  return <Button onClick={ handleClearSearchParams }>Clear search</Button>;
+  return <Button onClick={handleClearSearchParams}>Clear search</Button>;
 };
 
 export default ClearSearchParamsButton;

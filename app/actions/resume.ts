@@ -28,28 +28,36 @@ const generateASTResume = async () => {
         },
         {
           type: "experience",
-          children: cv.experience.map((job: {
-            title: string; company: string; location: string; startDate: string; endDate: string; duties: {
-              description: string;
-            }[]
-          }) => ({
-            type: "job",
-            children: [
-              { type: "title", value: job.title },
-              { type: "company", value: job.company },
-              { type: "location", value: job.location },
-              { type: "duration", value: `${job.startDate} - ${job.endDate}` },
-              {
-                type: "duties",
-                children: job.duties.map((duty: {
-                  description: string
-                }) => ({
-                  type: "duty",
-                  value: duty.description,
-                })),
-              },
-            ],
-          })),
+          children: cv.experience.map(
+            (job: {
+              title: string;
+              company: string;
+              location: string;
+              startDate: string;
+              endDate: string;
+              duties: {
+                description: string;
+              }[];
+            }) => ({
+              type: "job",
+              children: [
+                { type: "title", value: job.title },
+                { type: "company", value: job.company },
+                { type: "location", value: job.location },
+                {
+                  type: "duration",
+                  value: `${job.startDate} - ${job.endDate}`,
+                },
+                {
+                  type: "duties",
+                  children: job.duties.map((duty: { description: string }) => ({
+                    type: "duty",
+                    value: duty.description,
+                  })),
+                },
+              ],
+            }),
+          ),
         },
         {
           type: "skills",
@@ -60,41 +68,58 @@ const generateASTResume = async () => {
         },
         {
           type: "education",
-          children: cv.education.map((edu: {
-            degree: string; field: string; institution: string; startDate: string; endDate: string; duties: {
-              description: string;
-            }[]
-          }) => ({
-            type: "education_entry",
-            children: [
-              { type: "degree", value: `${edu.degree} in ${edu.field}` },
-              { type: "institution", value: edu.institution },
-              { type: "duration", value: `${edu.startDate} - ${edu.endDate}` },
-              {
-                type: "duties",
-                children: edu.duties.map((duty: {
-                  description: string
-                }) => ({
-                  type: "duty",
-                  value: duty.description,
-                })),
-              },
-            ],
-          })),
+          children: cv.education.map(
+            (edu: {
+              degree: string;
+              field: string;
+              institution: string;
+              startDate: string;
+              endDate: string;
+              duties: {
+                description: string;
+              }[];
+            }) => ({
+              type: "education_entry",
+              children: [
+                { type: "degree", value: `${edu.degree} in ${edu.field}` },
+                { type: "institution", value: edu.institution },
+                {
+                  type: "duration",
+                  value: `${edu.startDate} - ${edu.endDate}`,
+                },
+                {
+                  type: "duties",
+                  children: edu.duties.map((duty: { description: string }) => ({
+                    type: "duty",
+                    value: duty.description,
+                  })),
+                },
+              ],
+            }),
+          ),
         },
         {
           type: "publications",
-          children: cv.publications.map((pub: { title: string; journal: string; year: string; authors: string; edition: string; doi: string }) => ({
-            type: "publication",
-            children: [
-              { type: "title", value: pub.title },
-              { type: "journal", value: pub.journal },
-              { type: "year", value: pub.year },
-              { type: "authors", value: pub.authors },
-              { type: "edition", value: pub.edition },
-              { type: "url", value: pub.doi },
-            ],
-          })),
+          children: cv.publications.map(
+            (pub: {
+              title: string;
+              journal: string;
+              year: string;
+              authors: string;
+              edition: string;
+              doi: string;
+            }) => ({
+              type: "publication",
+              children: [
+                { type: "title", value: pub.title },
+                { type: "journal", value: pub.journal },
+                { type: "year", value: pub.year },
+                { type: "authors", value: pub.authors },
+                { type: "edition", value: pub.edition },
+                { type: "url", value: pub.doi },
+              ],
+            }),
+          ),
         },
       ],
     };

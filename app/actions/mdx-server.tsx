@@ -81,13 +81,13 @@ const highlighter = createHighlighter({
   themes: ["nord"],
   langs: ["typescript"],
 });
-async function CodeBlock ({ code }: { code: string }) {
+async function CodeBlock({ code }: { code: string }) {
   const out = (await highlighter).codeToHtml(code, {
     lang: "typescript",
     theme: "nord",
   });
 
-  return <div dangerouslySetInnerHTML={ { __html: out } } />;
+  return <div dangerouslySetInnerHTML={{ __html: out }} />;
 }
 
 const MDXPre = (
@@ -101,10 +101,10 @@ const MDXPre = (
   return (
     <div className="group relative">
       <pre
-        { ...rest }
+        {...rest}
         className="scrollbar-thin scrollbar-thumb-secondary scrollbar-thumb-rounded-full my-7 w-full overflow-x-auto rounded-xl p-4 text-primary transition ease-in-out"
       >
-        { children }
+        {children}
       </pre>
     </div>
   );
@@ -113,7 +113,7 @@ const MDXPre = (
 const TableComponent = ({ children }: { children: React.ReactNode }) => {
   return (
     <table className="not-prose bg-content1 rounded-large shadow-small my-10 h-auto w-full min-w-full table-auto overflow-auto">
-      { children }
+      {children}
     </table>
   );
 };
@@ -132,14 +132,14 @@ const Callout = ({
 }: CalloutProps) => {
   return (
     <div
-      className={ cn("my-6 flex items-start rounded-md border border-l-4 p-4", {
+      className={cn("my-6 flex items-start rounded-md border border-l-4 p-4", {
         "border-red-900 bg-red-50": type === "danger",
         "border-yellow-900 bg-yellow-50": type === "warning",
-      }) }
-      { ...props }
+      })}
+      {...props}
     >
-      { icon && <span className="mr-4 text-2xl">{ icon }</span> }
-      <div>{ children }</div>
+      {icon && <span className="mr-4 text-2xl">{icon}</span>}
+      <div>{children}</div>
     </div>
   );
 };
@@ -147,20 +147,6 @@ const Callout = ({
 const POSTS_FOLTER = path.join(process.cwd(), "app/blog/content");
 
 // Write a function to get all front matter and content
-
-const getAllBlogPosts = async () => {
-  const files = fs
-    .readdirSync(POSTS_FOLTER)
-    .filter((file) => path.extname(file) === ".mdx");
-
-  return files.map((file) => {
-    const { metadata } = parseTheFrontmatter(
-      fs.readFileSync(path.join(POSTS_FOLTER, file), "utf-8"),
-    );
-    return metadata;
-  });
-  // sort
-};
 
 const getAllPosts = async (category?: string[]): Promise<MDXFrontMatter[]> => {
   const selectedCategory = category;
@@ -187,28 +173,6 @@ const getAllPosts = async (category?: string[]): Promise<MDXFrontMatter[]> => {
   return metadata;
 };
 
-const getSlugsAndCategories = async () => {
-  const posts = await getAllBlogPosts();
-  const myData = transformArray({ posts });
-  return myData;
-};
-
-const transformArray = ({ posts }: { posts: MDXFrontMatter[] }) => {
-  const categories = posts.flatMap((post) => post.categories);
-  const uniqueCategories = [...new Set(categories)];
-  const myData = uniqueCategories.map((category) => {
-    const related = posts
-      .filter((post) => post.categories.includes(category))
-      .map((post) => post.slug);
-    return {
-      category,
-      related,
-      categoryCount: related.length,
-    };
-  });
-  return myData;
-};
-
 const getFilteredPosts = async ({
   searchParams,
 }: {
@@ -233,11 +197,9 @@ const getFilteredPosts = async ({
 };
 
 export {
-  getAllBlogPosts,
   CodeBlock,
   MDXPre,
   TableComponent,
-  getSlugsAndCategories,
   getFilteredPosts,
   getAllPosts,
   Callout,

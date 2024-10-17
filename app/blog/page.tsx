@@ -4,11 +4,9 @@ import { verifySession } from "../actions/auth";
 import BlogList from "@/components/blog/blog-list";
 import CategorySelector from "../../components/blog/categories/categories/category-container";
 
-export default async function Blog(
-  props: {
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-  }
-) {
+export default async function Blog(props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
   const searchParams = await props.searchParams;
   const categoriesParam = searchParams.categories;
 
