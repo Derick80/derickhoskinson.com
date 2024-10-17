@@ -1,16 +1,16 @@
 "use client";
+import { useActionState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { sendEmail } from "@/app/actions/auth";
-import { useFormState } from "react-dom";
 const initialState = {
   email: "",
   message: "",
 };
 const EmailForm = () => {
   // update this to useActionState when it's available
-  const [state, action, isPending] = useFormState(sendEmail, initialState);
+  const [state, action, isPending] = useActionState(sendEmail, initialState);
 
   return (
     <form className="flex flex-col gap-4" action={ action }>

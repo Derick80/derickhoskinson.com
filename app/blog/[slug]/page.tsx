@@ -20,13 +20,14 @@ const blogPostSchema = z.object({
 });
 export type BlogPost = z.infer<typeof blogPostSchema>;
 
-export default async function BlogPost({
-  params,
-}: {
-  params: {
-    slug: string;
-  };
-}) {
+export default async function BlogPost(
+  props0: {
+    params: Promise<{
+      slug: string;
+    }>;
+  }
+) {
+  const params = await props0.params;
   const { slug } = blogPostSchema.parse(params);
   if (!slug) {
     throw new Error("No slug provided");
@@ -46,7 +47,7 @@ export default async function BlogPost({
   }
 
   return (
-    <div className="prose prose-neutral min-w-full p-4 dark:prose-invert prose-a:no-underline">
+    (<div className="prose prose-neutral min-w-full p-4 dark:prose-invert prose-a:no-underline">
       <MDXRemote
         source={post.content}
         components={{
@@ -63,11 +64,11 @@ export default async function BlogPost({
             ...props
           }: React.ImgHTMLAttributes<HTMLImageElement>) => (
             // eslint-disable-next-line @next/next/no-img-element
-            <img
+            (<img
               className={cn("rounded-md border", className)}
               alt={alt}
               {...props}
-            />
+            />)
           ),
           Image: (props: ImageProps) => <Image {...props} alt="blog image" />,
         }}
@@ -77,6 +78,6 @@ export default async function BlogPost({
           },
         }}
       />
-    </div>
+    </div>)
   );
 }

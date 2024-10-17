@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import crypto from "crypto";
-import { cookies } from "next/headers";
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 import prisma from "@/lib/prisma";
 import { cache } from "react";
 import { sendEmailVerification } from "@/components/auth/send-verification-email";
@@ -136,7 +136,7 @@ interface AuthCookie {
 }
 
 export const verifySession = cache(async () => {
-  const cookie = cookies().get("session-token");
+  const cookie = (await cookies()).get("session-token");
 
   if (!cookie) {
     return null;
@@ -173,7 +173,7 @@ export const verifySession = cache(async () => {
 });
 
 export const deleteSession = () => {
-  cookies().delete("session-token");
+  (cookies() as unknown as UnsafeUnwrappedCookies).delete("session-token");
   redirect("/");
 };
 
@@ -206,19 +206,19 @@ export const createUserSession = async (userId: string) => {
   };
 
   // set the session cookie
-  cookies().set("session-token", sessionData, cookieOptions);
+  (await cookies()).set("session-token", sessionData, cookieOptions);
   redirect("/");
 };
 
 export const logout = async () => {
-  const cookie = cookies().get("session-token");
+  const cookie = (await cookies()).get("session-token");
   if (!cookie) {
     return;
   }
 
   try {
-    cookies().delete("session-token");
-    cookies().set("session-token", "");
+    (await cookies()).delete("session-token");
+    (await cookies()).set("session-token", "");
   } catch (error) {
     console.error("Error in logout:", error);
     throw new Error("Unable to logout");

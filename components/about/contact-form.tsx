@@ -1,9 +1,9 @@
 "use client";
+import { useActionState } from "react";
 import { sendContactEmail } from "@/app/actions/about";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useFormState } from "react-dom";
 
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
 };
 
 const ContactForm = () => {
-  const [state, action, isPending] = useFormState(sendContactEmail, initialState);
+  const [state, action, isPending] = useActionState(sendContactEmail, initialState);
   return (
     <form className="space-y-4" action={ action }>
       <input type="hidden" name="shield" value="" />
