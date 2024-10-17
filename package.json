@@ -8,7 +8,8 @@
     "build": "next build",
     "format": "prettier \"app/**/*.ts\" \"app/**/*.tsx\" --write . ",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.19.1",
