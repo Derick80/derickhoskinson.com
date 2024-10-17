@@ -1,10 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
-import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import { Separator } from "@radix-ui/react-dropdown-menu";
-import { ShareIcon, MessageCircleIcon } from "lucide-react";
 import { MDXFrontMatter } from "@/lib/types";
-import { Badge } from "../ui/badge";
 // inspo https://www.leohuynh.dev/
 export const BlogCard = (props: MDXFrontMatter) => {
   const {
