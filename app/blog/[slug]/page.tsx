@@ -9,16 +9,12 @@ import Image, { ImageProps } from "next/image";
 import { cn } from "@/lib/utils";
 import { DetailedHTMLProps, HTMLAttributes } from 'react';
 import { Callout, MDXPre } from '@/components/mdx/sync-functions';
+import { blogPostSchema } from '@/lib/types';
 
 export async function generateStaticParams () {
   const posts = await getAllPosts();
   return posts.map((post) => ({ params: { slug: post.slug } }));
 }
-const blogPostSchema = z.object({
-  slug: z.string(),
-});
-export type BlogPost = z.infer<typeof blogPostSchema>;
-
 export default async function BlogPost (props0: {
   params: Promise<{
     slug: string;

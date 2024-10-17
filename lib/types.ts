@@ -22,3 +22,9 @@ export type CategoryFilterType = {
   related: string[];
   categoryCount: number;
 };
+
+
+export const blogPostSchema = z.object({
+  slug: z.string(),
+});
+export type BlogPost = z.infer<typeof blogPostSchema>;
