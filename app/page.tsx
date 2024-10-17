@@ -26,6 +26,16 @@ export const metadata: Metadata = {
     "germline",
     "tufts genetics phd",
   ],
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    }
+
+  }
 };
 
 export default async function Home ({
