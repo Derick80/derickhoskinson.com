@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import NavigationBar from "@/components/shared/nav-bar";
+import { Analytics } from "@vercel/analytics/react"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,6 +32,7 @@ export default function RootLayout ({
       <body
         className={ `${geistSans.variable} ${geistMono.variable} container mx-auto flex min-h-screen max-w-screen-lg flex-col antialiased` }
       >
+        <Analytics />
         <ThemeProvider attribute="class">
           <NavigationBar />
           <main className="mt-10 px-4 py-20">{ children }</main>
