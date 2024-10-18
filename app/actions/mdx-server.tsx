@@ -3,9 +3,8 @@ import path from "path";
 import fs from "fs";
 import readingTime from "reading-time";
 import { createHighlighter } from "shiki";
-import { cn } from '@/lib/utils';
-import { frontMatterSchema, MDXFrontMatter } from '@/lib/types';
-
+import { cn } from "@/lib/utils";
+import { frontMatterSchema, MDXFrontMatter } from "@/lib/types";
 
 /* Parsing front matter */
 
@@ -62,7 +61,6 @@ const parseTheFrontmatter = (fileContent: string) => {
   };
 };
 
-
 // Create a code block component
 
 const highlighter = createHighlighter({
@@ -70,26 +68,22 @@ const highlighter = createHighlighter({
   langs: ["typescript"],
 });
 
-
 export const CodeBlock = async ({ code }: { code: string }) => {
   const out = (await highlighter).codeToHtml(code, {
     lang: "typescript",
     theme: "nord",
   });
 
-  return <div dangerouslySetInnerHTML={ { __html: out } } />;
-}
-
-
-
-
-
+  return <div dangerouslySetInnerHTML={{ __html: out }} />;
+};
 
 const POSTS_FOLTER = path.join(process.cwd(), "app/blog/content");
 
 // Write a function to get all front matter and content
 
-export const getAllPosts = async (category?: string[]): Promise<MDXFrontMatter[]> => {
+export const getAllPosts = async (
+  category?: string[],
+): Promise<MDXFrontMatter[]> => {
   const selectedCategory = category;
 
   const files = fs
@@ -113,4 +107,3 @@ export const getAllPosts = async (category?: string[]): Promise<MDXFrontMatter[]
   }
   return metadata;
 };
-

@@ -1,28 +1,21 @@
-import { verifySession } from '../actions/auth';
-import { getUserImages } from '../actions/user-avatar';
-import { UploadImageForm } from './up-form';
-
-
+import { verifySession } from "../actions/auth";
+import { getUserImages } from "../actions/user-avatar";
+import { UploadForm } from "./up-form";
 
 export default async function Page () {
-    const session = await verifySession()
+    const session = await verifySession();
     if (!session) {
-        return <div>Not authenticated</div>
+        return <div>Not authenticated</div>;
     }
-    const userId = session.userId
-    const isAuthed = userId ? true : false
-    const userImages = await getUserImages(userId)
-    const userData = { userId, isAuthed }
-    console.log(userImages)
+    const userId = session.userId;
+    const isAuthed = userId ? true : false;
+    // const userImages = await getUserImages(userId);
+    // const userData = { userId, isAuthed };
+
     return (
         <div>
             <h1>Page</h1>
-            <UploadImageForm
-                userData={ userData }
-                userImages={ userImages }
-            />
+            <UploadForm />
         </div>
-
-
-    )
+    );
 }

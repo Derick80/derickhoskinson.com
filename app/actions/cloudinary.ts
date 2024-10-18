@@ -1,87 +1,122 @@
-'use server'
+"use server";
+import { z } from "zod";
+import cloudinary from "cloudinary";
+import { NextRequest } from "next/server";
 
-import cloudinary from 'cloudinary'
-import { revalidatePath } from 'next/cache'
-import prisma from '@/lib/prisma'
 
-cloudinary.v2.config({
-    cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
+const NewImageSchema = z.object({
+    imageField: z.array(z.instanceof(File)).refine((files) => files.every((file) => file.size > 0),
+        'Image is required'),
+    userId: z.string({
+        required_error: 'User ID is required'
+    })
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function uploadImagesToCloudinary (prevState: any, formData: FormData) {
-    const files = formData.getAll('files') as File[]
-    if (files.length === 0) {
-        return { success: false, error: 'No files found in FormData' }
-    }
-    const userId = formData.get('userId') as string
+const cloudname = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const apiKey = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
+const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+if (!cloudname || !apiKey || !apiSecret) {
+    throw new Error('Missing cloudinary credentials')
+}
 
 
-    const uploadPromises = files.map(file =>
-        new Promise<cloudinary.UploadApiResponse>((resolve, reject) => {
-            const stream = cloudinary.v2.uploader.upload_stream(
+
+cloudinary.v2.config({
+    cloud_name: cloudname,
+    api_key: apiKey,
+    api_secret: apiSecret
+});
+
+export const UploadImagesToCloudinary = async (
+    files: File[],
+    userId: string,
+) => {
+    const uploadedImages = await Promise.all(
+        files.map(async (file) => {
+            const result = await cloudinary.v2.uploader.upload_stream(
                 {
-                    folder: 'personal_blog_2024',
+                    folder: "blog_testing_24",
+                    filename_override: __filename,
+                    discard_original_filename: false,
+                    use_filename: true,
+                    unique_filename: false,
+                    overwrite: true,
+                    transformation: [{ quality: "auto" }],
+                },
+                (error, result) => {
+                    if (error) {
+                        throw error;
+                    }
+                    return result;
+                },
+            );
+        }),
+    );
+
+    return uploadedImages;
+};
+
+
+
+export const uploadImages = async (formData: FormData) => {
+    const files = formData.getAll("imageField") as File[];
+    const userId = formData.get("userId") as string;
+    // with a single file the next line would be const arrayBuffer = await file.arrayBuffer(). but I have multiple files
+    for (const file of files) {
+        const arrayBuffer = await file.arrayBuffer();
+        const uploadResult = await new Promise((resolve, reject) => {
+            cloudinary.v2.uploader.upload_stream(
+                {
+                    folder: "blog_testing_24",
                     filename_override: file.name,
                     discard_original_filename: false,
                     use_filename: true,
                     unique_filename: false,
                     overwrite: true,
-                    transformation: [{
-                        quality: 'auto',
-                        fetch_format: 'webp'
-                    }]
+                    transformation: [{ quality: "auto" }],
                 },
                 (error, result) => {
-                    if (error) reject(error)
-                    else if (result) resolve(result)
-                }
-            )
-
-            const reader = file.stream().getReader()
-            const pump = () => {
-                reader.read().then(({ done, value }) => {
-                    if (done) {
-                        stream.end()
-                    } else {
-                        stream.write(value)
-                        pump()
-                    }
-                })
-            }
-            pump()
-        })
-    )
-
-    try {
-        const results = await Promise.all(uploadPromises)
-
-        // Save image information to the database
-        await Promise.all(results.map(result =>
-            prisma.userImage.upsert({
-                where: {
-                    id: result.public_id,
-                    fileName: result.original_filename
+                    if (error || !result) reject(error);
+                    else resolve(result);
                 },
-                update: {},
-                create: {
-                    cloudinaryId: result.public_id,
-                    userId,
-                    fileName: result.original_filename,
-                    imageUrl: result.secure_url,
-                    // is it possible to check if I ahve a userAvatar set to True and if so set it to false?
-                    userAvatar: false
-
-                }
-            })
-        ))
-
-        revalidatePath('/') // Revalidate the path where images are displayed
-        return { success: true, results }
-    } catch (error) {
-        console.error('Error uploading images:', error)
-        return { success: false, error: 'Failed to upload images' }
+            ).end(Buffer.from(arrayBuffer));
+        });
+        return uploadResult;
     }
+}
+
+
+export const create = async (formData: FormData) => {
+    const files = formData.getAll("imageField") as File[];
+    const userId = formData.get("userId") as string;
+
+    const uploadPromises = files.map(async (file) => {
+        const arrayBuffer = await file.arrayBuffer();
+        const buffer = new Uint8Array(arrayBuffer);
+
+        return new Promise((resolve, reject) => {
+            cloudinary.v2.uploader.upload_stream(
+                {
+                    folder: "blog_testing_24",
+                    filename_override: file.name,
+                    discard_original_filename: false,
+                    use_filename: true,
+                    unique_filename: false,
+                    overwrite: true,
+                    transformation: [{ quality: "auto" }],
+                },
+                (error, result) => {
+                    if (error || !result) reject(error);
+                    else resolve(result);
+                },
+            ).end(buffer);
+        });
+    });
+    // wait for files to upload
+    const uploadResults = await Promise.all(uploadPromises);
+    return uploadResults;
+
+
+
 }

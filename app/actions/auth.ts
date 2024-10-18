@@ -53,8 +53,6 @@ export const sendEmail = async (
   };
 };
 
-
-
 export const getOrCreateUser = async (email: string) => {
   try {
     await prisma.user.upsert({
@@ -229,7 +227,6 @@ export const logout = async () => {
   }
   redirect("/");
 };
-
 
 export const getUser = async (userId: string) => {
   const user = await prisma.user.findUnique({

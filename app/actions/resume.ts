@@ -1,4 +1,3 @@
-
 import { resume_basics } from "@/lib/resources/resume";
 
 type ASTResume = {
@@ -140,5 +139,3 @@ export const generateASTResume = async () => {
 
   return downloadResumeAST;
 };
-
-
