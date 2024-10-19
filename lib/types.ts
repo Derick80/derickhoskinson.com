@@ -1,5 +1,4 @@
 /* Mdx Blog types */
-
 import { z } from "zod";
 
 export const frontMatterSchema = z.object({

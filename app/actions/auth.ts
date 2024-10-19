@@ -233,6 +233,9 @@ export const getUser = async (userId: string) => {
     where: {
       id: userId,
     },
+    include: {
+      userImages: true,
+    },
   });
   if (!user) {
     return null;

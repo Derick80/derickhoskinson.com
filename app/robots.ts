@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
     sitemap:
       process.env.NODE_ENV === "production"
         ? "https://derickhoskinson.com/sitemap.xml"
-        : "http://localhost:3000/sitemap.xml",
+        : "http://localhost:3000/sitemap.ts",
   };
 }
