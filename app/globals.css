@@ -101,3 +101,20 @@ html.dark .shiki span {
   border: none !important;
   box-shadow: none !important;
 }
+
+
+:root {
+  --nav-height: 4rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --nav-height: 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --nav-height: 6rem;
+  }
+}
