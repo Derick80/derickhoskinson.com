@@ -78,14 +78,24 @@ export const evidenceSubCategories = [
 type EvidenceCategory = {
 
     title: string;
+    label: string;
 };
 
 
 const EvidenceContainer = (
     { evidenceCategory }: { evidenceCategory: string },
 ) => {
-    const [selectedCategory, setSelectedCategory] = React.useState<string | null>(null);
-    const subcategories = evidenceSubCategories.filter((evidence) => evidence.primaryCategory === evidenceCategory)[0].categories;
+    const [selectedCategories, setSelectedCategories] = React.useState<string[]>([]);
+    const subcategories = evidenceSubCategories.find((evidence) => evidence.primaryCategory === evidenceCategory)?.categories || [];
+
+    const handleCategorySelection = (category: string) => {
+        setSelectedCategories((prevCategories) =>
+            prevCategories.includes(category)
+                ? prevCategories.filter((c) => c !== category)
+                : [...prevCategories, category]
+        );
+    };
+
     return (
         <div className="flex h-full flex-col gap-2 space-y-4 rounded-md border border-red-500 p-4">
             <h2
@@ -95,16 +105,20 @@ const EvidenceContainer = (
 
             <div className="flex flex-col">
                 Analaysis select a category to view the evidence block
-                <div>
+                <div
+                    className="flex flex-wrap gap-2"
+                >
                     {
                         subcategories.map((category) => {
                             return (
                                 <Button
                                     key={ category.title }
-                                    onClick={ () => setSelectedCategory(category.title) }
-                                    variant="secondary"
+                                    onClick={ () => handleCategorySelection(category.title) }
+                                    variant={ selectedCategories.includes(category.title) ? "default" : "secondary" }
+                                    className="flex items-center space-x-2"
                                 >
-                                    { category.label }
+                                    <span>{ category.label }</span>
+
                                 </Button>
 
                             )
@@ -118,9 +132,22 @@ const EvidenceContainer = (
 
                 </div>
                 <Separator />
-                {
-                    selectedCategory
-                }
+                { selectedCategories.length > 0 && (
+                    <>
+                        <Separator className="my-4" />
+                        <div className="space-y-4">
+                            <h3 className="text-lg font-medium">Selected Categories:</h3>
+                            { selectedCategories.map((categoryTitle) => {
+                                const category = subcategories.find((c) => c.title === categoryTitle);
+                                return (
+                                    <div key={ categoryTitle } className="rounded-md border p-4">
+                                        <h4 className="text-md text-red-400 font-semibold mb-2">{ category?.label }</h4>
+                                    </div>
+                                );
+                            }) }
+                        </div>
+                    </>
+                ) }
             </div>
         </div>
     );
