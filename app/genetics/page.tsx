@@ -1,17 +1,28 @@
-
-import React from 'react';
-import EvidenceBlock from './evidence-block/evidence-block';
+import React from "react";
+import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import EvidenceContainer from "./evidence-block/evidence-container";
+import { EvidenceCategory } from './genetic-resources/acmg-criteria-v4';
 export default async function GeneticsPage () {
+  // get the inddivudal evidence type categories
+  const evidenceTypes = Object.values(EvidenceCategory);
   return (
-    <div
-      className='relative flex flex-col gap-10 w-full'
-    >
+    <div id="home" className="flex min-h-screen flex-col space-y-8 py-2">
       <h1>Genetics</h1>
-      <p>Genetics Page</p>
+      <div className={ cn("flex flex-col space-y-4") }>
 
-      <EvidenceBlock />
+        {
+          evidenceTypes.map((evidenceType) => {
+            return (
+              <EvidenceContainer
+                key={ evidenceType }
+                evidenceCategory={ evidenceType }
+              />
+            )
+          }
+          )
+        }
+      </div>
     </div>
   );
 }
-
-

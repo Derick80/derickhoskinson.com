@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     "A personal web app for Derick Hoskinson with a blog, curriculum vitae, and other resources.",
 };
 
-export default function RootLayout ({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -30,20 +30,19 @@ export default function RootLayout ({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={ `${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased` }
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col gap-20 antialiased`}
       >
-        {/* <Analytics /> */ }
+        {/* <Analytics /> */}
         <ThemeProvider attribute="class">
-          <div className="flex flex-col min-h-screen">
+          <div className="min-h- flex flex-col gap-10 space-y-10">
             <NavigationBar />
 
-            <main className="relative flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 max-w-3xl">
-              { children }</main>
+            <main className="container relative mx-auto max-w-3xl flex-grow px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+              {children}
+            </main>
           </div>
         </ThemeProvider>
       </body>
     </html>
   );
 }
-
-

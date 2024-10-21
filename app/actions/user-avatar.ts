@@ -1,8 +1,8 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { verifySession } from './auth';
-import { redirect } from 'next/navigation';
+import { verifySession } from "./auth";
+import { redirect } from "next/navigation";
 
 export const getUserImages = async (userId: string) => {
   return await prisma.userImage.findMany({
@@ -11,20 +11,19 @@ export const getUserImages = async (userId: string) => {
     },
     orderBy: [
       {
-        userAvatar: 'desc'
+        userAvatar: "desc",
       },
       {
-        createdAt: 'desc'
-      }
-    ]
+        createdAt: "desc",
+      },
+    ],
   });
 };
 
-
 export const starUserImage = async (imageId: string) => {
-  const session = await verifySession()
-  if (!session) redirect('login')
-  const userId = session.userId
+  const session = await verifySession();
+  if (!session) redirect("login");
+  const userId = session.userId;
   // Set all other images to false
   await prisma.userImage.updateMany({
     where: {
@@ -45,6 +44,4 @@ export const starUserImage = async (imageId: string) => {
       userAvatar: true,
     },
   });
-
-
-}
+};
