@@ -4,10 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Separator } from '@/components/ui/separator';
 import React from "react";
 import EvidenceBlock from './evidence-block';
+import { EvidenceCategory, EvidenceType } from '../genetic-resources/acmg-criteria-v4';
 
-export const evidenceSubCategories = [
+type SubCategory = {
+    title: EvidenceType;
+    label: string;
+}
+
+type EvidenceSubCategory = {
+    primaryCategory: EvidenceCategory;
+    categories: SubCategory[];
+}
+export const evidenceSubCategories: EvidenceSubCategory = [
     {
-        primaryCategory: "Molecular Impact Evidence",
+        primaryCategory: EvidenceCategory.MOLECULAR_IMPACT_EVIDENCE,
         categories: [
             {
                 title: "IMP_LOF",
@@ -36,7 +46,7 @@ export const evidenceSubCategories = [
         ],
     },
     {
-        primaryCategory: "Population Evidence",
+        primaryCategory: EvidenceCategory.POPULATION_EVIDENCE,
         categories: [
             {
                 title: "POP_FRQ",
@@ -45,7 +55,7 @@ export const evidenceSubCategories = [
         ],
     },
     {
-        primaryCategory: "Clinical Evidence",
+        primaryCategory: EvidenceCategory.CLINICAL_EVIDENCE,
         categories: [
             {
                 title: "CLN_CCR",
@@ -75,76 +85,57 @@ export const evidenceSubCategories = [
     },
 ];
 
-type EvidenceCategory = {
-
-    title: string;
-    label: string;
-};
 
 
+interface EvidenceContainerProps {
+    evidenceCategory: EvidenceCategory;
+}
 const EvidenceContainer = (
-    { evidenceCategory }: { evidenceCategory: string },
+    { evidenceCategory }: EvidenceContainerProps
 ) => {
-    const [selectedCategories, setSelectedCategories] = React.useState<string[]>([]);
-    const subcategories = evidenceSubCategories.find((evidence) => evidence.primaryCategory === evidenceCategory)?.categories || [];
+    const [selectedCategories, setSelectedCategories] = React.useState<EvidenceType[]>([])
 
-    const handleCategorySelection = (category: string) => {
+    const subcategories = React.useMemo(() =>
+        evidenceSubCategories.find((evidence) => evidence.primaryCategory === evidenceCategory)?.categories || [],
+        [evidenceCategory]
+    )
+
+    const handleCategorySelection = (category: EvidenceType) => {
         setSelectedCategories((prevCategories) =>
             prevCategories.includes(category)
                 ? prevCategories.filter((c) => c !== category)
                 : [...prevCategories, category]
-        );
-    };
-
+        )
+    }
     return (
-        <div className="flex h-full flex-col gap-2 space-y-4 rounded-md border border-red-500 p-4">
-            <h2
-            >
+        <div className="flex h-full flex-col gap-2 space-y-4 rounded-md border border-primary p-4">
+            <h2 className="text-2xl font-bold" id={ `evidence-category-${evidenceCategory}` }>
                 { evidenceCategory }
             </h2>
 
             <div className="flex flex-col">
-                Analaysis select a category to view the evidence block
-                <div
-                    className="flex flex-wrap gap-2"
-                >
-                    {
-                        subcategories.map((category) => {
-                            return (
-                                <Button
-                                    key={ category.title }
-                                    onClick={ () => handleCategorySelection(category.title) }
-                                    variant={ selectedCategories.includes(category.title) ? "default" : "secondary" }
-                                    className="flex items-center space-x-2"
-                                >
-                                    <span>{ category.label }</span>
-
-                                </Button>
-
-                            )
-                        }
-                        )
-                    }
-
-
-
-
-
+                <p className="mb-2">Select a category to view the evidence block:</p>
+                <div className="flex flex-wrap gap-2" role="group" aria-labelledby={ `evidence-category-${evidenceCategory}` }>
+                    { subcategories.map((category) => (
+                        <Button
+                            key={ category.title }
+                            onClick={ () => handleCategorySelection(category.title) }
+                            variant={ selectedCategories.includes(category.title) ? "default" : "secondary" }
+                            className="flex items-center space-x-2"
+                            aria-pressed={ selectedCategories.includes(category.title) }
+                        >
+                            <span>{ category.label }</span>
+                        </Button>
+                    )) }
                 </div>
-                <Separator />
+                <Separator className="my-4" />
                 { selectedCategories.length > 0 && (
                     <>
-                        <Separator className="my-4" />
+                        <h3 className="text-lg font-medium mb-2">Selected Evidence Blocks:</h3>
                         <div className="space-y-4">
-                            <h3 className="text-lg font-medium">Selected Categories:</h3>
-                            { selectedCategories.map((categoryTitle) => {
-                                const category = subcategories.find((c) => c.title === categoryTitle);
-                                return (
-                                    <div key={ categoryTitle } className="rounded-md border p-4">
-                                        <h4 className="text-md text-red-400 font-semibold mb-2">{ category?.label }</h4>
-                                    </div>
-                                );
-                            }) }
+                            { selectedCategories.map((categoryTitle) => (
+                                <EvidenceBlock key={ categoryTitle } evidenceCode={ categoryTitle } />
+                            )) }
                         </div>
                     </>
                 ) }
