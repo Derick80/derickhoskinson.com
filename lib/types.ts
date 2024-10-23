@@ -1,6 +1,5 @@
 /* Mdx Blog types */
-
-import { z } from 'zod';
+import { z } from "zod";
 
 export const frontMatterSchema = z.object({
   title: z.string(),
@@ -22,7 +21,6 @@ export type CategoryFilterType = {
   related: string[];
   categoryCount: number;
 };
-
 
 export const blogPostSchema = z.object({
   slug: z.string(),

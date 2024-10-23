@@ -30,12 +30,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} container mx-auto flex min-h-screen max-w-screen-lg flex-col antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col gap-20 antialiased`}
       >
-        <Analytics />
+        {/* <Analytics /> */}
         <ThemeProvider attribute="class">
-          <NavigationBar />
-          <main className="mt-10 px-4 py-20">{children}</main>
+          <div className="min-h- flex flex-col gap-10 space-y-10">
+            <NavigationBar />
+
+            <main className="container relative mx-auto max-w-3xl flex-grow px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+              {children}
+            </main>
+          </div>
         </ThemeProvider>
       </body>
     </html>

@@ -17,27 +17,30 @@ const UserLoginMenu = async ({ userId }: { userId: string }) => {
     return null;
   }
 
+  // extract the userAvatar:true from the user object. If there isn't one set it to false
+  const { userImages } = user;
+  const isAvatar = userImages.filter((image) => image.userAvatar === true);
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          {user.image ? (
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={user.image} alt={user.name || "User avatar"} />
-              <AvatarFallback>
-                {user.name ? user.name.charAt(0).toUpperCase() : <User />}
-              </AvatarFallback>
-            </Avatar>
-          ) : (
-            <Avatar className="h-8 w-8">
-              <AvatarFallback>
-                {user.name ? user.name.charAt(0).toUpperCase() : <User />}
-              </AvatarFallback>
-            </Avatar>
-          )}
+          <Avatar className="h-8 w-8">
+            <AvatarImage
+              src={
+                isAvatar.length > 0
+                  ? isAvatar[0].imageUrl
+                  : "/assets/images/placeholder-user.jpg"
+              }
+              alt={user.name || "User avatar"}
+            />
+            <AvatarFallback>
+              {user.name ? user.name.charAt(0).toUpperCase() : <User />}
+            </AvatarFallback>
+          </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent avoidCollisions={true}>
         <DropdownMenuItem>
           <Link href="/profile">Profile</Link>
         </DropdownMenuItem>

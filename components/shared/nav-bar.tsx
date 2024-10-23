@@ -8,17 +8,18 @@ import React from "react";
 import { Separator } from "../ui/separator";
 
 const NavigationBar = async () => {
-  const session = await verifySession();
-  const isAuthenticated = session?.isAuthenticated;
-  const userId = session?.userId;
+  // for now
+  // const isAuthenticated = true
+  const userId = "cm2f2spxq000011jt5jagnwio";
   return (
     <nav
-      className={`fixed left-0 right-0 top-0 z-50 mx-auto mb-2 flex max-w-screen-lg flex-col bg-background/80 shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out`}
+      className="fixed left-0 right-0 top-0 z-50 mx-auto mb-32 flex max-w-screen-lg flex-col bg-background/80 shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out"
+      style={{ "--nav-height": "4rem" } as React.CSSProperties}
     >
-      <ul className="flex h-16 items-center justify-around gap-2 md:gap-4">
+      <ul className="flex items-center justify-around gap-2 md:gap-4">
         <NavLinks />
 
-        {isAuthenticated && userId ? (
+        {userId ? (
           <li className="flex items-center gap-4">
             <UserLoginMenu userId={userId} />
           </li>
