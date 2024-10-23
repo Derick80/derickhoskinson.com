@@ -32,7 +32,7 @@ export default function RootLayout ({
       <body
         className={ `${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col gap-20 antialiased` }
       >
-        <Analytics />
+        {/* <Analytics /> */ }
         <ThemeProvider attribute="class">
           <div className="min-h- flex flex-col gap-10 space-y-10">
             <NavigationBar />

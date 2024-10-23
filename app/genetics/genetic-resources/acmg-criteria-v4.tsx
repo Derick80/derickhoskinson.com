@@ -14,6 +14,7 @@ export type EvidenceCategory = typeof EvidenceCategory[keyof typeof EvidenceCate
  */
 export const PopulationEvidence = {
     POP_FRQ: 'Population Freq.',
+
 } as const
 
 export type PopulationEvidence = typeof PopulationEvidence[keyof typeof PopulationEvidence]
