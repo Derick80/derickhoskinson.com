@@ -71,7 +71,7 @@ body {
 
 @layer components {
   .slanted-card-bg {
-    @apply absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 transform -skew-x-6 origin-top-right;
+    @apply absolute inset-0 origin-top-right -skew-x-6 transform bg-gradient-to-br from-blue-500 to-purple-600;
   }
 }
 

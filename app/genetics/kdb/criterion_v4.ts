@@ -1,4 +1,9 @@
-import { EvidenceCategory, ClinicalEvidence, PopulationEvidence, MolecularImpactEvidence } from '../genetic-resources/acmg-criteria-v4';
+import {
+  EvidenceCategory,
+  ClinicalEvidence,
+  PopulationEvidence,
+  MolecularImpactEvidence,
+} from "../genetic-resources/acmg-criteria-v4";
 
 export const criterion_v4 = [
   {
