@@ -37,5 +37,3 @@ yarn-error.log*
 next-env.d.ts
 public/assets/images
 # geentics resources for now
-
-app/genetics/genetic-resources
