@@ -11,12 +11,12 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import EvidenceCard from "./evidences-card";
-import { SharedState } from "./evidence-tabs";
-import SharedEvidence from "./shared-evidence";
+import { SharedEvidenceProps } from './shared-evidence';
+
 
 export type LinesOfEvidenceProps = {
     lineOfEvidence: string;
-    setSharedState: React.Dispatch<React.SetStateAction<SharedState>>;
+    setSharedState: React.Dispatch<React.SetStateAction<SharedEvidenceProps>>;
 };
 
 const LinesOfEvidence = ({ lineOfEvidence, setSharedState }: LinesOfEvidenceProps) => {
@@ -82,7 +82,7 @@ const LinesOfEvidence = ({ lineOfEvidence, setSharedState }: LinesOfEvidenceProp
                                             setSharedState={ setSharedState }
                                             key={ code }
                                             lineOfEvidence={ lineOfEvidence }
-
+                                            evidenceCode={ code }
                                         // Add any necessary props for EvidenceCard
                                         />
                                     )) }
