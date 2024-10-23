@@ -14,13 +14,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { SharedState } from './evidence-tabs';
 
 type EvidenceState = {
   score: number | null;
   evidenceCodes: string[];
 };
-
 
 export type EvidenceCardProps = {
   evidenceCode: string;
@@ -28,11 +26,17 @@ export type EvidenceCardProps = {
   updateEvidence: (evidenceCode: string, score: number) => void;
 };
 
-const EvidenceCard = ({ evidenceCode, lineOfEvidence, updateEvidence }: EvidenceCardProps) => {
-  const [selectedWeight, setSelectedWeight] = React.useState<EvidencePointScale>(EvidencePointScale.INDETERMINATE);
+const EvidenceCard = ({
+  evidenceCode,
+  lineOfEvidence,
+  updateEvidence,
+}: EvidenceCardProps) => {
+  const [selectedWeight, setSelectedWeight] =
+    React.useState<EvidencePointScale>(EvidencePointScale.INDETERMINATE);
   const [isPathogenic, setIsPathogenic] = React.useState(true);
 
-  const calculateScore = (weight: number, pathogenic: boolean) => (pathogenic ? weight : -weight);
+  const calculateScore = (weight: number, pathogenic: boolean) =>
+    pathogenic ? weight : -weight;
 
   const handleWeightChange = (value: string) => {
     const newWeight = parseInt(value) as EvidencePointScale;
@@ -54,7 +58,10 @@ const EvidenceCard = ({ evidenceCode, lineOfEvidence, updateEvidence }: Evidence
         <Label htmlFor="evidence-weight" className="text-sm font-medium">
           Evidence Weight:
         </Label>
-        <Select onValueChange={ handleWeightChange } value={ selectedWeight.toString() }>
+        <Select
+          onValueChange={ handleWeightChange }
+          value={ selectedWeight.toString() }
+        >
           <SelectTrigger id="evidence-weight" className="w-full">
             <SelectValue placeholder="Select weight" />
           </SelectTrigger>
@@ -79,14 +86,18 @@ const EvidenceCard = ({ evidenceCode, lineOfEvidence, updateEvidence }: Evidence
             onCheckedChange={ handleDirectionChange }
           />
           <span className="text-sm">
-            { isPathogenic ? EvidenceDirection.PATHOGENIC : EvidenceDirection.BENIGN }
+            { isPathogenic
+              ? EvidenceDirection.PATHOGENIC
+              : EvidenceDirection.BENIGN }
           </span>
         </div>
       </div>
 
       <div className="text-center">
         <span className="text-sm font-medium">Evidence Value:</span>
-        <span className={ `text-2xl font-bold ml-2 ${isPathogenic ? "text-blue-500" : "text-red-600"}` }>
+        <span
+          className={ `ml-2 text-2xl font-bold ${isPathogenic ? "text-blue-500" : "text-red-600"}` }
+        >
           { score }
         </span>
       </div>

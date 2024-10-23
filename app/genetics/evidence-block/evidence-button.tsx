@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 type EvidenceButtonProps = {
   evidenceLabel: string;
   onClick?: () => void;
+  isSelected?: boolean;
 };
 export const EvidenceButton = ({
   evidenceLabel,
   onClick,
+  isSelected,
 }: EvidenceButtonProps) => {
   return (
     <Button
