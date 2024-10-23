@@ -1,14 +1,9 @@
 'use client'
 import React from 'react';
-import { EvidenceCategory, EvidenceDirection, EvidencePointScale, EvidenceType, EvidenceWeightOptions } from '../genetic-resources/acmg-criteria-v4';
+import { EvidenceDirection, EvidencePointScale, EvidenceWeightOptions } from '../genetic-resources/acmg-criteria-v4';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import category from '@/components/blog/categories/category';
 import { Checkbox } from '@/components/ui/checkbox';
-
-interface EvidenceSelectorProps {
-
-}
 
 const EvidenceSelector = () => {
     const handleEvidenceChange = (weight: number, isPathogenic: boolean) => {
