@@ -22,14 +22,16 @@ export const BlogCard = (props: MDXFrontMatter) => {
     <Card className="overflow-hidden">
       <div className="grid md:grid-cols-[2fr_3fr] h-full">
         <div className="relative w-full h-48 md:h-full">
-          <Image
-            src={ imageUrl }
-            alt={ title }
-            fill
-            sizes="(max-width: 768px) 100vw, 40vw"
-            priority
-            className="object-cover object-center"
-          />
+          {
+            imageUrl && <Image
+              src={ imageUrl }
+              alt={ title }
+              fill
+              sizes="(max-width: 768px) 100vw, 40vw"
+              priority
+              className="object-cover object-center"
+            />
+          }
         </div>
         <CardContent className="p-4 md:p-6 flex flex-col justify-between">
           <div>
