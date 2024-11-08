@@ -1,5 +1,9 @@
 import Image from "next/image";
 import { MDXFrontMatter } from "@/lib/types";
+import { CalendarIcon, ClockIcon, UserIcon } from 'lucide-react';
+import { Card, CardContent } from '../ui/card';
+import { Badge } from '../ui/badge';
+import Link from 'next/link';
 // inspo https://www.leohuynh.dev/
 export const BlogCard = (props: MDXFrontMatter) => {
   const {
@@ -15,27 +19,50 @@ export const BlogCard = (props: MDXFrontMatter) => {
   } = props;
 
   return (
-    <article className="border-2">
-      <div className="flex flex-col gap-5 overflow-hidden md:flex-row">
-        <div
-          id="blog-card-image"
-          className="relative flex h-auto w-full pb-3 pl-0 pr-3 pt-0 transition-all ease-in-out hover:pb-2 hover:pl-1 hover:pr-2 hover:pt-1 md:h-80 md:w-72"
-        >
-          {imageUrl && (
-            <Image
-              src={imageUrl}
-              alt={title}
-              width={500}
-              height={300}
-              className="object-cenkkter aspect-video h-full w-full rounded-xl object-cover shadow-2xl"
-              priority
-            />
-          )}
+    <Card className="overflow-hidden">
+      <div className="grid md:grid-cols-[2fr_3fr] h-full">
+        <div className="relative w-full h-48 md:h-full">
+          <Image
+            src={ imageUrl }
+            alt={ title }
+            fill
+            sizes="(max-width: 768px) 100vw, 40vw"
+            priority
+            className="object-cover object-center"
+          />
         </div>
-        <div className="spac4 flex flex-col justify-between">
-          <div className="text-2xl font-bold">{title}</div>
-        </div>
+        <CardContent className="p-4 md:p-6 flex flex-col justify-between">
+          <div>
+            <div className="flex flex-wrap gap-2 mb-2">
+              { categories.map((category) => (
+                <Badge key={ category } variant="secondary">
+                  { category }
+                </Badge>
+              )) }
+            </div>
+            <h2 className="text-2xl font-bold mb-2">
+              <Link href={ `/blog/${slug}` } className="hover:underline">
+                { title }
+              </Link>
+            </h2>
+            <p className="text-muted-foreground mb-4">{ description }</p>
+          </div>
+          <div className="flex flex-wrap items-center text-sm text-muted-foreground gap-4">
+            <div className="flex items-center">
+              <UserIcon className="w-4 h-4 mr-1" />
+              { author }
+            </div>
+            <div className="flex items-center">
+              <CalendarIcon className="w-4 h-4 mr-1" />
+              { date }
+            </div>
+            <div className="flex items-center">
+              <ClockIcon className="w-4 h-4 mr-1" />
+              { readingTime }
+            </div>
+          </div>
+        </CardContent>
       </div>
-    </article>
+    </Card>
   );
 };

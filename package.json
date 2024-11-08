@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "seed_posts": "tsx scripts/sync-db.ts",
     "build": "next build",
     "format": "prettier \"app/**/*.ts\" \"app/**/*.tsx\" --write . ",
     "start": "next start",

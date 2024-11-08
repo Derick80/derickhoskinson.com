@@ -22,26 +22,12 @@ const syncwithDb = async () => {
         update: {
           title: post.title,
           slug: post.slug,
-          content: post.content,
-          author: post.author,
-          description: post.description,
-          categories: post.categories,
-          published: post.published,
-          wordCount: post.wordCount,
-          readingTime: post.readingTime,
-          date: post.date,
+
         },
         create: {
           title: post.title,
           slug: post.slug,
-          content: post.content,
-          author: post.author,
-          description: post.description,
-          categories: post.categories,
-          published: post.published,
-          wordCount: post.wordCount,
-          readingTime: post.readingTime,
-          date: post.date,
+
         },
       });
     }),
