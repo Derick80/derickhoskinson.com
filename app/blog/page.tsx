@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 import { getAllPosts } from "../actions/mdx-server";
-import { verifySession } from "../actions/auth";
 import BlogList from "@/components/blog/blog-list";
 import CategorySelector from "../../components/blog/categories/categories/category-container";
 

@@ -8,7 +8,7 @@ const LandingAbout = () => {
   return (
     <>
       <div id="Introduction" className="grid gap-8 md:grid-cols-2">
-        <div className="space-y-6">
+        <div className="flex flex-col justify-between">
           <Biography />
           <Socials />
         </div>
