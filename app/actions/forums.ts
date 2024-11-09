@@ -8,18 +8,19 @@ export const getForumData = async () => {
     include: {
       tags: true,
     },
-  })
+  });
 
   const tags = await prisma.tag.findMany({
     include: {
+      forumPosts: true,
       _count: {
         select: { forumPosts: true },
       },
     },
-  })
+  });
 
-  return { forumposts, tags }
-}
+  return { forumposts, tags };
+};
 
 export const getAllForums = async () => {
   // try {

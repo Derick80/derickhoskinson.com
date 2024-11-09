@@ -9,7 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Socials from "../../components/about/socials";
-import HobbyComponent from "../../components/about/hobbies";
+import HobbyComponent from "../../components/about/about-image";
 import Biography from "../../components/about/bio";
 import ProfessionalSummary from "../../components/about/professiona-summary";
 import ContactForm from "../../components/about/contact-form";
