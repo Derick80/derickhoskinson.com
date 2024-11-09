@@ -10,7 +10,8 @@ import { Separator } from "../ui/separator";
 const NavigationBar = async () => {
   // for now
   // const isAuthenticated = true
-  const userId = "cm2f2spxq000011jt5jagnwio";
+  const session = await verifySession();
+  const userId = session ? session.userId : null;
   return (
     <nav
       className="fixed left-0 right-0 top-0 z-50 mx-auto mb-32 flex max-w-screen-lg flex-col bg-background/80 shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out"

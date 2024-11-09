@@ -36,7 +36,13 @@ const NowReading = () => {
           <CardContent>
             and I will put details of the novel here. and after reading maybe I
             will put a review here. and a star rating.
-            <Link href='https://bookshop.org/a/82157/9780735224049' target='_blank' rel='noreferrer'>Buy the book</Link>
+            <Link
+              href="https://bookshop.org/a/82157/9780735224049"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Buy the book
+            </Link>
           </CardContent>
         </Card>
       </div>

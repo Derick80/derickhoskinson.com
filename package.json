@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "seed_posts": "tsx scripts/sync-db.ts",
@@ -13,7 +16,7 @@
     "postinstall": "prisma generate && npx prisma db push"
   },
   "dependencies": {
-    "@prisma/client": "^5.21.0",
+    "@prisma/client": "^5.22.0",
     "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-checkbox": "^1.1.1",
@@ -40,7 +43,6 @@
     "next-cloudinary": "^6.15.0",
     "next-mdx-remote": "^5.0.0",
     "next-themes": "^0.3.0",
-    "prisma": "^5.21.0",
     "react": "19.0.0-rc-69d4b800-20241021",
     "react-dom": "19.0.0-rc-69d4b800-20241021",
     "react-dropzone-esm": "^15.0.1",
@@ -63,6 +65,7 @@
     "postcss": "^8",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",
+    "prisma": "^5.22.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   },

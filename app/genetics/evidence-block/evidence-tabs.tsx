@@ -46,28 +46,28 @@ const EvidenceTabs: React.FC = () => {
 
   return (
     <div className="mx-auto w-full max-w-4xl space-y-6">
-      <SharedEvidence evidenceState={ evidenceState } />
+      <SharedEvidence evidenceState={evidenceState} />
       <Tabs defaultValue="Population Evidence" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          { evidenceData.map((category) => (
+          {evidenceData.map((category) => (
             <TabsTrigger
-              key={ category.evidenceCategory }
-              value={ category.evidenceCategory }
+              key={category.evidenceCategory}
+              value={category.evidenceCategory}
             >
-              { category.evidenceCategory }
+              {category.evidenceCategory}
             </TabsTrigger>
-          )) }
+          ))}
         </TabsList>
-        { evidenceData.map((category) => (
+        {evidenceData.map((category) => (
           <TabsContent
-            key={ category.evidenceCategory }
-            value={ category.evidenceCategory }
+            key={category.evidenceCategory}
+            value={category.evidenceCategory}
           >
             <Card>
               <CardHeader>
-                <CardTitle>{ category.evidenceCategory }</CardTitle>
+                <CardTitle>{category.evidenceCategory}</CardTitle>
                 <CardDescription>
-                  { category.evidenceCategoryDescription }
+                  {category.evidenceCategoryDescription}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -76,43 +76,43 @@ const EvidenceTabs: React.FC = () => {
                     <AccordionTrigger>Evidence Codes</AccordionTrigger>
                     <AccordionContent>
                       <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                        { category.evidenceCodes.map((code) => (
+                        {category.evidenceCodes.map((code) => (
                           <EvidenceButton
-                            key={ code.code }
-                            evidenceLabel={ code.label }
-                            onClick={ () =>
+                            key={code.code}
+                            evidenceLabel={code.label}
+                            onClick={() =>
                               handleEvidenceSelection(
                                 category.evidenceCategory,
                                 code.code,
                               )
                             }
                           />
-                        )) }
+                        ))}
                       </div>
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
               </CardContent>
               <CardFooter className="flex flex-wrap gap-4">
-                { Object.entries(evidenceState)
+                {Object.entries(evidenceState)
                   .filter(
                     ([_, data]) =>
                       data.lineOfEvidence === category.evidenceCategory,
                   )
                   .map(([code, _]) => (
                     <EvidenceCard
-                      key={ code }
-                      evidenceCode={ code }
-                      lineOfEvidence={ category.evidenceCategory }
-                      updateEvidence={ (code, score) =>
+                      key={code}
+                      evidenceCode={code}
+                      lineOfEvidence={category.evidenceCategory}
+                      updateEvidence={(code, score) =>
                         updateEvidence(code, score, category.evidenceCategory)
                       }
                     />
-                  )) }
+                  ))}
               </CardFooter>
             </Card>
           </TabsContent>
-        )) }
+        ))}
       </Tabs>
     </div>
   );

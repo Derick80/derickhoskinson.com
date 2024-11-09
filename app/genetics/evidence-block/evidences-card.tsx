@@ -53,24 +53,24 @@ const EvidenceCard = ({
 
   return (
     <div className="mx-auto w-full max-w-md space-y-4 rounded-lg border bg-background p-4 shadow-md">
-      <h3 className="text-lg font-semibold">{ evidenceCode }</h3>
+      <h3 className="text-lg font-semibold">{evidenceCode}</h3>
       <div className="flex items-center space-x-2">
         <Label htmlFor="evidence-weight" className="text-sm font-medium">
           Evidence Weight:
         </Label>
         <Select
-          onValueChange={ handleWeightChange }
-          value={ selectedWeight.toString() }
+          onValueChange={handleWeightChange}
+          value={selectedWeight.toString()}
         >
           <SelectTrigger id="evidence-weight" className="w-full">
             <SelectValue placeholder="Select weight" />
           </SelectTrigger>
           <SelectContent>
-            { EvidenceWeightOptions.map((option) => (
-              <SelectItem key={ option.value } value={ option.value.toString() }>
-                { option.label }
+            {EvidenceWeightOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value.toString()}>
+                {option.label}
               </SelectItem>
-            )) }
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -82,13 +82,13 @@ const EvidenceCard = ({
         <div className="flex items-center space-x-2">
           <Checkbox
             id="evidence-direction"
-            checked={ isPathogenic }
-            onCheckedChange={ handleDirectionChange }
+            checked={isPathogenic}
+            onCheckedChange={handleDirectionChange}
           />
           <span className="text-sm">
-            { isPathogenic
+            {isPathogenic
               ? EvidenceDirection.PATHOGENIC
-              : EvidenceDirection.BENIGN }
+              : EvidenceDirection.BENIGN}
           </span>
         </div>
       </div>
@@ -96,9 +96,9 @@ const EvidenceCard = ({
       <div className="text-center">
         <span className="text-sm font-medium">Evidence Value:</span>
         <span
-          className={ `ml-2 text-2xl font-bold ${isPathogenic ? "text-blue-500" : "text-red-600"}` }
+          className={`ml-2 text-2xl font-bold ${isPathogenic ? "text-blue-500" : "text-red-600"}`}
         >
-          { score }
+          {score}
         </span>
       </div>
     </div>

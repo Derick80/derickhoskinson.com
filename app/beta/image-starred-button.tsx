@@ -13,7 +13,7 @@ const StarImage = ({ isUserAvatar, imageId }: StartImageProps) => {
       className={cn(
         "absolute right-0 top-0 rounded-full p-1 text-white outline outline-black/10 focus:outline-none focus:ring-2",
         isUserAvatar
-          ? "bg-yellow-500 hover:bg-red-600 focus:ring-red-300"
+          ? "bg-yellow-300 hover:bg-yellow-600 focus:ring-yellow-300"
           : "bg-gray-400/20 hover:bg-yellow-600 focus:ring-yellow-300",
       )}
       name="_intent"
@@ -23,7 +23,7 @@ const StarImage = ({ isUserAvatar, imageId }: StartImageProps) => {
       }}
     >
       {isUserAvatar ? (
-        <Star className="fill-yellow-500" />
+        <Star className="fill-yellow-300" />
       ) : (
         <Star className="h-4 w-4" />
       )}

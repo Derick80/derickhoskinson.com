@@ -22,12 +22,10 @@ const syncwithDb = async () => {
         update: {
           title: post.title,
           slug: post.slug,
-
         },
         create: {
           title: post.title,
           slug: post.slug,
-
         },
       });
     }),

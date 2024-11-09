@@ -43,6 +43,10 @@ const NavData = [
     title: "Genetics",
     url: "/genetics",
   },
+  {
+    title: "Community",
+    url: "/community",
+  },
 ];
 
 export default NavLinks;
