@@ -15,14 +15,14 @@ const NavigationBar = async () => {
   return (
     <nav
       className="fixed left-0 right-0 top-0 z-50 mx-auto mb-32 flex max-w-screen-lg flex-col bg-background/80 shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out"
-      style={{ "--nav-height": "4rem" } as React.CSSProperties}
+
     >
       <ul className="flex items-center justify-around gap-2 md:gap-4">
         <NavLinks />
 
-        {userId ? (
+        { userId ? (
           <li className="flex items-center gap-4">
-            <UserLoginMenu userId={userId} />
+            <UserLoginMenu userId={ userId } />
           </li>
         ) : (
           <>
@@ -33,10 +33,8 @@ const NavigationBar = async () => {
               <ModeToggle />
             </li>
           </>
-        )}
+        ) }
       </ul>
-      <Separator className="mb-1" />
-      <Breadcrumbs />
     </nav>
   );
 };

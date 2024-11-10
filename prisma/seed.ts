@@ -51,6 +51,7 @@ const seed = async () => {
             update: {},
             create: {
               title: tagTitle,
+              description: `Description for ${tagTitle}`,
               createdAt: new Date(),
               updatedAt: new Date(),
             },
@@ -59,10 +60,11 @@ const seed = async () => {
       );
 
       // Create forum posts and associate them with a forum and a user
-      const forumPost = await prisma.forumPost.create({
+      const entry = await prisma.entry.create({
         data: {
           title: post.title || "Untitled Post",
           content: post.content,
+          description: post.description,
           forumId: forum.id,
           authorId: users[forumIndex % users.length].id,
           createdAt: new Date(),
@@ -72,7 +74,7 @@ const seed = async () => {
           },
         },
       });
-      if (!forumPost) {
+      if (!entry) {
         console.error(`Failed to create forum post: ${post.title}`);
         continue;
       }
@@ -81,7 +83,7 @@ const seed = async () => {
       // await prisma.comment.create({
       //     data: {
       //         message: "This is a seeded comment.",
-      //         postId: forumPost.id,
+      //         postId: entry.id,
       //         userId: users[0].id,
       //         createdAt: new Date(),
       //         updatedAt: new Date(),

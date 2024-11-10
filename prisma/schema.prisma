@@ -20,7 +20,7 @@ model User {
   comments      Comment[]
   likes         Like[]
   Forum         Forum[]
-  ForumPost     ForumPost[]
+  Entry         Entry[]
 }
 
 model UserImage {
@@ -68,30 +68,30 @@ model Post {
 }
 
 model Comment {
-  id          String     @id @default(cuid())
+  id          String    @id @default(cuid())
   author      String?
   message     String
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  parent      Comment?   @relation("comment_children", fields: [parentId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  parent      Comment?  @relation("comment_children", fields: [parentId], references: [id], onDelete: Cascade)
   parentId    String?
-  children    Comment[]  @relation("comment_children")
-  Post        Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  children    Comment[] @relation("comment_children")
+  Post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId      String
-  user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId      String?
-  ForumPost   ForumPost? @relation(fields: [forumPostId], references: [id])
+  Entry       Entry?    @relation(fields: [forumPostId], references: [id])
   forumPostId String?
 }
 
 model Like {
-  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
-  post        Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId      String
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  ForumPost   ForumPost? @relation(fields: [forumPostId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Entry       Entry?   @relation(fields: [forumPostId], references: [id])
   forumPostId String?
 
   @@id([postId, userId])
@@ -101,36 +101,37 @@ model Like {
 }
 
 model Forum {
-  id          String      @id @default(uuid())
-  title       String      @unique
+  id          String   @id @default(uuid())
+  title       String   @unique
   description String
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   creatorId   String
-  creator     User        @relation(fields: [creatorId], references: [id])
-  posts       ForumPost[]
+  creator     User     @relation(fields: [creatorId], references: [id])
+  posts       Entry[]
 }
 
-model ForumPost {
-  id        String    @id @default(cuid())
-  title     String
-  content   String
-  forumId   String
-  forum     Forum     @relation(fields: [forumId], references: [id])
-  authorId  String
-  author    User      @relation(fields: [authorId], references: [id])
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  comments  Comment[]
-  likes     Like[]
-  tags      Tag[]
+model Entry {
+  id          String    @id @default(cuid())
+  title       String
+  content     String
+  description String
+  forumId     String
+  forum       Forum     @relation(fields: [forumId], references: [id])
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  comments    Comment[]
+  likes       Like[]
+  tags        Tag[]
 }
 
 model Tag {
-  id          String      @id @default(cuid())
-  title       String      @unique
-  description String?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  forumPosts  ForumPost[]
+  id             String   @id @default(cuid())
+  title          String   @unique
+  description    String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  relatedEntries Entry[]
 }

@@ -3,23 +3,58 @@
 import prisma from "@/lib/prisma";
 import { cache } from "react";
 
+export const getForumEntries = async () => {
+  try {
+    return await prisma.entry.findMany({
+      include: {
+        tags: {
+          include: {
+            relatedEntries: true,
+          }
+        },
+      },
+    });
+  }
+  catch (error) {
+    console.error(error);
+  }
+
+}
 export const getForumData = async () => {
-  const forumposts = await prisma.forumPost.findMany({
-    include: {
-      tags: true,
+  const entries = await prisma.entry.findMany({
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      content: true,
+      tags: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          relatedEntries: {
+            select: {
+              id: true,
+              title: true,
+              description: true,
+              content: true,
+            }
+          },
+        },
+      },
     },
   });
 
   const tags = await prisma.tag.findMany({
     include: {
-      forumPosts: true,
+      relatedEntries: true,
       _count: {
-        select: { forumPosts: true },
+        select: { relatedEntries: true },
       },
     },
   });
 
-  return { forumposts, tags };
+  return { entries, tags };
 };
 
 export const getAllForums = async () => {
@@ -37,7 +72,7 @@ export const getAllForums = async () => {
 };
 
 export const getForumPosts = cache(async () => {
-  return await prisma.forumPost.findMany({
+  return await prisma.entry.findMany({
     include: {
       tags: true,
       author: {
@@ -55,7 +90,7 @@ export const getUniqueTags = async () => {
   return await prisma.tag.findMany({
     distinct: ["title"],
     include: {
-      forumPosts: true,
+      relatedEntries: true,
     },
   });
 };
