@@ -10,16 +10,14 @@ export const getForumEntries = async () => {
         tags: {
           include: {
             relatedEntries: true,
-          }
+          },
         },
       },
     });
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error);
   }
-
-}
+};
 export const getForumData = async () => {
   const entries = await prisma.entry.findMany({
     select: {
@@ -38,7 +36,7 @@ export const getForumData = async () => {
               title: true,
               description: true,
               content: true,
-            }
+            },
           },
         },
       },

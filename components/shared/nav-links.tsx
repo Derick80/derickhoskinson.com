@@ -12,7 +12,7 @@ const NavLinks = () => {
           <Link
             prefetch
             href={item.url}
-            className={`${pathname === item.url ? "underline" : ""}`}
+            className={`text-lg md:text-xl ${pathname === item.url ? "underline" : ""}`}
           >
             {item.title}
           </Link>
