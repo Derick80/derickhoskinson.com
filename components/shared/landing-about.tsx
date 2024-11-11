@@ -11,9 +11,9 @@ const LandingAbout = () => {
       <div id="Introduction" className="grid gap-8 md:grid-cols-2">
         <div className="flex flex-col justify-between">
           <div>
-            <h1>{ aboutMeDetails.fullname }</h1>
-            <p className="italic">{ aboutMeDetails.title }</p>
-            <p className="mt-4">{ aboutMeDetails.description }</p>
+            <h1>{aboutMeDetails.fullname}</h1>
+            <p className="italic">{aboutMeDetails.title}</p>
+            <p className="mt-4">{aboutMeDetails.description}</p>
           </div>
 
           <p>
@@ -23,11 +23,11 @@ const LandingAbout = () => {
           <ul className="list-inside">
             <li className="mt-2">
               <h3>Origin</h3>
-              <p>{ aboutMeDetails.origin }</p>
+              <p>{aboutMeDetails.origin}</p>
             </li>
             <li className="mt-2">
               <h3>Hobbies</h3>
-              <p>{ aboutMeDetails.hobbies }</p>
+              <p>{aboutMeDetails.hobbies}</p>
             </li>
           </ul>
           <Socials />

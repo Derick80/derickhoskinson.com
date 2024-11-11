@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home(props: {
+export default async function Home (props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const searchParams = await props.searchParams;
@@ -61,12 +61,11 @@ export default async function Home(props: {
           variant classification, and other topics related to my work.
         </p>
       </div>
-      {/* <CategoryBadges posts={ allPosts } /> */}
-      <CategorySelector posts={allPosts} />
-      <Suspense fallback={<p>Loading results...</p>}>
-        <div className="prose prose-neutral mt-4 flex min-w-full flex-col justify-center gap-4 dark:prose-invert prose-a:no-underline">
-          <BlogList categories={categories} />
-        </div>
+      {/* <CategoryBadges posts={ allPosts } /> */ }
+      <CategorySelector posts={ allPosts } />
+      <Suspense fallback={ <p>Loading results...</p> }>
+
+        <BlogList categories={ categories } />
       </Suspense>
       <div id="contact" className="mt-12 space-y-6">
         <h2 className="text-2xl font-bold tracking-tighter">Get in Touch</h2>
@@ -81,7 +80,7 @@ export default async function Home(props: {
         </Card>
       </div>
       <PageOverLayBar
-        sectionIds={["home", "Introduction", "category-filter", "contact"]}
+        sectionIds={ ["home", "Introduction", "category-filter", "contact"] }
       />
     </div>
   );

@@ -15,9 +15,9 @@ const NavigationBar = async () => {
       <ul className="flex items-center justify-around gap-2 md:gap-4">
         <NavLinks />
 
-        { userId ? (
+        {userId ? (
           <li className="flex items-center gap-4">
-            <UserLoginMenu userId={ userId } />
+            <UserLoginMenu userId={userId} />
           </li>
         ) : (
           <>
@@ -28,12 +28,10 @@ const NavigationBar = async () => {
               <ModeToggle />
             </li>
           </>
-        ) }
+        )}
       </ul>
     </nav>
   );
 };
 
 export default NavigationBar;
-
-
