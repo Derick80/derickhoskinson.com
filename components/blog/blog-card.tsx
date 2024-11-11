@@ -22,45 +22,45 @@ export const BlogCard = (props: MDXFrontMatter) => {
     <Card className="overflow-hidden">
       <div className="grid h-full md:grid-cols-[2fr_3fr]">
         <div className="relative h-48 w-full md:h-full">
-          {imageUrl && (
+          { imageUrl && (
             <Image
-              src={imageUrl}
-              alt={title}
+              src={ imageUrl }
+              alt={ title }
               fill
               sizes="(max-width: 768px) 100vw, 40vw"
               priority
               className="object-cover object-center"
             />
-          )}
+          ) }
         </div>
         <CardContent className="flex flex-col justify-between p-4 md:p-6">
           <div>
             <div className="mb-2 flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <Badge key={category} variant="secondary">
-                  {category}
+              { categories.map((category) => (
+                <Badge key={ category } variant="secondary">
+                  { category }
                 </Badge>
-              ))}
+              )) }
             </div>
             <h2 className="mb-2 text-2xl font-bold">
-              <Link href={`/blog/${slug}`} className="hover:underline">
-                {title}
+              <Link href={ `/blog/${slug}` } className="hover:underline">
+                { title }
               </Link>
             </h2>
-            <p className="mb-4 text-muted-foreground">{description}</p>
+            <p className="mb-4 text-muted-foreground">{ description }</p>
           </div>
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center">
               <UserIcon className="mr-1 h-4 w-4" />
-              {author}
+              { author }
             </div>
             <div className="flex items-center">
               <CalendarIcon className="mr-1 h-4 w-4" />
-              {date}
+              { date }
             </div>
             <div className="flex items-center">
               <ClockIcon className="mr-1 h-4 w-4" />
-              {readingTime}
+              { readingTime }
             </div>
           </div>
         </CardContent>

@@ -22,7 +22,6 @@ const CategoryFilter = ({
   onFilterChange,
 }: CategoryFilterProps) => {
   const [selectedTags, setSelectedTags] = React.useState<string[]>([]);
-  console.log(tags, "tags");
 
   const handleTagClick = (tag: string) => {
     const newSelectedTags = selectedTags.includes(tag)
@@ -45,8 +44,8 @@ const CategoryFilter = ({
     selectedTags.length === 0
       ? entries
       : entries.filter((post) =>
-          selectedTags.some((tag) => post.tags.some((t) => t.title === tag)),
-        );
+        selectedTags.some((tag) => post.tags.some((t) => t.title === tag)),
+      );
 
   const tagCounts = filteredEntries.reduce(
     (acc, post) => {
@@ -62,23 +61,23 @@ const CategoryFilter = ({
   return (
     <div>
       <div className="flex flex-wrap gap-2">
-        {tags.map((tag) => (
+        { tags.map((tag) => (
           <Badge
-            key={tag.title}
-            variant={selectedTags.includes(tag.title) ? "default" : "secondary"}
+            key={ tag.title }
+            variant={ selectedTags.includes(tag.title) ? "default" : "secondary" }
             className="relative cursor-pointer px-3 py-1"
-            onClick={() => handleTagClick(tag.title)}
+            onClick={ () => handleTagClick(tag.title) }
           >
-            {tag.title}
-            {showCounts && (
+            { tag.title }
+            { showCounts && (
               <span
-                className={`} absolute bottom-0 right-0 -mb-1 -mr-1 flex h-4 w-4 items-center justify-center rounded-full`}
+                className={ `} absolute bottom-0 right-0 -mb-1 -mr-1 flex h-4 w-4 items-center justify-center rounded-full` }
               >
-                {tag.relatedEntries.length}
+                { tag.relatedEntries.length }
               </span>
-            )}
+            ) }
           </Badge>
-        ))}
+        )) }
       </div>
     </div>
   );
