@@ -85,13 +85,11 @@ model Comment {
 }
 
 model Like {
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
-  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  post        Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  Entry       Entry?   @relation(fields: [forumPostId], references: [id])
+  Entry       Entry?  @relation(fields: [forumPostId], references: [id])
   forumPostId String?
 
   @@id([postId, userId])
