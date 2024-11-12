@@ -60,7 +60,7 @@ const LandingAbout = ({ preview = true }: { preview?: boolean }) => {
         <div className="hidden md:flex md:flex-col items-center mt-20 ">
           <div className="relative aspect-square overflow-hidden rounded-lg shadow-lg ">
             <Image
-              src="/assets/images/voted24.jpg"
+              src="https://res.cloudinary.com/dch-photo/image/upload/c_crop,ar_3:4/v1731380562/blog_test_photos_23/voted24_lsaf4p.jpg"
               alt={ `Photo of ${aboutMeDetails.fullname}` }
               priority
               style={ {
