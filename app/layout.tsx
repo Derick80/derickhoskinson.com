@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import NavigationBar from "@/components/shared/nav-bar";
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,17 +31,15 @@ export default function RootLayout ({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={ `${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col gap-20 antialiased` }
+        className={ `${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col gap-40 antialiased` }
       >
-        <Analytics />
+        {/* <Analytics /> */ }
         <ThemeProvider attribute="class">
-          <div className="min-h- flex flex-col gap-10 space-y-10">
+          <Toaster />
+          <main className="container relative mx-auto flex-grow px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16 space-y-6 md:space-y-10">
             <NavigationBar />
-
-            <main className="container relative mx-auto max-w-3xl flex-grow px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-              { children }
-            </main>
-          </div>
+            { children }
+          </main>
         </ThemeProvider>
       </body>
     </html>

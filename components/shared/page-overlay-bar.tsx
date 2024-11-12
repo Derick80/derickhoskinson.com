@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronUp, HomeIcon } from "lucide-react";
 import Link from "next/link";
+import React from "react";
+import { Separator } from '../ui/separator';
 
 const PageOverLayBar = ({ sectionIds }: { sectionIds: string[] }) => {
-  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [showScrollTop, setShowScrollTop] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 300);
     };
@@ -31,40 +32,41 @@ const PageOverLayBar = ({ sectionIds }: { sectionIds: string[] }) => {
   return (
     <div
       id="resume-nav-bar"
-      className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 transform"
+      className="fixed bottom-4 left-0 right-0 z-50 flex items-center justify-between md:justify-around rounded-xl bg-muted/90
+       p-2 shadow-lg backdrop-blur-sm print:hidden px-3 mx-auto max-w-[80%] sm:max-w-[60%] md:max-w-[40%]"
     >
-      <div className="flex flex-col items-center rounded-full bg-background/80 p-2 shadow-lg backdrop-blur-sm print:hidden">
-        <div className="flex gap-1 md:gap-2">
-          {sectionIds.map((sectionId) => (
-            <Button
-              key={sectionId}
-              variant="ghost"
-              size="sm"
-              onClick={() => scrollToSection(sectionId)}
-              className="text-xs"
-            >
-              {sectionId}
-            </Button>
-          ))}
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="text-xs" asChild>
-            <Link prefetch href="/">
-              <HomeIcon className="h-4 w-4" />
-            </Link>
-          </Button>
+      { sectionIds.map((sectionId) => (
+        <Button
+          key={ sectionId }
+          variant="ghost"
+          size="sm"
+          onClick={ () => scrollToSection(sectionId) }
+          className="text-xs"
+        >
+          { sectionId }
+        </Button>
+      )) }
+      <Separator
+        orientation="vertical"
+        className="h-4 w-0.5 bg-muted-foreground"
+      />
+      <Button variant="ghost" size="sm" className="text-xs" asChild>
+        <Link
+          href="/">
+          <HomeIcon className="h-4 w-4" aria-label="Home" />
+        </Link>
+      </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={scrollToTop}
-            className="ml-2"
-            disabled={!showScrollTop}
-          >
-            <ChevronUp className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label="Scroll to top"
+        onClick={ scrollToTop }
+        className="ml-2"
+        disabled={ !showScrollTop }
+      >
+        <ChevronUp className="h-4 w-4" />
+      </Button>
     </div>
   );
 };

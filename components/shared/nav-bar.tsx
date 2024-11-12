@@ -2,26 +2,31 @@ import Link from "next/link";
 import { ModeToggle } from "../theme/theme-toggle";
 import { verifySession } from "@/app/actions/auth";
 import UserLoginMenu from "./nav-user-bar";
-import NavLinks from "./nav-links";
-import Breadcrumbs from "@/components/shared/breadcrumbs";
+import { NavLinks, MobileNavigationBar } from "./nav-links";
 import React from "react";
-import { Separator } from "../ui/separator";
 
 const NavigationBar = async () => {
   // for now
   // const isAuthenticated = true
-  const userId = "cm2f2spxq000011jt5jagnwio";
+  const session = await verifySession();
+  const userId = session ? session.userId : null;
   return (
-    <nav
-      className="fixed left-0 right-0 top-0 z-50 mx-auto mb-32 flex max-w-screen-lg flex-col bg-background/80 shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out"
-      style={{ "--nav-height": "4rem" } as React.CSSProperties}
-    >
-      <ul className="flex items-center justify-around gap-2 md:gap-4">
-        <NavLinks />
+    <nav className="fixed left-0 right-0 top-0 z-50 mx-auto flex max-w-screen-lg flex-col  bg-background/80 shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out mb-4">
+      <ul className="flex items-center justify-between gap-2 md:gap-4 p-2">
+        <li className="hidden md:block">
+          <div className="flex items-baseline space-x-4">
+            <NavLinks />
+          </div>
+        </li>
+        <li className="md:hidden">
+          {/* Mobile Navigation */ }
 
-        {userId ? (
+          <MobileNavigationBar />
+        </li>
+        <li className="md:hidden">{/* maybe put icon or name here */ }</li>
+        { userId ? (
           <li className="flex items-center gap-4">
-            <UserLoginMenu userId={userId} />
+            <UserLoginMenu userId={ userId } />
           </li>
         ) : (
           <>
@@ -32,12 +37,37 @@ const NavigationBar = async () => {
               <ModeToggle />
             </li>
           </>
-        )}
+        ) }
       </ul>
-      <Separator className="mb-1" />
-      <Breadcrumbs />
     </nav>
   );
 };
 
 export default NavigationBar;
+
+const navData = [
+  {
+    title: "Home",
+    url: "/",
+  },
+  {
+    title: "Blog",
+    url: "/blog",
+  },
+  {
+    title: "Projects",
+    url: "/projects",
+  },
+  {
+    title: "CV",
+    url: "/cv",
+  },
+  {
+    title: "Genetics",
+    url: "/genetics",
+  },
+  {
+    title: "Community",
+    url: "/community",
+  },
+];

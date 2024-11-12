@@ -24,7 +24,6 @@ export const UserImageDisplay = ({
       userAvatar: false,
     }),
   ].slice(0, 4);
-  console.log(filledUsers, "filledUsers");
   const userImageCount = userImages.length;
   return (
     <div className="mx-auto w-full max-w-sm">

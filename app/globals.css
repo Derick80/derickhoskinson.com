@@ -69,6 +69,12 @@ body {
   }
 }
 
+@layer components {
+  .slanted-card-bg {
+    @apply absolute inset-0 origin-top-right -skew-x-6 transform bg-gradient-to-br from-blue-500 to-purple-600;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -84,6 +90,12 @@ body {
   }
   h3 {
     @apply text-2xl font-bold;
+  }
+  h4 {
+    @apply text-xl font-bold;
+  }
+  p {
+    @apply m-0;
   }
 }
 

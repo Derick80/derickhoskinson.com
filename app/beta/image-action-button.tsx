@@ -1,7 +1,5 @@
 "use client";
-
 import { cn } from "@/lib/utils";
-import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Plus, Trash2 } from "lucide-react";
 import React from "react";
@@ -28,7 +26,6 @@ export interface ImageActionButtonProps
 }
 
 const ImageActionButton = ({ variant }: { variant: string | undefined }) => {
-  console.log(variant);
   return (
     <button
       className={cn(

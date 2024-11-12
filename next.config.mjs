@@ -7,6 +7,11 @@ const nextConfig = {
         port: "",
       },
       {
+        protocol: "http",
+        hostname: "books.google.com",
+        port: "",
+      },
+      {
         protocol: "https",
         hostname: "remix-bucket.s3.us-east-2.amazonaws.com",
       },

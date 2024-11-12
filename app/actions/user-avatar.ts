@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { verifySession } from "./auth";
 import { redirect } from "next/navigation";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const getUserImages = async (userId: string) => {
   return await prisma.userImage.findMany({
@@ -22,7 +23,7 @@ export const getUserImages = async (userId: string) => {
 
 export const starUserImage = async (imageId: string) => {
   const session = await verifySession();
-  if (!session) redirect("login");
+  if (!session) redirect("/login");
   const userId = session.userId;
   // Set all other images to false
   await prisma.userImage.updateMany({
@@ -36,7 +37,7 @@ export const starUserImage = async (imageId: string) => {
   });
 
   // Set the selected image to true
-  await prisma.userImage.update({
+  const updated = await prisma.userImage.update({
     where: {
       id: imageId, // Assuming 'id' is the unique identifier for userImage
     },
@@ -44,4 +45,8 @@ export const starUserImage = async (imageId: string) => {
       userAvatar: true,
     },
   });
+  if (!updated) {
+    throw new Error("Failed to update user image");
+  }
+  return revalidateTag("userImages");
 };
