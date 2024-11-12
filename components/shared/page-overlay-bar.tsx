@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronUp, HomeIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { Separator } from '../ui/separator';
+import { Separator } from "../ui/separator";
 
 const PageOverLayBar = ({ sectionIds }: { sectionIds: string[] }) => {
   const [showScrollTop, setShowScrollTop] = React.useState(false);
@@ -32,27 +32,25 @@ const PageOverLayBar = ({ sectionIds }: { sectionIds: string[] }) => {
   return (
     <div
       id="resume-nav-bar"
-      className="fixed bottom-4 left-0 right-0 z-50 flex items-center justify-between md:justify-around rounded-xl bg-muted/90
-       p-2 shadow-lg backdrop-blur-sm print:hidden px-3 mx-auto max-w-[80%] sm:max-w-[60%] md:max-w-[40%]"
+      className="fixed bottom-4 left-0 right-0 z-50 mx-auto flex max-w-[80%] items-center justify-between rounded-xl bg-muted/90 p-2 px-3 shadow-lg backdrop-blur-sm sm:max-w-[60%] md:max-w-[40%] md:justify-around print:hidden"
     >
-      { sectionIds.map((sectionId) => (
+      {sectionIds.map((sectionId) => (
         <Button
-          key={ sectionId }
+          key={sectionId}
           variant="ghost"
           size="sm"
-          onClick={ () => scrollToSection(sectionId) }
+          onClick={() => scrollToSection(sectionId)}
           className="text-xs"
         >
-          { sectionId }
+          {sectionId}
         </Button>
-      )) }
+      ))}
       <Separator
         orientation="vertical"
         className="h-4 w-0.5 bg-muted-foreground"
       />
       <Button variant="ghost" size="sm" className="text-xs" asChild>
-        <Link
-          href="/">
+        <Link href="/">
           <HomeIcon className="h-4 w-4" aria-label="Home" />
         </Link>
       </Button>
@@ -61,9 +59,9 @@ const PageOverLayBar = ({ sectionIds }: { sectionIds: string[] }) => {
         variant="ghost"
         size="icon"
         aria-label="Scroll to top"
-        onClick={ scrollToTop }
+        onClick={scrollToTop}
         className="ml-2"
-        disabled={ !showScrollTop }
+        disabled={!showScrollTop}
       >
         <ChevronUp className="h-4 w-4" />
       </Button>

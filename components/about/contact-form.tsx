@@ -17,9 +17,7 @@ const ContactForm = () => {
     initialState,
   );
   return (
-    <form
-      id='Contact'
-      className="space-y-4" action={ action }>
+    <form id="Contact" className="space-y-4" action={action}>
       <input type="hidden" name="shield" value="" />
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
@@ -59,7 +57,7 @@ const ContactForm = () => {
           placeholder="Enter your message"
         />
       </div>
-      <Button className="w-full" disabled={ isPending } type="submit">
+      <Button className="w-full" disabled={isPending} type="submit">
         Send Message
       </Button>
     </form>

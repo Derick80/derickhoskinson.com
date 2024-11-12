@@ -31,12 +31,13 @@ export default function RootLayout ({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={ `${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col gap-40 antialiased` }
+        className={ `${geistSans.variable} ${geistMono.variable} gap-20 antialiased` }
       >
         {/* <Analytics /> */ }
         <ThemeProvider attribute="class">
           <Toaster />
-          <main className="container relative mx-auto flex-grow px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16 space-y-6 md:space-y-10">
+
+          <main className="container relative mx-auto mt-10 flex-grow space-y-6 px-4 py-2 sm:px-6 md:mt-20 md:space-y-10 lg:px-8">
             <NavigationBar />
             { children }
           </main>
