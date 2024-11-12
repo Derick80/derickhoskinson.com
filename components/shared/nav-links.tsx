@@ -22,52 +22,54 @@ const NavLinks = () => {
     <>
       <div className="hidden md:block">
         <div className="flex w-full items-stretch justify-between">
-          { navData.map((item, index) => (
+          {navData.map((item, index) => (
             <Link
-              key={ index }
-              href={ item.url }
+              key={index}
+              href={item.url}
               prefetch
-              className={ `rounded-md px-3 py-2 text-lg hover:text-primary ${pathname === item.url
-                ? "font-medium text-primary underline"
-                : "text-muted-foreground"
-                }` }
+              className={`rounded-md px-3 py-2 text-lg hover:text-primary ${
+                pathname === item.url
+                  ? "font-medium text-primary underline"
+                  : "text-muted-foreground"
+              }`}
             >
-              { item.title }
+              {item.title}
             </Link>
-          )) }
+          ))}
         </div>
       </div>
       <div className="md:hidden">
-        <DropdownMenu open={ isOpen } onOpenChange={ setIsOpen }>
+        <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
-              onClick={ toggleMenu }
+              onClick={toggleMenu}
             >
-              { isOpen ? (
+              {isOpen ? (
                 <X className="block h-6 w-6" aria-hidden="true" />
               ) : (
                 <Menu className="block h-6 w-6" aria-hidden="true" />
-              ) }
+              )}
               <span className="sr-only">Toggle menu</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            { navData.map((item, index) => (
-              <DropdownMenuItem key={ index } asChild>
+            {navData.map((item, index) => (
+              <DropdownMenuItem key={index} asChild>
                 <Link
-                  href={ item.url }
+                  href={item.url}
                   prefetch
-                  className={ `w-full px-3 py-2 text-lg ${pathname === item.url
-                    ? "font-medium text-primary underline"
-                    : "text-gray-600"
-                    }` }
+                  className={`w-full px-3 py-2 text-lg ${
+                    pathname === item.url
+                      ? "font-medium text-primary underline"
+                      : "text-gray-600"
+                  }`}
                 >
-                  { item.title }
+                  {item.title}
                 </Link>
               </DropdownMenuItem>
-            )) }
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

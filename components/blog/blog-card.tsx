@@ -66,9 +66,9 @@ export const BlogCard = (props: MDXFrontMatter) => {
         <h2 className="mb-2 mt-2 border-none pb-0 text-2xl font-bold">
           {title}
         </h2>
-        <p className="mb-4 text-muted-foreground">{description}</p>
+        <p className="mb-4 line-clamp-3 text-muted-foreground">{description}</p>
         <Button variant="outline" size="sm" asChild className="mt-auto">
-          <a href={`/blog/${slug}`}>Read More</a>
+          <Link href={`/blog/${slug}`}>Read More</Link>
         </Button>
       </CardContent>
       <CardFooter className="flex items-center justify-between border-t p-2">
