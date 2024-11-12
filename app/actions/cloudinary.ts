@@ -1,8 +1,17 @@
 "use server";
 import { z } from "zod";
-import cloudinary from "cloudinary";
+import cloudinary, { UploadApiResponse } from "cloudinary";
 import { NextRequest } from "next/server";
-
+import prisma from "@/lib/prisma";
+interface CloudinaryUploadResult {
+  secure_url: string;
+  public_id: string;
+  format: string;
+  width: number;
+  height: number;
+  bytes: number;
+  original_filename: string;
+}
 const NewImageSchema = z.object({
   imageField: z
     .array(z.instanceof(File))
@@ -29,18 +38,24 @@ cloudinary.v2.config({
   api_secret: apiSecret,
 });
 
-
-
-
 export const create = async (formData: FormData) => {
   const files = formData.getAll("imageField") as File[];
+
   const userId = formData.get("userId") as string;
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+  if (!user) {
+    throw new Error("User not found");
+  }
 
   const uploadPromises = files.map(async (file) => {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
 
-    return new Promise((resolve, reject) => {
+    return new Promise<CloudinaryUploadResult>((resolve, reject) => {
       cloudinary.v2.uploader
         .upload_stream(
           {
@@ -62,5 +77,18 @@ export const create = async (formData: FormData) => {
   });
   // wait for files to upload
   const uploadResults = await Promise.all(uploadPromises);
-  return uploadResults;
+  const saveImages = await Promise.all(
+    uploadResults.map(async (result) => {
+      return prisma.userImage.create({
+        data: {
+          userId: user.id,
+          cloudinaryId: result.public_id,
+          imageUrl: result.secure_url,
+          fileName: result.original_filename,
+          userAvatar: false,
+        },
+      });
+    }),
+  );
+  return saveImages;
 };

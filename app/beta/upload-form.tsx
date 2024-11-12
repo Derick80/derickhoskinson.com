@@ -1,22 +1,20 @@
 import { create } from "../actions/cloudinary";
 import ImageDropZone from "./image-dropzone";
 
-export const UploadForm = (
-  { userId }: { userId: string },
-) => {
+export const UploadForm = ({ userId }: { userId: string }) => {
 
 
-  console.log(userId, "userId from upload form");
   return (
-    <form action={
-      create
-    }
-    >
-      <ImageDropZone />
-      <input type="hidden" name="userId" value={
-        userId
-      } />
-
+    <form action={ create }>
+      <ImageDropZone
+        userId={ userId }
+      />
+      <input
+        type="text"
+        name="userId"
+        value={ userId }
+        readOnly
+      />
     </form>
   );
 };

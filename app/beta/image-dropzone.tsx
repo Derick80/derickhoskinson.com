@@ -3,9 +3,11 @@
 import React from "react";
 import { useDropzone } from "react-dropzone-esm";
 import { Upload, File, X } from "lucide-react";
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 // V0 help here.
-export default function ImageDropZone () {
+export default function ImageDropZone (
+  { userId }: { userId: string }
+) {
   const [files, setFiles] = React.useState<File[]>([]);
   const [uploading, setUploading] = React.useState(false);
 
@@ -23,37 +25,35 @@ export default function ImageDropZone () {
     setUploading(true);
     const formData = new FormData();
     files.forEach((file) => {
-      formData.append('imageField', file);
+      formData.append("imageField", file);
     });
+    formData.append("userId", userId);
     try {
-      const response = await fetch('/cloudinary', {
-        method: 'POST',
+      const response = await fetch("/cloudinary", {
+        method: "POST",
         body: formData,
       });
       const data = await response.json();
-      console.log('Upload successful:', data);
+      console.log("Upload successful:", data);
       // Handle successful upload response
     } catch (error) {
-      console.error('Upload failed:', error);
+      console.error("Upload failed:", error);
       // Handle upload error
     } finally {
       setUploading(false);
     }
-
   };
-
 
   return (
     <div className="p-4">
       <div
         { ...getRootProps() }
         className={ `cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-colors ${isDragActive
-          ? "border-blue-500 bg-blue-50"
-          : "border-gray-300 hover:border-gray-400"
+            ? "border-blue-500 bg-blue-50"
+            : "border-gray-300 hover:border-gray-400"
           }` }
       >
-        <input
-          { ...getInputProps() } />
+        <input { ...getInputProps() } />
         <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
         <p className="mt-2 text-sm text-gray-600">
           Drag or drop some files here, or click to select files
@@ -89,7 +89,7 @@ export default function ImageDropZone () {
             className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             disabled={ uploading }
           >
-            { uploading ? 'Uploading...' : 'Upload' }
+            { uploading ? "Uploading..." : "Upload" }
           </button>
         </div>
       ) }

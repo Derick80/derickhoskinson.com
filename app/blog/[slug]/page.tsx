@@ -8,13 +8,13 @@ import { DetailedHTMLProps, HTMLAttributes, Suspense } from "react";
 import { Callout, MDXPre } from "@/components/mdx/sync-functions";
 import { blogPostSchema } from "@/lib/types";
 
-import CldImage from '@/components/shared/client-cloudinary';
+import CldImage from "@/components/shared/client-cloudinary";
 
-export async function generateStaticParams () {
+export async function generateStaticParams() {
   const posts = await getAllPosts();
   return posts.map((post) => ({ params: { slug: post.slug } }));
 }
-export default async function BlogPost (props: {
+export default async function BlogPost(props: {
   params: Promise<{
     slug: string;
   }>;
@@ -34,18 +34,18 @@ export default async function BlogPost (props: {
   }
 
   return (
-    <Suspense fallback={ <>Loading...</> }>
+    <Suspense fallback={<>Loading...</>}>
       <div className="prose prose-neutral min-w-full p-4 dark:prose-invert prose-a:no-underline">
         <MDXRemote
-          source={ post.content }
-          components={ {
+          source={post.content}
+          components={{
             pre: (props) => (
               <MDXPre className="bg-content1 max-h-[400px]">
-                { props.children }
+                {props.children}
               </MDXPre>
             ),
             Callout,
-            code: (props) => <CodeBlock code={ String(props.children) } />,
+            code: (props) => <CodeBlock code={String(props.children)} />,
             // img: ({
             //   className,
             //   alt,
@@ -60,14 +60,14 @@ export default async function BlogPost (props: {
             // ),
             // Image: (props: ImageProps) => <Image {...props} alt="blog image" />,
             Image: ({ src, ...props }: ImageProps) => (
-              <CldImage src={ String(src) } { ...props } alt="blog image" />
+              <CldImage src={String(src)} {...props} alt="blog image" />
             ),
-          } }
-          options={ {
+          }}
+          options={{
             mdxOptions: {
               remarkPlugins: [remarkGfm],
             },
-          } }
+          }}
         />
       </div>
     </Suspense>
