@@ -1,44 +1,23 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import Socials from "../../components/about/socials";
-import HobbyComponent from "../../components/about/about-image";
-import Biography from "../../components/about/bio";
-import ProfessionalSummary from "../../components/about/professiona-summary";
-import ContactForm from "../../components/about/contact-form";
+import Biography from "@/components/about/bio";
+import AboutImage from "@/components/about/about-image";
+import ProfessionalSummary from "@/components/about/professiona-summary";
+import Socials from "@/components/about/socials";
+import NowReading from "@/components/about/now-reading";
+import { Briefcase, Heart, MapPin } from "lucide-react";
 
-export default function AboutMePage() {
-  // helped by v0
+import Image from "next/image";
+import { aboutMeDetails, hobbies } from "@/components/about/about";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import LandingAbout from "@/components/shared/landing-about";
+import ContactForm from '@/components/about/contact-form';
+
+export default function AboutPage () {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid gap-8 md:grid-cols-2">
-        <div className="space-y-6">
-          <Biography />
-          <Socials />
-        </div>
-
-        <HobbyComponent />
-      </div>
-      <ProfessionalSummary />
-      <div className="mt-12 space-y-6">
-        <h2 className="text-2xl font-bold tracking-tighter">Get in Touch</h2>
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact Me</CardTitle>
-            <CardDescription>I&apos;d love to hear from you!</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ContactForm />
-          </CardContent>
-        </Card>
-      </div>
+    <div className="container mx-auto space-y-8 px-4 py-8">
+      <LandingAbout preview={ false } />
+      <ContactForm
+      />
     </div>
   );
 }

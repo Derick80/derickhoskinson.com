@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import ContactForm from "../components/about/contact-form";
 import PageOverLayBar from "@/components/shared/page-overlay-bar";
+import { BlogCard } from '@/components/blog/blog-card';
 
 export const metadata: Metadata = {
   title: "Dr. Hoskinson's Blog",
@@ -37,51 +38,42 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home (props: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const searchParams = await props.searchParams;
-  const categoriesParam = searchParams.categories;
+export default async function Home () {
 
-  const categories =
-    typeof categoriesParam === "string"
-      ? categoriesParam.split(",")
-      : categoriesParam || [];
 
-  const allPosts = await getAllPosts(categories);
+  const posts = await getAllPosts();
   return (
-    <div id="home" className="flex min-h-screen flex-col py-2">
-      <LandingAbout />
-      <div id="Introduction" className="mt-12 space-y-6">
-        <h2 className="text-2xl font-bold tracking-tighter">
+    <>
+      <section id="Introduction"
+
+      >
+        <h2
+
+          className='mb-10'
+        >Welcome!</h2>
+        <LandingAbout />
+      </section>
+      <section id="blog" className="space-y-6">
+        <h2 className="mb-10">
           Welcome to my blog
         </h2>
-        <p className="text-lg">
+        <p >
           This blog is a collection of thoughts and ideas on clinical genetics,
           variant classification, and other topics related to my work.
         </p>
-      </div>
-      {/* <CategoryBadges posts={ allPosts } /> */ }
-      <CategorySelector posts={ allPosts } />
-      <Suspense fallback={ <p>Loading results...</p> }>
 
-        <BlogList categories={ categories } />
-      </Suspense>
-      <div id="contact" className="mt-12 space-y-6">
-        <h2 className="text-2xl font-bold tracking-tighter">Get in Touch</h2>
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact Me</CardTitle>
-            <CardDescription>I&apos;d love to hear from you!</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ContactForm />
-          </CardContent>
-        </Card>
-      </div>
-      <PageOverLayBar
-        sectionIds={ ["home", "Introduction", "category-filter", "contact"] }
-      />
-    </div>
+        <Suspense fallback={ <p>Loading results...</p> }>
+
+          { posts.map(
+            (post) => post.slug && <BlogCard key={ post.slug } { ...post } />,
+          ) }
+        </Suspense>
+      </section>
+      <section id="contact" className="space-y-6">
+        <h2 className="mb-10">Get in Touch</h2>
+        <ContactForm />
+      </section>
+      <PageOverLayBar sectionIds={ ["Introduction", "Blog", "Contact"] } />
+    </>
   );
 }

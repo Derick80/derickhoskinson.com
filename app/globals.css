@@ -94,9 +94,9 @@ body {
   h4 {
     @apply text-xl font-bold;
   }
-p {
-  @apply m-0
-}
+  p {
+    @apply m-0;
+  }
 }
 
 html.dark .shiki,

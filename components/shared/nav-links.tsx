@@ -6,11 +6,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
   DropdownMenuContent,
-
-} from '../ui/dropdown-menu';
-import { Button } from '../ui/button';
-import React from 'react';
-import { Menu, SquareX, X } from 'lucide-react';
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
+import React from "react";
+import { Menu, SquareX, X } from "lucide-react";
 
 const NavLinks = () => {
   const pathname = usePathname();
@@ -48,6 +47,11 @@ const navData = [
     url: "/cv",
   },
   {
+    title: 'About',
+    url: '/about',
+  }
+  ,
+  {
     title: "Genetics",
     url: "/genetics",
   },
@@ -57,25 +61,17 @@ const navData = [
   },
 ];
 
-
-
-
 const MobileNavigationBar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const toggleMenu = () => setIsOpen(!isOpen)
+  const toggleMenu = () => setIsOpen(!isOpen);
   const pathname = usePathname();
   return (
-    <DropdownMenu
-      open={ isOpen }
-      onOpenChange={ setIsOpen }
-    >
+    <DropdownMenu open={ isOpen } onOpenChange={ setIsOpen }>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-primary hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
-          onClick={
-            () => toggleMenu()
-          }
+          className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-primary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
+          onClick={ () => toggleMenu() }
         >
           { isOpen ? (
             <X className="block h-4 w-4" aria-hidden="true" />
@@ -84,29 +80,21 @@ const MobileNavigationBar = () => {
           ) }
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="end"
-        className="w-56"
-      >
-        {
-          navData.map((item, index) => (
-            <DropdownMenuItem
-              key={ index }
-              asChild>
-              <Link
-                prefetch
-                href={ item.url }
-                className={ `w-full text-lg md:text-xl ${pathname === item.url ? "underline" : ""}` }
-              >
-                { item.title }
-              </Link>
-            </DropdownMenuItem>
-          ))
-        }
+      <DropdownMenuContent align="end" className="w-56">
+        { navData.map((item, index) => (
+          <DropdownMenuItem key={ index } asChild>
+            <Link
+              prefetch
+              href={ item.url }
+              className={ `w-full text-lg md:text-xl ${pathname === item.url ? "underline" : ""}` }
+            >
+              { item.title }
+            </Link>
+          </DropdownMenuItem>
+        )) }
       </DropdownMenuContent>
     </DropdownMenu>
-  )
-}
-
+  );
+};
 
 export { NavLinks, MobileNavigationBar };

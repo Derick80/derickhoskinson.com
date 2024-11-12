@@ -11,30 +11,19 @@ const NavigationBar = async () => {
   const session = await verifySession();
   const userId = session ? session.userId : null;
   return (
-    <nav className="fixed left-0 right-0 top-0 z-50 mx-auto mb-32 border-2 flex max-w-screen-lg flex-col bg-background/80 shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out">
-      <ul className="flex items-center justify-between gap-2 md:gap-4">
-        <li
-          className='hidden md:block'>
-          <div
-            className='ml-10 flex items-baseline space-x-4'>
+    <nav className="fixed left-0 right-0 top-0 z-50 mx-auto flex max-w-screen-lg flex-col  bg-background/80 shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out mb-4">
+      <ul className="flex items-center justify-between gap-2 md:gap-4 p-2">
+        <li className="hidden md:block">
+          <div className="flex items-baseline space-x-4">
             <NavLinks />
           </div>
         </li>
-        <li
-          className='md:hidden'>
+        <li className="md:hidden">
           {/* Mobile Navigation */ }
 
-          <MobileNavigationBar
-
-          />
-
-
+          <MobileNavigationBar />
         </li>
-        <li
-          className='md:hidden'>
-          {/* maybe put icon or name here */ }
-
-        </li>
+        <li className="md:hidden">{/* maybe put icon or name here */ }</li>
         { userId ? (
           <li className="flex items-center gap-4">
             <UserLoginMenu userId={ userId } />
@@ -55,8 +44,6 @@ const NavigationBar = async () => {
 };
 
 export default NavigationBar;
-
-
 
 const navData = [
   {
