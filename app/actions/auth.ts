@@ -143,7 +143,6 @@ export const verifySession = cache(async () => {
   if (!cookie) {
     return null;
   }
-  console.log(cookie, "cookie");
   if (!cookie?.value) {
     return null;
   }

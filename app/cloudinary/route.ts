@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { redirect } from "next/navigation";
-import { UploadImagesToCloudinary } from "../actions/cloudinary";
+import { create } from "../actions/cloudinary";
 import { NextResponse } from "next/server";
 import cloudinary, { UploadApiResponse } from "cloudinary";
 
@@ -18,12 +18,14 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function POST(request: Request) {
+export async function POST (request: Request) {
   const formData = await request.formData();
-  const files = formData.getAll("imageField") as File[];
-  const userId = formData.get("userId") as string;
-  console.log(files, userId, "files and userId");
 
+  const results = await create(formData);
+  if (!results) {
+    return NextResponse.json({ message: "error" });
+  }
+  console.log(results, "results from cloudinary");
   return NextResponse.json({ message: "success" });
   // try { // put the files through a arrayBuffer to get the fileBuffer.
   //     const formData = await request.formData()

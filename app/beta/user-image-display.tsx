@@ -28,34 +28,34 @@ export const UserImageDisplay = ({
   return (
     <div className="mx-auto w-full max-w-sm">
       <h2 className="text-lg font-semibold">User Images</h2>
-      {userImageCount}
+      { userImageCount }
       <div className="flex flex-col items-center justify-between gap-4 sm:flex-row sm:items-start">
-        {filledUsers.map((user, index) => (
+        { filledUsers.map((user, index) => (
           <div
-            key={user.id || `empty-${index}`}
+            key={ user.id || `empty-${index}` }
             className="flex flex-col items-center"
           >
             <div className="relative">
               <Avatar className="h-20 w-20">
-                {user.imageUrl ? (
-                  <AvatarImage src={user.imageUrl} alt={`one of my avatars`} />
+                { user.imageUrl ? (
+                  <AvatarImage src={ user.imageUrl } alt={ `one of my avatars` } />
                 ) : (
                   <AvatarFallback>
-                    <User className="h-10 w-10 text-gray-400" />
+                    <User className="h-10 w-10 text-muted-foreground" />
                   </AvatarFallback>
-                )}
+                ) }
               </Avatar>
               <StarImage
-                isUserAvatar={user?.userAvatar}
-                imageId={user?.id || ""}
+                isUserAvatar={ user?.userAvatar }
+                imageId={ user?.id || "" }
               />
-              <ImageActionButton variant={user?.imageUrl} />
+              <ImageActionButton variant={ user?.imageUrl } />
             </div>
             <span className="mt-2 text-center text-sm">
-              {user?.fileName || `User ${index + 1}`}
+              { user?.fileName || `User ${index + 1}` }
             </span>
           </div>
-        ))}
+        )) }
       </div>
     </div>
   );

@@ -1,16 +1,7 @@
 import { getAllPosts } from "./actions/mdx-server";
 import type { Metadata } from "next";
-import BlogList from "@/components/blog/blog-list";
-import CategorySelector from "../components/blog/categories/categories/category-container";
 import { Suspense } from "react";
 import LandingAbout from "@/components/shared/landing";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
 import ContactForm from "../components/about/contact-form";
 import PageOverLayBar from "@/components/shared/page-overlay-bar";
 import { BlogCard } from "@/components/blog/blog-card";
@@ -38,7 +29,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Home() {
+export default async function Home () {
   const posts = await getAllPosts();
   return (
     <>
@@ -53,17 +44,17 @@ export default async function Home() {
           variant classification, and other topics related to my work.
         </p>
 
-        <Suspense fallback={<p>Loading results...</p>}>
-          {posts.map(
-            (post) => post.slug && <BlogCard key={post.slug} {...post} />,
-          )}
+        <Suspense fallback={ <p>Loading results...</p> }>
+          { posts.map(
+            (post) => post.slug && <BlogCard key={ post.slug } { ...post } />,
+          ) }
         </Suspense>
       </section>
       <section id="contact" className="space-y-6">
         <h2 className="mb-10">Get in Touch</h2>
         <ContactForm />
       </section>
-      <PageOverLayBar sectionIds={["Introduction", "Blog", "Contact"]} />
+      <PageOverLayBar sectionIds={ ["Introduction", "Blog", "Contact"] } />
     </>
   );
 }
