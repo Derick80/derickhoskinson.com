@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { ModeToggle } from '../theme/theme-toggle'
 import { getUser } from '@/app/actions/auth'
 import { NavLinks } from './nav-links'
 import React from 'react'
@@ -24,8 +23,8 @@ const NavigationBar = async () => {
 
             <NavigationPath />
             <div className='flex items-center space-x-4'>
-                {userData !== null && (
-                    <DropdownMenu modal={false}>
+                { userData !== null && (
+                    <DropdownMenu modal={ false }>
                         <DropdownMenuTrigger asChild>
                             <Button
                                 variant='ghost'
@@ -36,27 +35,27 @@ const NavigationBar = async () => {
                                         className='object-cover'
                                         src={
                                             userData.userImages.length > 0 &&
-                                            userData.userImages[0]
-                                                .userAvatar === true
+                                                userData.userImages[0]
+                                                    .userAvatar === true
                                                 ? userData.userImages[0]
-                                                      .imageUrl
+                                                    .imageUrl
                                                 : '/assets/images/placeholder-user.jpg'
                                         }
-                                        alt={userData.name || 'User avatar'}
+                                        alt={ userData.name || 'User avatar' }
                                     />
                                     <AvatarFallback>
-                                        {userData.name ? (
+                                        { userData.name ? (
                                             userData.name
                                                 .charAt(0)
                                                 .toUpperCase()
                                         ) : (
                                             <User />
-                                        )}
+                                        ) }
                                     </AvatarFallback>
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent avoidCollisions={true}>
+                        <DropdownMenuContent avoidCollisions={ true }>
                             <DropdownMenuItem>
                                 <Link href='/profile'>Profile</Link>
                             </DropdownMenuItem>
@@ -66,9 +65,9 @@ const NavigationBar = async () => {
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
-                )}
+                ) }
 
-                {!userData && <Link href='/login'>Login</Link>}
+                { !userData && <Link href='/login'>Login</Link> }
                 <ToggleTheme />
             </div>
         </nav>

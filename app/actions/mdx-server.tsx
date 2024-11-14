@@ -42,7 +42,7 @@ const parseTheFrontmatter = (fileContent: string) => {
             posts.published = value === 'true'
         } else {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ; (posts as any)[key] = value
+            ;(posts as any)[key] = value
         }
     })
 
@@ -79,9 +79,7 @@ export const CodeBlock = async ({ code }: { code: string }) => {
         }
     })
 
-    return <div
-
-        dangerouslySetInnerHTML={ { __html: out } } />
+    return <div dangerouslySetInnerHTML={{ __html: out }} />
 }
 
 const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
@@ -107,11 +105,11 @@ export const getAllPosts = cache(async (): Promise<MdxCompiled[]> => {
     return posts
 })
 
-function abbreviateWord (word: string): string {
+function abbreviateWord(word: string): string {
     return word.length > 5 ? word.slice(0, 3) + word.length : word
 }
 
-function generateSlug (title: string): string {
+function generateSlug(title: string): string {
     const hash = crypto
         .createHash('md5')
         .update(title)

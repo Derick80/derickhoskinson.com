@@ -5,16 +5,15 @@ import remarkGfm from 'remark-gfm'
 import Image, { ImageProps } from 'next/image'
 import { cn } from '@/lib/utils'
 import { DetailedHTMLProps, HTMLAttributes, Suspense } from 'react'
-import { Callout, MDXPre } from '@/components/mdx/sync-functions'
 import { blogPostSchema } from '@/lib/types'
 
 import CldImage from '@/components/shared/client-cloudinary'
 
-export async function generateStaticParams () {
+export async function generateStaticParams() {
     const posts = await getAllPosts()
     return posts.map((post) => ({ params: { slug: post.slug } }))
 }
-export default async function BlogPost (props: {
+export default async function BlogPost(props: {
     params: Promise<{
         slug: string
     }>
@@ -41,40 +40,32 @@ export default async function BlogPost (props: {
     }
 
     return (
-        <div className='prose prose-slate max-w-2xl mx-auto p-4 dark:prose-invert prose-a:no-underline'>
-            <Suspense fallback={ <>Loading...</> }>
+        <div className='prose prose-slate mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
+            <Suspense fallback={<>Loading...</>}>
                 <MDXRemote
-                    source={ post.content }
-                    components={ {
-
-                        blockquote: (props) => (
-                            <Callout
-                                { ...props }
-                            />
-                        ),
-
+                    source={post.content}
+                    components={{
                         code: (props) => (
-                            <CodeBlock code={ String(props.children) } />
+                            <CodeBlock code={String(props.children)} />
                         ),
 
                         img: ({ src, ...props }: ImageProps) => (
-                            <div
-                                className={ cn('relative', props.className) }>
+                            <div className={cn('relative', props.className)}>
                                 <CldImage
-                                    src={ String(src) }
-                                    width={ 250 }
-                                    height={ props.height || 250 }
-                                    { ...props }
+                                    src={String(src)}
+                                    width={250}
+                                    height={props.height || 250}
+                                    {...props}
                                     alt='blog image'
                                 />
                             </div>
                         )
-                    } }
-                    options={ {
+                    }}
+                    options={{
                         mdxOptions: {
                             remarkPlugins: [remarkGfm]
                         }
-                    } }
+                    }}
                 />
             </Suspense>
         </div>
