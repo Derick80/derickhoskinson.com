@@ -3,6 +3,9 @@ import { z } from "zod";
 import cloudinary, { UploadApiResponse } from "cloudinary";
 import { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
+import { revalidateTag } from 'next/cache';
+import { cache } from "react";
+
 interface CloudinaryUploadResult {
   secure_url: string;
   public_id: string;
@@ -22,6 +25,9 @@ const NewImageSchema = z.object({
   userId: z.string({
     required_error: "User ID is required",
   }),
+  intent: z.string({
+    required_error: "Intent is required",
+  }),
 });
 
 const cloudname = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -38,7 +44,19 @@ cloudinary.v2.config({
   api_secret: apiSecret,
 });
 
-export const create = async (formData: FormData) => {
+export const create = cache(async (formData: FormData) => {
+  const validatedFields = NewImageSchema.safeParse({
+    imageField: formData.getAll("imageField"),
+    userId: formData.get("userId"),
+    intent: formData.get("intent"),
+
+  });
+  if (!validatedFields.success) {
+    return {
+      message: validatedFields.error?.flatten().fieldErrors,
+    };
+  }
+
   const files = formData.getAll("imageField") as File[];
 
   const userId = formData.get("userId") as string;
@@ -59,11 +77,11 @@ export const create = async (formData: FormData) => {
       cloudinary.v2.uploader
         .upload_stream(
           {
-            folder: "blog_testing_24",
+            folder: "dh-com",
             filename_override: file.name,
             discard_original_filename: false,
             use_filename: true,
-            unique_filename: false,
+            unique_filename: true,
             overwrite: true,
             transformation: [{ quality: "auto" }],
           },
@@ -74,7 +92,7 @@ export const create = async (formData: FormData) => {
         )
         .end(buffer);
     });
-  });
+  })
   // wait for files to upload
   const uploadResults = await Promise.all(uploadPromises);
   const saveImages = await Promise.all(
@@ -86,9 +104,15 @@ export const create = async (formData: FormData) => {
           imageUrl: result.secure_url,
           fileName: result.original_filename,
           userAvatar: false,
+          width: result.width,
+          height: result.height,
         },
       });
     }),
   );
+  revalidateTag('userImages');
   return saveImages;
-};
+
+}
+
+)

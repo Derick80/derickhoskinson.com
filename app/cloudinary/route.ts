@@ -14,15 +14,14 @@ import { getUser } from "../actions/auth";
 //     })
 // })
 
-export async function POST (request: Request) {
-  const formData = await request.formData();
+export async function POST(request: Request) {
   const userData = await getUser();
   const userId = userData?.id;
 
   if (!userId) {
     return NextResponse.redirect("/login");
   }
-  const results = await create(formData);
+  const results = await create(await request.formData());
   if (!results) {
     return NextResponse.json({ message: "error" });
   }

@@ -37,3 +37,14 @@ export type AuthedUserMore = {
     userAvatar: boolean;
   }[];
 };
+
+export type CustomUserImageType = {
+  id: string;
+  userId: string;
+  imageUrl: string | null;
+  cloudinaryId: string;
+  fileName: string;
+  width: number;
+  height: number;
+  userAvatar: boolean;
+};
