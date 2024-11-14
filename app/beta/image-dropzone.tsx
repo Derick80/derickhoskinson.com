@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React from "react";
@@ -29,7 +30,7 @@ interface CloudinaryUploadFileType extends File {
   preview: string;
 }
 
-export default function ImageDropZone({
+export default function ImageDropZone ({
   userImages,
   userId,
 }: {
@@ -60,7 +61,7 @@ export default function ImageDropZone({
   }));
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    async onDrop(files) {
+    async onDrop (files) {
       try {
         if (inputRef.current) {
           inputRef.current.value = "";
@@ -149,64 +150,63 @@ export default function ImageDropZone({
     <div className="p-4">
       <h2>Upload Image</h2>
       <div className="mt-4 flex flex-wrap gap-4">
-        {existingImages.map((image) => {
+        { existingImages.map((image) => {
           const pendingFile = files.find(
             (file) => file.name === image.fileName,
           );
           return (
             <FileImage
-              key={image.fileName}
-              onDelete={() => {}}
-              userImage={{
+              key={ image.fileName }
+              onDelete={ () => { } }
+              userImage={ {
                 userImages: userImages,
-              }}
+              } }
             >
               <ImageWithPlaceholder
-                key={image.fileName}
-                src={image.imageUrl}
+                key={ image.fileName }
+                src={ image.imageUrl || "" }
                 className="mt-2 h-20 w-20 rounded-lg border-2 border-white ring-2 ring-neutral-400 ring-offset-1 hover:ring-primary-foreground"
                 placeholderSrc={
                   pendingFile ? getFileUrl(pendingFile) : undefined
                 }
-                onLoad={() => {
+                onLoad={ () => {
                   console.log("loaded", pendingFile);
                   setFiles((pendingFiles) => {
                     return pendingFiles.filter((p) => p !== pendingFile);
                   });
-                }}
+                } }
               />
             </FileImage>
           );
-        })}
+        }) }
 
-        {displayPendingFiles.map((file) => (
+        { displayPendingFiles.map((file) => (
           <div
             className="relative mt-2 h-20 w-20 overflow-hidden rounded-lg border border-neutral-100"
-            key={file.name}
+            key={ file.name }
           >
             <img
-              src={getFileUrl(file)}
+              src={ getFileUrl(file) }
               alt="Uploaded file"
               className="opacity-50"
             />
           </div>
-        ))}
+        )) }
       </div>
 
-      {/* Dropzone */}
+      {/* Dropzone */ }
       <form
-        action={create}
-        {...getRootProps({
+        action={ create }
+        { ...getRootProps({
           className: cn("w-full h-fit", {
             "bg-primary-foreground": isDragActive,
             "bg-neutral-100": !isDragActive,
           }),
-        })}
-        className={`cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
-          isDragActive
-            ? "border-blue-500 bg-blue-50"
-            : "border-gray-300 hover:border-gray-400"
-        }`}
+        }) }
+        className={ `cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-colors ${isDragActive
+          ? "border-blue-500 bg-blue-50"
+          : "border-gray-300 hover:border-gray-400"
+          }` }
       >
         <Label htmlFor="imageField" className="block w-full items-center">
           <div className="flex w-full cursor-pointer place-items-center justify-center gap-2 rounded-md border-2 border-dashed px-4 py-6 text-neutral-500 transition-colors hover:border-neutral-400 hover:bg-neutral-50 hover:text-neutral-800 md:py-12">
@@ -217,7 +217,7 @@ export default function ImageDropZone({
           </div>
 
           <Input
-            {...getInputProps()}
+            { ...getInputProps() }
             type="file"
             name="imageField"
             id="imageField"
@@ -226,7 +226,7 @@ export default function ImageDropZone({
           />
         </Label>
       </form>
-      {/* { errorMessage && <p className='text-red-500'>{ errorMessage }</p> } */}
+      {/* { errorMessage && <p className='text-red-500'>{ errorMessage }</p> } */ }
     </div>
   );
 }
