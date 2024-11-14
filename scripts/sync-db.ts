@@ -73,4 +73,4 @@ const syncWithDb = async () => {
 
 syncWithDb().then(console.log).catch(console.error);
 
-await syncwithDb();
+await syncWithDb();
