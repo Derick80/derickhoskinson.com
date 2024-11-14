@@ -1,33 +1,39 @@
 import { cn } from '@/lib/utils'
-import { DetailedHTMLProps, HTMLAttributes } from 'react'
+import React, { DetailedHTMLProps, HTMLAttributes } from 'react'
 
 interface CalloutProps {
-    icon?: string
-    children?: React.ReactNode
-    type?: 'default' | 'warning' | 'danger'
+    children: React.ReactNode;
 }
 
-export const Callout = ({
-    children,
-    icon,
-    type = 'default',
-    ...props
-}: CalloutProps) => {
+export const Callout = ({ children }:
+    { children: CalloutProps }) => {
+    const iconMap = {
+        note: '📝',
+        tip: '💡',
+        important: '🔥',
+        warning: '⚠️',
+        danger: '🚨'
+
+    }
+
+    const content = React.Children.toArray(children);
+    console.log(content)
+    const firstLine = content[0]?.toString().toLowerCase() || '';
+
+
+
     return (
-        <div
-            className={cn(
-                'my-6 flex items-start rounded-md border border-l-4 p-4',
-                {
-                    'border-red-900 bg-red-50': type === 'danger',
-                    'border-yellow-900 bg-yellow-50': type === 'warning'
-                }
-            )}
-            {...props}
-        >
-            {icon && <span className='mr-4 text-2xl'> {icon} </span>}
-            <div> {children} </div>
+        <div className={ cn('prose-callout'
+
+        ) }>
+            <div className='prose-callout-icon'>{ }</div>
+            <div className='prose-callout-content border-2'>{
+                content.slice(1)
+            }</div>
         </div>
     )
+
+
 }
 
 export const MDXPre = (
@@ -41,10 +47,10 @@ export const MDXPre = (
     return (
         <div className='group relative'>
             <pre
-                {...rest}
-                className='scrollbar-thin scrollbar-thumb-secondary scrollbar-thumb-rounded-full my-7 w-full overflow-x-auto rounded-xl p-4 text-primary transition ease-in-out'
+                { ...rest }
+                className='scrollbar-thin scrollbar-thumb-secondary scrollbar-thumb-rounded-full my- w-full overflow-x-auto rounded-xl p-4 text-primsary transition ease-in-out'
             >
-                {children}
+                { children }
             </pre>
         </div>
     )

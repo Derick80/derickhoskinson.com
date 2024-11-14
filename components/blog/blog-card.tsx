@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { MDXFrontMatter } from '@/lib/types'
+import { MdxCompiled } from '@/lib/types'
 import {
     Bookmark,
     CalendarIcon,
@@ -21,7 +21,7 @@ import { Button } from '../ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { SharePostButton } from './share-button'
 // inspo https://www.leohuynh.dev/
-export const BlogCard = (props: MDXFrontMatter) => {
+export const BlogCard = (props: MdxCompiled) => {
     const {
         title,
         date,

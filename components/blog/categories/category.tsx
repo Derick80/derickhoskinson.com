@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { CategoryFilterType, MDXFrontMatter } from '@/lib/types'
+import { CategoryFilterType, MdxCompiled } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 

@@ -8,8 +8,30 @@ imageUrl: https://res.cloudinary.com/dch-photo/image/upload/v1729130284/personal
 categories: [Documentation]
 ---
 
-# Continuous dhdotcom Development
 
+# Continuous dhdotcom Development
+## Testing
+```typescript
+
+export const getAllPosts = cache(async (): Promise<MdxCompiled[]> => {
+    const files = (await fs.readdir(POSTS_FOLDER)).filter(
+        (file) => path.extname(file) === '.mdx'
+    )
+
+    const posts = await Promise.all(
+        files.map(async (file) => {
+            const fileContent = await fs.readFile(
+                path.join(POSTS_FOLDER, file),
+                'utf-8'
+            )
+            const { posts } = parseTheFrontmatter(fileContent)
+
+            return posts
+        })
+    )
+    return posts
+})
+```
 ## Overview
 
 This is a living document for the continuous development of derickhoskinson.com. I have been spending most of my free time coding rather than writing extensive blog entries. For now, I will just update this document as I change the site.
@@ -21,14 +43,13 @@ November 11 2024: Today I worked on fixing some layout issues. I decided that si
 ### Purpose
 
 - Explore new technologies
-
-![DNA Sequencing](/assets/images/dnaseq.jpg)
-
+![myself](https://res.cloudinary.com/dch-photo/image/upload/v1731554528/dh-com/DerickTrain1_j4grbg.jpg)
 I am somewhat happy with how things are turning out in this app. But I'm about to enter a few weeks of focused working which will limit my timem to work on this project.
 
 I think I may just try to write stream of concsiousness....but I really need to figure out how to turn off predictive text in vscode.
 
-I want to learn how to generate metdatat for this site better. I started this site to learn Nextjs app router and use server actions and server components. It's been fun but a littl hectic. I would say I was a moderately knowledgable remix coder. If you call my DIY apps as actual coding.
+I want to learn how to generate metdatat for this site better. I started this site to learn Nextjs app router and use server actions and server components. It's been fun but a littl hectic. I would say I was a moder
+> **important:** Vately knowledgable remix coder. If you call my DIY apps as actual coding.
 
 I am interested in exploring more aspects of genetics and variant classification. What's next for the field? I am actually not sure. While I have learned a great deal of things in my current position I haven't spent much time planning for the future. I will do that now.
 

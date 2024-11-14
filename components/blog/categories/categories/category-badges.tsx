@@ -5,9 +5,9 @@ import CategoryButton from './category-button'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { MDXFrontMatter } from '@/lib/types'
+import { MdxCompiled } from '@/lib/types'
 
-const CategoryBadges = ({ posts }: { posts: MDXFrontMatter[] }) => {
+const CategoryBadges = ({ posts }: { posts: MdxCompiled[] }) => {
     const searchParams = useSearchParams()
     const [selectedCategories, setSelectedCategories] = React.useState<
         string[]

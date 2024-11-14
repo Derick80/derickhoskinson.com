@@ -10,11 +10,11 @@ import { blogPostSchema } from '@/lib/types'
 
 import CldImage from '@/components/shared/client-cloudinary'
 
-export async function generateStaticParams() {
+export async function generateStaticParams () {
     const posts = await getAllPosts()
     return posts.map((post) => ({ params: { slug: post.slug } }))
 }
-export default async function BlogPost(props: {
+export default async function BlogPost (props: {
     params: Promise<{
         slug: string
     }>
@@ -26,7 +26,14 @@ export default async function BlogPost(props: {
     }
 
     const post = await getAllPosts().then((posts) => {
-        return posts.find((post) => post.slug === slug)
+        const postData = posts.find((post) => post.slug === slug)
+        if (!postData) {
+            throw new Error('No post found')
+        }
+        return {
+            slug: postData.slug,
+            content: postData.content
+        }
     })
 
     if (!post) {
@@ -34,48 +41,42 @@ export default async function BlogPost(props: {
     }
 
     return (
-        <Suspense fallback={<>Loading...</>}>
-            <div className='prose prose-neutral min-w-full p-4 dark:prose-invert prose-a:no-underline'>
+        <div className='prose prose-slate max-w-2xl mx-auto p-4 dark:prose-invert prose-a:no-underline'>
+            <Suspense fallback={ <>Loading...</> }>
                 <MDXRemote
-                    source={post.content}
-                    components={{
-                        pre: (props) => (
-                            <MDXPre className='bg-content1 max-h-[400px]'>
-                                {props.children}
-                            </MDXPre>
-                        ),
-                        Callout,
-                        code: (props) => (
-                            <CodeBlock code={String(props.children)} />
-                        ),
-                        // img: ({
-                        //   className,
-                        //   alt,
-                        //   ...props
-                        // }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-                        //   // eslint-disable-next-line @next/next/no-img-element
-                        //   <img
-                        //     className={cn("rounded-md border", className)}
-                        //     alt={alt}
-                        //     {...props}
-                        //   />
-                        // ),
-                        // Image: (props: ImageProps) => <Image {...props} alt="blog image" />,
-                        Image: ({ src, ...props }: ImageProps) => (
-                            <CldImage
-                                src={String(src)}
-                                {...props}
-                                alt='blog image'
+                    source={ post.content }
+                    components={ {
+
+                        blockquote: (props) => (
+                            <Callout
+                                { ...props }
                             />
+                        ),
+
+                        code: (props) => (
+                            <CodeBlock code={ String(props.children) } />
+                        ),
+
+                        img: ({ src, ...props }: ImageProps) => (
+                            <div
+                                className={ cn('relative', props.className) }>
+                                <CldImage
+                                    src={ String(src) }
+                                    width={ 250 }
+                                    height={ props.height || 250 }
+                                    { ...props }
+                                    alt='blog image'
+                                />
+                            </div>
                         )
-                    }}
-                    options={{
+                    } }
+                    options={ {
                         mdxOptions: {
                             remarkPlugins: [remarkGfm]
                         }
-                    }}
+                    } }
                 />
-            </div>
-        </Suspense>
+            </Suspense>
+        </div>
     )
 }

@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { CategoryFilterType, MDXFrontMatter } from '@/lib/types'
+import { CategoryFilterType, MdxCompiled } from '@/lib/types'
 import Category from './category'
 
 const CategoryContainer = ({
@@ -10,7 +10,7 @@ const CategoryContainer = ({
     selectedCategories
 }: {
     categories: CategoryFilterType[]
-    posts: MDXFrontMatter[]
+    posts: MdxCompiled[]
     onCategorySelect: (event: React.ChangeEvent<HTMLInputElement>) => void
     selectedCategories: string[]
 }) => {

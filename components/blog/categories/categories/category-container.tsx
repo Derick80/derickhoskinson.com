@@ -6,10 +6,10 @@ import React from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
-import { MDXFrontMatter } from '@/lib/types'
+import { MdxCompiled } from '@/lib/types'
 
 type CategorySelectorProps = {
-    posts: MDXFrontMatter[]
+    posts: MdxCompiled[]
 }
 const CategorySelector = ({ posts }: CategorySelectorProps) => {
     const categories = posts.flatMap((post) => post.categories)

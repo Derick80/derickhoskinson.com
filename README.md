@@ -16,6 +16,8 @@ and create an overlay component to display the selected MDX file
 
 ## Tech Stack
 
+![NextJs](https://img.shields.io/npm/v/npm.svg?logo=nextdotjs)
+
 - [Next.js](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
