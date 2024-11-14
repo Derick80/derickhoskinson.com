@@ -46,7 +46,7 @@ const syncWithDb = async () => {
 
     const updated = await Promise.all(
         posts.map(async (post) => {
-            await prisma.post.upsert({
+            return await prisma.post.upsert({
                 where: { slug: post.slug },
                 update: {
                     title: post.title,
@@ -62,7 +62,7 @@ const syncWithDb = async () => {
 
     return {
         message: 'Database updated successfully',
-        updated
+        updatedSlugs: updated.map((post) => post.slug)
     }
 }
 

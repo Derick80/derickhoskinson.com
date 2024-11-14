@@ -2,17 +2,42 @@
 import { z } from 'zod'
 
 export const frontMatterSchema = z.object({
-    title: z.string(),
-    date: z.string(),
-    author: z.string(),
-    description: z.string(),
-    imageUrl: z.string().optional(),
-    published: z.boolean(),
-    categories: z.array(z.string()),
+    title: z.string(
+        {
+            required_error: 'Title is required You forgot to add a title in the front matter'
+        }
+    ),
+    date: z.string(
+        {
+            required_error: 'Date is required You forgot to add a date in the front matter'
+        }
+    ),
+    author: z.string(
+        {
+            required_error: 'Author is required You forgot to add an author in the front matter'
+        }
+    ),
+    description: z.string(
+        {
+            required_error: 'Description is required'
+        }
+    ),
+    imageUrl: z.string().optional().optional(),
+    published: z.boolean(
+        {
+            required_error: 'Published is required'
+        }
+    ),
+    categories: z.array(z.string(
+        {
+            required_error: 'At least one category should be assigned.'
+
+        }
+    )),
     slug: z.string(),
-    readingTime: z.string(),
-    wordCount: z.number(),
-    content: z.string()
+    readingTime: z.string().optional(),
+    wordCount: z.number().optional(),
+    content: z.string().optional()
 })
 export type MDXFrontMatter = z.infer<typeof frontMatterSchema>
 

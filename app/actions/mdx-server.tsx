@@ -1,10 +1,14 @@
 'use server'
 import path from 'path'
-import fs from 'fs'
 import readingTime from 'reading-time'
 import { createHighlighter } from 'shiki'
 import { cn } from '@/lib/utils'
 import { frontMatterSchema, MDXFrontMatter } from '@/lib/types'
+import crypto from 'crypto';
+import * as fs from 'node:fs/promises';
+import { cache } from 'react'
+
+
 
 /* Parsing front matter */
 
@@ -40,11 +44,11 @@ const parseTheFrontmatter = (fileContent: string) => {
             metadata.published = value === 'true'
         } else {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ;(metadata as any)[key] = value
+            ; (metadata as any)[key] = value
         }
     })
 
-    metadata.slug = metadata.title?.replace(/\s+/g, '-').toLowerCase()
+    metadata.slug = generateSlug(metadata.title || '')
     metadata.readingTime = readingTime(content).text
     metadata.wordCount = content.split(/\s+/g).length
     metadata.content = content
@@ -74,24 +78,47 @@ export const CodeBlock = async ({ code }: { code: string }) => {
         theme: 'nord'
     })
 
-    return <div dangerouslySetInnerHTML={{ __html: out }} />
+    return <div dangerouslySetInnerHTML={ { __html: out } } />
 }
 
-const POSTS_FOLTER = path.join(process.cwd(), 'app/blog/content')
+const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
 
 // Write a function to get all front matter and content
 
-export const getAllPosts = async (): Promise<MDXFrontMatter[]> => {
-    const files = fs
-        .readdirSync(POSTS_FOLTER)
-        .filter((file) => path.extname(file) === '.mdx')
+export const getAllPosts = cache(async (): Promise<MDXFrontMatter[]> => {
+    const files = (await fs.readdir(POSTS_FOLDER)).filter((file) => path.extname(file) === '.mdx')
 
-    const metadata = files.map((file) => {
-        const { metadata } = parseTheFrontmatter(
-            fs.readFileSync(path.join(POSTS_FOLTER, file), 'utf-8')
+    const metadata = await Promise.all(
+        files.map(async (file) => {
+            const fileContent = await fs.readFile(path.join(POSTS_FOLDER, file), 'utf-8')
+            const { metadata } = parseTheFrontmatter(fileContent)
+
+
+            return metadata
+
+        }
         )
-        // Modify the metadata here if needed
-        return metadata
-    })
+    )
     return metadata
+}
+
+)
+
+
+
+
+
+
+function abbreviateWord (word: string): string {
+    return word.length > 5 ? word.slice(0, 3) + word.length : word;
+}
+
+function generateSlug (title: string): string {
+    const hash = crypto.createHash('md5').update(title).digest('hex').slice(0, 6);
+    const shortTitle = title
+        .split(' ')
+        .map(abbreviateWord)
+        .join('-')
+        .toLowerCase();
+    return `${shortTitle}-${hash}`;
 }
