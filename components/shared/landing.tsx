@@ -1,8 +1,4 @@
-import Biography from "@/components/about/bio";
-import AboutImage from "@/components/about/about-image";
-import ProfessionalSummary from "@/components/about/professiona-summary";
 import Socials from "@/components/about/socials";
-import NowReading from "@/components/about/now-reading";
 import { aboutMeDetails, hobbies } from "../about/about";
 import { Briefcase, GraduationCap, Heart, MapPin } from "lucide-react";
 import {
@@ -19,64 +15,60 @@ import { Button } from "../ui/button";
 const LandingAbout = ({ preview = true }: { preview?: boolean }) => {
   return (
     <>
-      <div id="Introduction" className="flex items-center gap-8 overflow-hidden">
-        <div className="space-y-4 flex flex-col justify-between md:justify-normal h-full">
-          <div
-            className='space-y-1'
-          >
-
-            <h3>
-              { aboutMeDetails.fullname }
-            </h3>
+      <div
+        id="Introduction"
+        className="flex items-center gap-8 overflow-hidden"
+      >
+        <div className="flex h-full flex-col justify-between space-y-4 md:justify-normal">
+          <div className="space-y-1">
+            <h3>{aboutMeDetails.fullname}</h3>
             <p className="text-xl italic text-muted-foreground">
-              { aboutMeDetails.title }
+              {aboutMeDetails.title}
             </p>
 
-            <Card
-
-            >
+            <Card>
               <CardContent className="flex pt-6">
-                <div
-                  className='space-y-1 md:space-y-4'
-                >
-                  <p className="mb-4 text-lg">{ aboutMeDetails.description }</p>
+                <div className="space-y-1 md:space-y-4">
+                  <p className="mb-4 text-lg">{aboutMeDetails.description}</p>
                   <div className="mb-4 flex items-center text-muted-foreground">
                     <MapPin className="mr-2 h-4 w-4" />
                     <span>Chicago, IL</span>
                   </div>
-                  <Button variant="outline" size="sm" asChild className="mt-auto">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    asChild
+                    className="mt-auto"
+                  >
                     <a href="about">Read more about me</a>
                   </Button>
                 </div>
-
               </CardContent>
               <CardFooter>
                 <Socials />
               </CardFooter>
             </Card>
           </div>
-
         </div>
-        <div className="hidden md:flex md:flex-col items-center mt-20 ">
-          <div className="relative aspect-square overflow-hidden rounded-lg shadow-lg ">
+        <div className="mt-20 hidden items-center md:flex md:flex-col">
+          <div className="relative aspect-square overflow-hidden rounded-lg shadow-lg">
             <Image
               src="https://res.cloudinary.com/dch-photo/image/upload/c_crop,ar_3:4/v1731380562/blog_test_photos_23/voted24_lsaf4p.jpg"
-              alt={ `Photo of ${aboutMeDetails.fullname}` }
+              alt={`Photo of ${aboutMeDetails.fullname}`}
               priority
-              style={ {
-                width: '100%',
-                height: 'auto',
-              } }
-              width={ 500 }
-              height={ 300 }
-              className="transition-transform duration-300 hover:scale-105 object-contain"
+              style={{
+                width: "100%",
+                height: "auto",
+              }}
+              width={500}
+              height={300}
+              className="object-contain transition-transform duration-300 hover:scale-105"
             />
           </div>
         </div>
-
       </div>
 
-      { !preview && (
+      {!preview && (
         <>
           <Card>
             <CardHeader>
@@ -85,18 +77,18 @@ const LandingAbout = ({ preview = true }: { preview?: boolean }) => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">{ aboutMeDetails.hobbies }</p>
+              <p className="mb-4">{aboutMeDetails.hobbies}</p>
               <div className="space-y-4">
-                { hobbies.map((hobby, index) => (
-                  <div key={ index }>
+                {hobbies.map((hobby, index) => (
+                  <div key={index}>
                     <Badge variant="secondary" className="mb-2">
-                      { hobby.hobby }
+                      {hobby.hobby}
                     </Badge>
                     <p className="text-sm text-muted-foreground">
-                      { hobby.description }
+                      {hobby.description}
                     </p>
                   </div>
-                )) }
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -108,37 +100,37 @@ const LandingAbout = ({ preview = true }: { preview?: boolean }) => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p>{ aboutMeDetails.origin }</p>
+              <p>{aboutMeDetails.origin}</p>
             </CardContent>
           </Card>
 
           <div className="col-span-2 space-y-6">
             <h2 className="mb-4 text-2xl font-bold">Professional Summary</h2>
             <div className="flex w-full flex-row gap-4">
-              { aboutMeDetails.summary.map((item, index) => (
-                <Card key={ index }>
+              {aboutMeDetails.summary.map((item, index) => (
+                <Card key={index}>
                   <CardHeader>
                     <CardTitle className="flex items-center">
-                      { index === 0 ? (
+                      {index === 0 ? (
                         <Briefcase className="mr-2 h-5 w-5" />
                       ) : (
                         <GraduationCap className="mr-2 h-5 w-5" />
-                      ) }
-                      { item.title }
+                      )}
+                      {item.title}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      { item.duration }
+                      {item.duration}
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <p>{ item.description }</p>
+                    <p>{item.description}</p>
                   </CardContent>
                 </Card>
-              )) }
+              ))}
             </div>
           </div>
         </>
-      ) }
+      )}
     </>
   );
 };

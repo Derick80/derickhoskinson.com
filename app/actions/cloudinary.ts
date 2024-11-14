@@ -1,8 +1,20 @@
 "use server";
 import { z } from "zod";
-import cloudinary from "cloudinary";
+import cloudinary, { UploadApiResponse } from "cloudinary";
 import { NextRequest } from "next/server";
+import prisma from "@/lib/prisma";
+import { revalidateTag } from 'next/cache';
+import { cache } from "react";
 
+interface CloudinaryUploadResult {
+  secure_url: string;
+  public_id: string;
+  format: string;
+  width: number;
+  height: number;
+  bytes: number;
+  original_filename: string;
+}
 const NewImageSchema = z.object({
   imageField: z
     .array(z.instanceof(File))
@@ -12,6 +24,9 @@ const NewImageSchema = z.object({
     ),
   userId: z.string({
     required_error: "User ID is required",
+  }),
+  intent: z.string({
+    required_error: "Intent is required",
   }),
 });
 
@@ -29,81 +44,44 @@ cloudinary.v2.config({
   api_secret: apiSecret,
 });
 
-export const UploadImagesToCloudinary = async (
-  files: File[],
-  userId: string,
-) => {
-  const uploadedImages = await Promise.all(
-    files.map(async (file) => {
-      const result = await cloudinary.v2.uploader.upload_stream(
-        {
-          folder: "blog_testing_24",
-          filename_override: __filename,
-          discard_original_filename: false,
-          use_filename: true,
-          unique_filename: false,
-          overwrite: true,
-          transformation: [{ quality: "auto" }],
-        },
-        (error, result) => {
-          if (error) {
-            throw error;
-          }
-          return result;
-        },
-      );
-    }),
-  );
+export const create = cache(async (formData: FormData) => {
+  const validatedFields = NewImageSchema.safeParse({
+    imageField: formData.getAll("imageField"),
+    userId: formData.get("userId"),
+    intent: formData.get("intent"),
 
-  return uploadedImages;
-};
-
-export const uploadImages = async (formData: FormData) => {
-  const files = formData.getAll("imageField") as File[];
-  const userId = formData.get("userId") as string;
-  // with a single file the next line would be const arrayBuffer = await file.arrayBuffer(). but I have multiple files
-  for (const file of files) {
-    const arrayBuffer = await file.arrayBuffer();
-    const uploadResult = await new Promise((resolve, reject) => {
-      cloudinary.v2.uploader
-        .upload_stream(
-          {
-            folder: "blog_testing_24",
-            filename_override: file.name,
-            discard_original_filename: false,
-            use_filename: true,
-            unique_filename: false,
-            overwrite: true,
-            transformation: [{ quality: "auto" }],
-          },
-          (error, result) => {
-            if (error || !result) reject(error);
-            else resolve(result);
-          },
-        )
-        .end(Buffer.from(arrayBuffer));
-    });
-    return uploadResult;
+  });
+  if (!validatedFields.success) {
+    return {
+      message: validatedFields.error?.flatten().fieldErrors,
+    };
   }
-};
 
-export const create = async (formData: FormData) => {
   const files = formData.getAll("imageField") as File[];
+
   const userId = formData.get("userId") as string;
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+  if (!user) {
+    throw new Error("User not found");
+  }
 
   const uploadPromises = files.map(async (file) => {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = new Uint8Array(arrayBuffer);
 
-    return new Promise((resolve, reject) => {
+    return new Promise<CloudinaryUploadResult>((resolve, reject) => {
       cloudinary.v2.uploader
         .upload_stream(
           {
-            folder: "blog_testing_24",
+            folder: "dh-com",
             filename_override: file.name,
             discard_original_filename: false,
             use_filename: true,
-            unique_filename: false,
+            unique_filename: true,
             overwrite: true,
             transformation: [{ quality: "auto" }],
           },
@@ -114,8 +92,27 @@ export const create = async (formData: FormData) => {
         )
         .end(buffer);
     });
-  });
+  })
   // wait for files to upload
   const uploadResults = await Promise.all(uploadPromises);
-  return uploadResults;
-};
+  const saveImages = await Promise.all(
+    uploadResults.map(async (result) => {
+      return prisma.userImage.create({
+        data: {
+          userId: user.id,
+          cloudinaryId: result.public_id,
+          imageUrl: result.secure_url,
+          fileName: result.original_filename,
+          userAvatar: false,
+          width: result.width,
+          height: result.height,
+        },
+      });
+    }),
+  );
+  revalidateTag('userImages');
+  return saveImages;
+
+}
+
+)

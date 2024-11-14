@@ -26,3 +26,25 @@ export const blogPostSchema = z.object({
   slug: z.string(),
 });
 export type BlogPost = z.infer<typeof blogPostSchema>;
+
+export type AuthedUserMore = {
+  id: string;
+  name: string | null;
+  email: string;
+  emailVerified: boolean | null;
+  userImages: {
+    imageUrl: string;
+    userAvatar: boolean;
+  }[];
+};
+
+export type CustomUserImageType = {
+  id: string;
+  userId: string;
+  imageUrl: string | null;
+  cloudinaryId: string;
+  fileName: string;
+  width: number;
+  height: number;
+  userAvatar: boolean;
+};

@@ -29,6 +29,8 @@ model UserImage {
   imageUrl     String
   cloudinaryId String   @unique
   fileName     String   @unique
+  width        Int
+  height       Int
   userAvatar   Boolean
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
@@ -36,6 +38,8 @@ model UserImage {
 
   @@index([userId])
   @@index([imageUrl])
+  @@index([cloudinaryId])
+  @@index([fileName])
 }
 
 model Session {

@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { getAllPosts } from "../actions/mdx-server";
 import { BlogCard } from "@/components/blog/blog-card";
 
-export default async function Blog () {
+export default async function Blog() {
   const posts = await getAllPosts();
   if (!posts) return null;
   return (
@@ -15,10 +15,10 @@ export default async function Blog () {
         clicking on the Read More button.
       </p>
 
-      <Suspense fallback={ <p>Loading results...</p> }>
-        { posts.map(
-          (post) => post.slug && <BlogCard key={ post.slug } { ...post } />,
-        ) }
+      <Suspense fallback={<p>Loading results...</p>}>
+        {posts.map(
+          (post) => post.slug && <BlogCard key={post.slug} {...post} />,
+        )}
       </Suspense>
     </div>
   );

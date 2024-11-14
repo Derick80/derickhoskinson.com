@@ -41,7 +41,7 @@ export const UserImageDisplay = ({
                   <AvatarImage src={user.imageUrl} alt={`one of my avatars`} />
                 ) : (
                   <AvatarFallback>
-                    <User className="h-10 w-10 text-gray-400" />
+                    <User className="h-10 w-10 text-muted-foreground" />
                   </AvatarFallback>
                 )}
               </Avatar>

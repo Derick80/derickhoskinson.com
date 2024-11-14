@@ -143,7 +143,6 @@ export const verifySession = cache(async () => {
   if (!cookie) {
     return null;
   }
-  console.log(cookie, "cookie");
   if (!cookie?.value) {
     return null;
   }
@@ -228,12 +227,25 @@ export const logout = async () => {
   redirect("/");
 };
 
-export const getUser = async (userId: string) => {
+export const getUser = cache(async () => {
+  const session = await verifySession();
+  if (!session) {
+    return null;
+  }
+  const { userId } = session;
+
+  const isAuthenticated = userId ? true : false;
+
   const user = await prisma.user.findUnique({
     where: {
       id: userId,
     },
-    include: {
+
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      emailVerified: true,
       userImages: true,
     },
   });
@@ -241,4 +253,4 @@ export const getUser = async (userId: string) => {
     return null;
   }
   return user;
-};
+});
