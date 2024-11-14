@@ -81,11 +81,7 @@ const POSTS_FOLTER = path.join(process.cwd(), "app/blog/content");
 
 // Write a function to get all front matter and content
 
-export const getAllPosts = async (
-  category?: string[],
-): Promise<MDXFrontMatter[]> => {
-  const selectedCategory = category;
-
+export const getAllPosts = async (): Promise<MDXFrontMatter[]> => {
   const files = fs
     .readdirSync(POSTS_FOLTER)
     .filter((file) => path.extname(file) === ".mdx");
@@ -97,13 +93,5 @@ export const getAllPosts = async (
     // Modify the metadata here if needed
     return metadata;
   });
-
-  // if there is a category filter the posts
-  if (selectedCategory && selectedCategory.length > 0) {
-    const filteredPosts = metadata.filter((post) =>
-      selectedCategory.some((cat) => post.categories.includes(cat)),
-    );
-    return filteredPosts;
-  }
   return metadata;
 };

@@ -3,7 +3,7 @@ import { z } from "zod";
 import cloudinary, { UploadApiResponse } from "cloudinary";
 import { NextRequest } from "next/server";
 import prisma from "@/lib/prisma";
-import { revalidateTag } from 'next/cache';
+import { revalidateTag } from "next/cache";
 import { cache } from "react";
 
 interface CloudinaryUploadResult {
@@ -49,7 +49,6 @@ export const create = cache(async (formData: FormData) => {
     imageField: formData.getAll("imageField"),
     userId: formData.get("userId"),
     intent: formData.get("intent"),
-
   });
   if (!validatedFields.success) {
     return {
@@ -92,7 +91,7 @@ export const create = cache(async (formData: FormData) => {
         )
         .end(buffer);
     });
-  })
+  });
   // wait for files to upload
   const uploadResults = await Promise.all(uploadPromises);
   const saveImages = await Promise.all(
@@ -110,9 +109,27 @@ export const create = cache(async (formData: FormData) => {
       });
     }),
   );
-  revalidateTag('userImages');
+  revalidateTag("userImages");
   return saveImages;
+});
 
-}
-
-)
+export const deleteImage = cache(async (cloudinaryId: string) => {
+  {
+    const image = await prisma.userImage.findUnique({
+      where: {
+        cloudinaryId,
+      },
+    });
+    if (!image) {
+      throw new Error("Image not found");
+    }
+    await cloudinary.v2.uploader.destroy(image.cloudinaryId);
+    await prisma.userImage.delete({
+      where: {
+        cloudinaryId,
+      },
+    });
+    revalidateTag("userImages");
+    return image;
+  }
+});

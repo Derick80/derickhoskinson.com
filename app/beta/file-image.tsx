@@ -7,41 +7,22 @@ import {
 import React from "react";
 import { flushSync } from "react-dom";
 import { ProfileImageDisplayProps } from "./profile-image-display";
+import { deleteImage } from "../actions/cloudinary";
 
 export type FileImageProps = {
-  userImage: ProfileImageDisplayProps;
-  onDelete: () => void;
+  cloudinaryId: string;
   children: React.ReactNode;
 };
-const FileImage = ({ userImage, onDelete, children }: FileImageProps) => {
-  console.log(userImage, "userImage");
-  const [isHidden, setIsHidden] = React.useState(false);
-
-  if (isHidden) return null;
-
-  const handleDelete = () => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete this image?",
-    );
-    if (isConfirmed) {
-      flushSync(() => {
-        setIsHidden(true);
-        onDelete();
-      });
-    }
-  };
+const FileImage = ({ cloudinaryId, children }: FileImageProps) => {
+  const deleteImageWithCloudinaryId = deleteImage.bind(null, cloudinaryId);
 
   return (
     <div className="group relative">
-      <input type="hidden" name="fileUrl" />
-      <input type="hidden" name="fileName" />
-
-      <input type="hidden" name="cloudinaryId" />
       {children}
       {/* // if you delete an image it falls back to the placeholder image */}
       <button
         type="button"
-        onClick={handleDelete}
+        onClick={deleteImageWithCloudinaryId}
         className="absolute -right-[0.625rem] -top-[0.125rem] block rounded-full bg-white text-black text-black/50"
       >
         <CrossCircledIcon />

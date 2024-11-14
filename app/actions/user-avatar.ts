@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 export const getUserImages = async (userId: string) => {
-  return await prisma.userImage.findMany({
+  const userImages = await prisma.userImage.findMany({
     where: {
       userId,
     },
@@ -19,6 +19,30 @@ export const getUserImages = async (userId: string) => {
       },
     ],
   });
+  // We want to limit the number of images to 4 for the user so we want to return dummy images if the user has less than 4 images
+
+  const arrayLength = userImages.length;
+  // get the difference between the length of the userImages and 4
+  const difference = 4 - arrayLength;
+  // if the difference is greater than 0, then we need to add dummy images
+  if (difference > 0) {
+    for (let i = 0; i < difference; i++) {
+      userImages.push({
+        id: `dummy-${i}`,
+        imageUrl: "/assets/images/placeholder-user.jpg",
+        userAvatar: false,
+        fileName: `dummy-${i}`,
+        cloudinaryId: "",
+        width: 200,
+        height: 200,
+        userId: "",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+    }
+  }
+
+  return userImages;
 };
 
 export const starUserImage = async (imageId: string) => {

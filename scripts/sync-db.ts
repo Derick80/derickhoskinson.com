@@ -9,12 +9,9 @@ const shouldUpdate = async () => {
     return false;
   }
 
-
   const dbPosts = await prisma.post.findMany();
-  const dbSlugs = new Set(dbPosts.map(post => post.slug));
-  const newSlugs = new Set(posts.map(post => post.slug));
-
-
+  const dbSlugs = new Set(dbPosts.map((post) => post.slug));
+  const newSlugs = new Set(posts.map((post) => post.slug));
 
   // Check if there are any new or missing slugs
   if (dbSlugs.size !== newSlugs.size) {
@@ -29,8 +26,6 @@ const shouldUpdate = async () => {
 
   return false;
 };
-
-
 
 const syncWithDb = async () => {
   const needsUpdating = await shouldUpdate();
@@ -62,7 +57,7 @@ const syncWithDb = async () => {
           slug: post.slug,
         },
       });
-    })
+    }),
   );
 
   return {

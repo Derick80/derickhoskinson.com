@@ -2,7 +2,7 @@ import { CustomUserImageType } from "@/lib/types";
 import Image from "next/image";
 
 export type ProfileImageDisplayProps = {
-  userImages: CustomUserImageType[];
+  userImages: CustomUserImageType;
 };
 
 const ProfileImageDisplay = ({ userImages }: ProfileImageDisplayProps) => {
