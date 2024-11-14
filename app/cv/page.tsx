@@ -1,15 +1,15 @@
-import ResumeCard from "@/components/resume/resume-component";
-import ResumeNavBar from "@/components/resume/resume-nav-bar";
-import { resume_basics } from "@/lib/resources/resume";
-import { generateResumeMetadata } from "./resume-metadata";
+import ResumeCard from '@/components/resume/resume-component'
+import ResumeNavBar from '@/components/resume/resume-nav-bar'
+import { resume_basics } from '@/lib/resources/resume'
+import { generateResumeMetadata } from './resume-metadata'
 
-export const metadata = generateResumeMetadata();
+export const metadata = generateResumeMetadata()
 
 export default function ResumeRoute() {
-  return (
-    <div className="mt-4 flex min-h-screen flex-col items-center py-2">
-      <ResumeCard cv={resume_basics} />
-      <ResumeNavBar />
-    </div>
-  );
+    return (
+        <div className='mt-4 flex min-h-screen flex-col items-center py-2'>
+            <ResumeCard cv={resume_basics} />
+            <ResumeNavBar />
+        </div>
+    )
 }

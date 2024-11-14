@@ -1,75 +1,75 @@
-import { createEmailVerificationToken } from "@/app/actions/auth";
-import { redirect } from "next/navigation";
+import { createEmailVerificationToken } from '@/app/actions/auth'
+import { redirect } from 'next/navigation'
 
 export async function sendEmailVerification(
-  email: string,
-  provider: {
-    apiKey: string;
-    from: string;
-  },
-  theme: Theme = {},
-) {
-  const token = await createEmailVerificationToken(email);
-  const url = process.env.NEXT_PUBLIC_BASE_URL;
-  if (!url) throw new Error("NEXT_PUBLIC_BASE_URL is not set");
-
-  const { host } = new URL(url);
-  console.log("host", host);
-  console.log("url", url);
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${provider.apiKey}`,
-      "Content-Type": "application/json",
+    email: string,
+    provider: {
+        apiKey: string
+        from: string
     },
-    body: JSON.stringify({
-      from: provider.from,
-      name: email,
-      to: email,
-      subject: `verify Your email ${email} at ${host}`,
-      html: html({ url, host, theme, email, token }),
-      text: text({ url, host }),
-    }),
-  });
+    theme: Theme = {}
+) {
+    const token = await createEmailVerificationToken(email)
+    const url = process.env.NEXT_PUBLIC_BASE_URL
+    if (!url) throw new Error('NEXT_PUBLIC_BASE_URL is not set')
 
-  if (!res.ok)
-    throw new Error("Resend error: " + JSON.stringify(await res.json()));
+    const { host } = new URL(url)
+    console.log('host', host)
+    console.log('url', url)
+    const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${provider.apiKey}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            from: provider.from,
+            name: email,
+            to: email,
+            subject: `verify Your email ${email} at ${host}`,
+            html: html({ url, host, theme, email, token }),
+            text: text({ url, host })
+        })
+    })
 
-  redirect("/");
+    if (!res.ok)
+        throw new Error('Resend error: ' + JSON.stringify(await res.json()))
+
+    redirect('/')
 }
 
 type Theme = {
-  brandColor?: string;
-  buttonText?: string;
-};
+    brandColor?: string
+    buttonText?: string
+}
 
 function html(params: {
-  email?: string;
-  url: string;
-  host: string;
-  theme: Theme;
-  token?: string;
+    email?: string
+    url: string
+    host: string
+    theme: Theme
+    token?: string
 }) {
-  const { email, url, host, theme, token } = params;
+    const { email, url, host, theme, token } = params
 
-  const httpUrl =
-    process.env.NODE_ENV === "production"
-      ? `https://${host}`
-      : "http://localhost:3000";
-  const confirmLink = `${httpUrl}/verify-email?token=${token}&email=${encodeURIComponent(email || "")}`;
-  const escapedHost = host.replace(/\./g, "&#8203;.");
-  console.log("escapedHost", escapedHost);
-  const brandColor = theme.brandColor || "#346df1";
-  const color = {
-    background: "#f9f9f9",
-    text: "#444",
-    mainBackground: "#fff",
-    buttonBackground: brandColor,
-    buttonBorder: brandColor,
-    buttonText: theme.buttonText || "#fff",
-  };
+    const httpUrl =
+        process.env.NODE_ENV === 'production'
+            ? `https://${host}`
+            : 'http://localhost:3000'
+    const confirmLink = `${httpUrl}/verify-email?token=${token}&email=${encodeURIComponent(email || '')}`
+    const escapedHost = host.replace(/\./g, '&#8203;.')
+    console.log('escapedHost', escapedHost)
+    const brandColor = theme.brandColor || '#346df1'
+    const color = {
+        background: '#f9f9f9',
+        text: '#444',
+        mainBackground: '#fff',
+        buttonBackground: brandColor,
+        buttonBorder: brandColor,
+        buttonText: theme.buttonText || '#fff'
+    }
 
-  return `
+    return `
 <body style="background: ${color.background};">
   <table width="100%" border="0" cellspacing="20" cellpadding="0"
     style="background: ${color.mainBackground}; max-width: 600px; margin: auto; border-radius: 10px;">
@@ -108,10 +108,10 @@ ${confirmLink}
         ${confirmLink} confirm link
         ${url} url
 </body>
-`;
+`
 }
 
 // Email Text body (fallback for email clients that don't render HTML, e.g. feature phones)
 function text({ url, host }: { url: string; host: string }) {
-  return `Sign in to ${host}\n${url}\n\n`;
+    return `Sign in to ${host}\n${url}\n\n`
 }
