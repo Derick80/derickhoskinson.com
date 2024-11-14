@@ -21,7 +21,7 @@ if (!apiKey) {
 
 type aboutEmailType = z.infer<typeof schema>
 
-export async function sendContactEmail(
+export async function sendContactEmail (
     prevState: Record<string, unknown>,
     formData: FormData
 ) {

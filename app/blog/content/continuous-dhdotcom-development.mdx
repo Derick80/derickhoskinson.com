@@ -8,7 +8,6 @@ imageUrl: https://res.cloudinary.com/dch-photo/image/upload/v1729130284/personal
 categories: [Documentation]
 ---
 
-
 # Continuous dhdotcom Development
 
 { /* insert MDX: Alert */}
@@ -17,11 +16,8 @@ before a line break…
 
 ***
 
-
-
 ## Testing
 ```typescript
-
 export const getAllPosts = cache(async (): Promise<MdxCompiled[]> => {
     const files = (await fs.readdir(POSTS_FOLDER)).filter(
         (file) => path.extname(file) === '.mdx'
@@ -67,7 +63,7 @@ But it looks like I did finally solve it
 ### Code to turn off text prediction in vscode
 
 ```json
-    "[mdx]": {
+"[mdx]": {
   "editor.quickSuggestions": {
     "other": false,
     "comments": false,

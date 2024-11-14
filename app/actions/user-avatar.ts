@@ -4,8 +4,8 @@ import prisma from '@/lib/prisma'
 import { verifySession } from './auth'
 import { redirect } from 'next/navigation'
 import { revalidatePath, revalidateTag } from 'next/cache'
-
-export const getUserImages = async (userId: string) => {
+import { cache } from 'react'
+export const getUserImages = cache(async (userId: string) => {
     const userImages = await prisma.userImage.findMany({
         where: {
             userId
@@ -44,7 +44,7 @@ export const getUserImages = async (userId: string) => {
 
     return userImages
 }
-
+)
 export const starUserImage = async (imageId: string) => {
     const session = await verifySession()
     if (!session) redirect('/login')
