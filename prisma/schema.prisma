@@ -28,7 +28,7 @@ model UserImage {
   userId       String
   imageUrl     String
   cloudinaryId String   @unique
-  fileName     String   @unique
+  fileName     String
   width        Int
   height       Int
   userAvatar   Boolean

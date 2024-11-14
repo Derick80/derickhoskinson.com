@@ -13,7 +13,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
 import { User } from 'lucide-react'
-import ToggleTheme from './toggle-theme'
+import ToggleTheme from '../theme/toggle-theme'
 
 const NavigationBar = async () => {
     const userData = await getUser()
@@ -21,7 +21,7 @@ const NavigationBar = async () => {
     return (
         <nav className='fixed left-0 right-0 top-0 z-50 flex items-center justify-between bg-background/80 px-4 shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out sm:px-6 lg:px-8'>
             <NavLinks />
-            <ToggleTheme />
+
             <NavigationPath />
             <div className='flex items-center space-x-4'>
                 { userData !== null && (
@@ -61,7 +61,7 @@ const NavigationBar = async () => {
                                 <Link href='/profile'>Profile</Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                <ModeToggle />
+
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <Link href='/logout'>Logout</Link>
@@ -71,11 +71,8 @@ const NavigationBar = async () => {
                 ) }
 
                 { !userData && <Link href='/login'>Login</Link> }
-                { userData === null &&
-                    <ModeToggle />
-
-                }
-            </div>{ ' ' }
+                <ToggleTheme />
+            </div>
         </nav>
     )
 }
