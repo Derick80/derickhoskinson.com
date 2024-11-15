@@ -43,8 +43,7 @@ export const getUserImages = cache(async (userId: string) => {
     }
 
     return userImages
-}
-)
+})
 export const starUserImage = async (imageId: string) => {
     const session = await verifySession()
     if (!session) redirect('/login')

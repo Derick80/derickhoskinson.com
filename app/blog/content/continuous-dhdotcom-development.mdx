@@ -17,6 +17,7 @@ before a line break…
 ***
 
 ## Testing
+
 ```typescript
 export const getAllPosts = cache(async (): Promise<MdxCompiled[]> => {
     const files = (await fs.readdir(POSTS_FOLDER)).filter(

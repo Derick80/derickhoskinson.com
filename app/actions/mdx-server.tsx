@@ -3,14 +3,14 @@ import path from 'path'
 import readingTime from 'reading-time'
 import { createHighlighter } from 'shiki'
 import { cn } from '@/lib/utils'
-import { FrontMatter, frontMatter, mdxcompiled, MdxCompiled } from '@/lib/types'
-import crypto from 'crypto'
+import { FrontMatter, mdxcompiled, MdxCompiled } from '@/lib/types'
 import * as fs from 'node:fs/promises'
-import { cache } from 'react'
-import { toJsxRuntime } from 'hast-util-to-jsx-runtime'
-import { Fragment } from 'react'
-import { jsx, jsxs } from 'react/jsx-runtime'
-import { codeToHast } from 'shiki'
+import { cache, DetailedHTMLProps, HTMLAttributes } from 'react'
+import matter from 'gray-matter'
+import { compileMDX } from 'next-mdx-remote/rsc'
+import remarkGfm from 'remark-gfm'
+import { ImageProps } from 'next/image'
+import { CldImage } from 'next-cloudinary'
 /* Parsing front matter */
 
 const parseTheFrontmatter = (fileContent: string) => {
@@ -56,12 +56,10 @@ const parseTheFrontmatter = (fileContent: string) => {
             posts.published = value === 'true'
         } else {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            ; (posts as
-                any
-            )[key] = value
+            ;(posts as any)[key] = value
         }
     })
-    posts.slug = posts.title.replace(/\s+/g, "-").toLowerCase() || ''
+    posts.slug = posts.title.replace(/\s+/g, '-').toLowerCase() || ''
 
     posts.readingTime = readingTime(content).text
     posts.wordCount = content.split(/\s+/g).length
@@ -86,24 +84,17 @@ const highlighter = createHighlighter({
     langs: ['typescript', 'javascript', 'html', 'css']
 })
 
+const options = {
+    lang: 'typescript',
+    themes: {
+        dark: 'nord',
+        light: 'nord'
+    }
+}
+
 export const CodeBlock = async ({ code }: { code: string }) => {
-    const out = (await highlighter).codeToHast(code, {
-        lang: 'typescript',
-        themes: {
-            dark: 'poimandres',
-            light: 'nord'
-        }
-    })
-    console.log(out)
-    return toJsxRuntime(out, {
-        Fragment,
-        jsx,
-        jsxs,
-        components: {
-            // your custom `pre` element
-            pre: props => <pre data-custom-codeblock { ...props } />
-        },
-    })
+    const out = (await highlighter).codeToHast(code, options)
+    return <div dangerouslySetInnerHTML={{ __html: out }} />
 }
 
 const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
@@ -122,18 +113,67 @@ export const getAllPosts = cache(async (): Promise<MdxCompiled[]> => {
                 'utf-8'
             )
             const { posts } = parseTheFrontmatter(fileContent)
-
+            posts.slug = file.replace(/\.mdx$/, '')
             return posts
         })
     )
     return posts
 })
 
-function abbreviateWord (word: string): string {
-    const removeSpecialChars = word.replace(/[^a-zA-Z ]/g, '')
+const POSTS_FOLTER = path.join(process.cwd(), 'app/blog/content')
 
-    return removeSpecialChars.length > 5
-        ? removeSpecialChars.slice(0, 3) + removeSpecialChars.length
-        : removeSpecialChars
-
+export const getPostBySlug = cache(async (slug: string) => {
+    const filePath = path.join(POSTS_FOLTER, `${slug}.mdx`)
+    const fileContent = await fs.readFile(filePath, 'utf8')
+    const content_two = await matter(fileContent)
+    const { frontmatter, content } = await compileMDX<FrontMatter>({
+        source: content_two.content,
+        options: {
+            parseFrontmatter: true,
+            mdxOptions: {
+                remarkPlugins: [remarkGfm],
+                rehypePlugins: []
+            }
+        },
+        components: {
+            pre: ({
+                children,
+                ...props
+            }: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) => (
+                <CodeBlock code={content_two.content} {...props} />
+            ),
+            img: ({ src, ...props }: ImageProps) => (
+                <div className={cn('relative', props.className)}>
+                    <CldImage
+                        src={String(src)}
+                        width={250}
+                        height={props.height || 250}
+                        {...props}
+                        alt='blog image'
+                    />
+                </div>
+            )
+        }
+    })
+    return {
+        meta: {
+            ...frontmatter,
+            slug
+        },
+        content_two: fileContent,
+        content
+    }
+})
+export const getPostsMetaData = async () => {
+    const files = await fs.readdir(POSTS_FOLTER)
+    const posts = []
+    for (const fileName of files) {
+        const { meta } = await getPostBySlug(fileName)
+        posts.push(meta)
+    }
+    return posts
+}
+export const getPageData = async (slug: string) => {
+    const { meta, content_two, content } = await getPostBySlug(slug)
+    return { meta, content, content_two }
 }
