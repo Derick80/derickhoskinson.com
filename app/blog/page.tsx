@@ -20,13 +20,10 @@ export default async function Blog () {
             {
                 frontmatter.map((post) => (
                     post.slug && (
-                        <Suspense
+
+                        <BlogCard
                             key={ post.slug }
-                            fallback={ <p>Loading...</p> }>
-                            <BlogCard
-                                key={ post.slug }
-                                { ...post } />
-                        </Suspense>
+                            { ...post } />
                     )
                 ))
             }

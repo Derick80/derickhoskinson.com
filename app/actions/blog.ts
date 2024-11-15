@@ -1,10 +1,9 @@
-import { FrontMatter, mdxcompiled, MdxCompiled } from '@/lib/types'
+import { MdxCompiled } from '@/lib/types'
 import rehypeShiki from '@shikijs/rehype'
 import { compileMDX } from 'next-mdx-remote/rsc'
 import path from 'path'
 import { cache } from 'react'
 import rehypeSlug from 'rehype-slug'
-import rehypeStringify from 'rehype-stringify'
 import remarkGfm from 'remark-gfm'
 import { mdxComponents } from './mdx-config'
 import * as fs from 'fs/promises'
@@ -18,7 +17,6 @@ export const getPostBySlug = cache(async (slug: string) => {
     const source = await fs.readFile(filePath, 'utf8')
     const { content, frontmatter } = await compileMDX<MdxCompiled>({
         source: source,
-
         options: {
             parseFrontmatter: true,
             mdxOptions: {
@@ -27,13 +25,11 @@ export const getPostBySlug = cache(async (slug: string) => {
                     [
                         rehypeShiki,
                         {
-                            theme: 'nord',
+                            theme: 'aurora-x',
                             useBackground: false
                         }
                     ],
-                    rehypeSlug,
-                    rehypeStringify
-                ]
+                    rehypeSlug]
             }
         },
         components: mdxComponents.components
@@ -49,7 +45,7 @@ export const getPostBySlug = cache(async (slug: string) => {
     }
 })
 
-export const getPostsMetaData = async () => {
+export const getPostsMetaData = cache(async () => {
     const files = await fs.readdir(POSTS_FOLTER)
     const posts = []
     for (const fileName of files) {
@@ -57,11 +53,11 @@ export const getPostsMetaData = async () => {
         posts.push({ compiledSource, ...frontmatter })
     }
     return posts
-}
+})
 
 // Uses the getPostBySlug function to get the content and meta data of a page.
-export const getPageData = async (slug: string) => {
+export const getPageData = cache(async (slug: string) => {
     return await getPostBySlug(slug)
-}
+})
 
 
