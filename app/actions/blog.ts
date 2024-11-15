@@ -39,7 +39,6 @@ export const getPostBySlug = cache(async (slug: string) => {
         components: mdxComponents.components
     })
 
-    console.log(content, 'compiledSource at mdx-server.tsx')
     frontmatter.slug = slug
     frontmatter.readingTime = readingTime(source).text
     frontmatter.wordCount = source.split(/\s+/g).length
