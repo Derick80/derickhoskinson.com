@@ -1,13 +1,15 @@
-import { getAllPosts, getPageData } from '@/app/actions/mdx-server'
+
 import { Suspense } from 'react'
 import { blogPostSchema } from '@/lib/types'
-import MdxViewer from './mdx-viewer'
+import { getPageData, getPostsMetaData } from '@/app/actions/blog'
 
-export async function generateStaticParams() {
-    const posts = await getAllPosts()
-    return posts.map((post) => ({ params: { slug: post.slug } }))
+export async function generateStaticParams () {
+    const results = await getPostsMetaData()
+    if (!results) return []
+    const frontmatter = results
+    return frontmatter.map((post) => ({ params: { slug: post.slug } }))
 }
-export default async function BlogPost(props: {
+export default async function Page (props: {
     params: Promise<{
         slug: string
     }>
@@ -17,11 +19,13 @@ export default async function BlogPost(props: {
     if (!slug) {
         throw new Error('No slug provided')
     }
-    const { content, content_two } = await getPageData(slug)
+    const { frontmatter, compiledSource } = await getPageData(slug)
+    console.log(compiledSource, 'compiledSource at slug page.tsx')
     return (
         <div className='prose prose-zinc mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
-            <Suspense fallback={<>Loading...</>}>
-                <MdxViewer content={content_two} />
+            <Suspense fallback={ <>Loading...</> }>
+                { compiledSource }
+
             </Suspense>
         </div>
     )

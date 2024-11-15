@@ -1,10 +1,10 @@
-import { getAllPosts } from './actions/mdx-server'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import LandingAbout from '@/components/shared/landing'
 import ContactForm from '../components/about/contact-form'
 import PageOverLayBar from '@/components/shared/page-overlay-bar'
 import { BlogCard } from '@/components/blog/blog-card'
+import { getPostsMetaData } from './actions/blog'
 
 export const metadata: Metadata = {
     title: "Dr. Hoskinson's Blog",
@@ -29,8 +29,8 @@ export const metadata: Metadata = {
     }
 }
 
-export default async function Home() {
-    const posts = await getAllPosts()
+export default async function Home () {
+    const frontmatter = await getPostsMetaData()
     return (
         <>
             <section id='Introduction'>
@@ -45,18 +45,23 @@ export default async function Home() {
                     to my work.
                 </p>
 
-                <Suspense fallback={<p>Loading results...</p>}>
-                    {posts.map(
+                <Suspense fallback={ <p>Loading results...</p> }>
+                    { frontmatter.map(
                         (post) =>
-                            post.slug && <BlogCard key={post.slug} {...post} />
-                    )}
+                            post.slug && (
+                                <BlogCard
+                                    key={ post.slug }
+                                    { ...post }
+                                />
+                            )
+                    ) }
                 </Suspense>
             </section>
             <section id='contact' className='space-y-6'>
                 <h2 className='mb-10'>Get in Touch</h2>
                 <ContactForm />
             </section>
-            <PageOverLayBar sectionIds={['Introduction', 'Blog', 'Contact']} />
+            <PageOverLayBar sectionIds={ ['Introduction', 'Blog', 'Contact'] } />
         </>
     )
 }

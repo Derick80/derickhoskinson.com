@@ -1,9 +1,16 @@
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import { JSX } from 'react'
 
-const MdxViewer = async ({ content }: { content: string }) => {
+const options = {
+    themes: {
+        dark: 'nord',
+        light: 'github-light'
+    }
+}
+const MdxViewer = ({ mdxSource }: { mdxSource: string }) => {
     return (
         <div>
-            <MDXRemote content={content} />
+            <MDXRemote source={mdxSource} components={{}} />
         </div>
     )
 }

@@ -8,6 +8,34 @@ imageUrl: https://res.cloudinary.com/dch-photo/image/upload/v1693281996/blog_tes
 categories: [Feature, Documentation, ACMG, Variant-Alleles]
 ---
 
+```typescript
+<MDXRemote source={ mdxSource }
+                options={ {
+                    parseFrontmatter: true,
+                } }
+                components={ {
+                    pre: ({
+                        children,
+                        ...props
+                    }: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) => (
+                        <ClientCodeBlock code={
+                            mdxSource } { ...props } />
+                    ),
+                    img: ({ src, ...props }) => (
+                        <div className={ 'relative' }>
+                            <CldImage
+                                src={ String(src) }
+                                width={ 250 }
+                                height={ props.height || 250 }
+                                { ...props }
+                                alt='blog image'
+                            />
+                        </div>
+                    )
+                } }
+            />
+```
+
 # {frontmatter.title}
 
 I am building the calculators based on the version of the ACMG guidelines. In the future the ACMG guidelines will be updated to use a Bayesian point system. The most uptodate version of the calculator is based on a [slide deck](https://drive.google.com/drive/folders/1ATJQLhAWsD04F5cDopJ3rfAJDibJ_6Vm?usp=drive_link) from ClinGen.

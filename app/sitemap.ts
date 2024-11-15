@@ -1,8 +1,8 @@
 'use server'
 import { MetadataRoute } from 'next'
-import { getAllPosts } from './actions/mdx-server'
+import { getPostsMetaData } from './actions/blog'
 
-function getSiteUrl(path = '') {
+function getSiteUrl (path = '') {
     return new URL(
         path,
         process.env.NODE_ENV === 'development'
@@ -12,7 +12,7 @@ function getSiteUrl(path = '') {
 }
 const revalidate = 60
 
-export default async function sitemap() {
+export default async function sitemap () {
     const staticMap = [
         {
             url: getSiteUrl('/').href,
@@ -52,7 +52,7 @@ export default async function sitemap() {
         }
     ] satisfies MetadataRoute.Sitemap
 
-    const posts = await getAllPosts()
+    const posts = await getPostsMetaData()
     const dynamicMap = posts.map((post) => ({
         url: getSiteUrl(`/blog/${post.slug}`).href,
         lastModified: new Date().toISOString().split('T')[0]

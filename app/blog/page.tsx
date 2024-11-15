@@ -1,10 +1,12 @@
 import React, { Suspense } from 'react'
-import { getAllPosts } from '../actions/mdx-server'
-import { BlogCard } from '@/components/blog/blog-card'
 
-export default async function Blog() {
-    const posts = await getAllPosts()
-    if (!posts) return null
+import { BlogCard } from '@/components/blog/blog-card'
+import { getPostsMetaData } from '../actions/blog'
+
+export default async function Blog () {
+    const frontmatter = await getPostsMetaData()
+    if (!frontmatter) return null
+    console.log(frontmatter, 'frontmatter at blog.tsx')
     return (
         <div className='flex min-h-screen flex-col gap-4 py-2 md:gap-6'>
             <h1>Blog</h1>
@@ -15,12 +17,19 @@ export default async function Blog() {
                 the entire post by clicking on the Read More button.
             </p>
 
-            <Suspense fallback={<p>Loading results...</p>}>
-                {posts.map(
-                    (post) =>
-                        post.slug && <BlogCard key={post.slug} {...post} />
-                )}
-            </Suspense>
+            {
+                frontmatter.map((post) => (
+                    post.slug && (
+                        <Suspense
+                            key={ post.slug }
+                            fallback={ <p>Loading...</p> }>
+                            <BlogCard
+                                key={ post.slug }
+                                { ...post } />
+                        </Suspense>
+                    )
+                ))
+            }
         </div>
     )
 }

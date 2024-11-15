@@ -10,6 +10,8 @@ categories: [Documentation]
 
 # Continuous dhdotcom Development
 
+
+
 { /* insert MDX: Alert */}
 A backslash\
 before a line break…
@@ -45,6 +47,24 @@ This is a living document for the continuous development of derickhoskinson.com.
 ## Updates
 
 November 11 2024: Today I worked on fixing some layout issues. I decided that since I am primarily coding I won't stress about making individual blog posts for a while. Instead I'll do updates here. I am looking into creating a table (maybe sortable) where I can track my progress.
+
+
+#### Refactor code that compiles my MDX files.
+
+November 15 2024
+
+- Goals
+I am trying to optimize and better understand the code that I am using to generate my mdx compliations.
+
+- Issues:
+
+I am using MDX remote
+Originally I was using MDXRemote on the client after retreiving the data. I moved that MDXRemote which contains the mdxCompile function to the server and experienced issues.
+
+This shouldn't have been surprising. I am using ```<CldImage />``` component from next-cloudinary. This component is responsive and uses state so it must be run client side.
+
+To fix this issue I still serialize my mdx files on the server and add the compnoents that can be run on the server.  Then, on the page I used ```<MDXRemote />``` and passed the ```<CldImage />```  at that point.  This has worked.
+I  ```serialize``` values on the server
 
 ### Purpose
 
