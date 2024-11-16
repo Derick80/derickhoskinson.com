@@ -3,6 +3,7 @@ import { DetailedHTMLProps, HTMLAttributes } from 'react'
 import { blogPostSchema } from '@/lib/types'
 import { getOnePost } from '@/app/actions/blog'
 import { ImageProps } from 'next/image'
+import { CodeBlock } from '@/components/mdx/sync-functions'
 
 // import { MDXPre } from '@/components/mdx/sync-functions'
 // export async function generateStaticParams () {
@@ -28,7 +29,6 @@ export default async function Page (props: {
   const Component = compiledSource
   return (
     <div className='prose prose-zinc mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
-
       {
         compiledSource
       }

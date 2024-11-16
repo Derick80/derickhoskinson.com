@@ -79,7 +79,7 @@ export const getOnePost = async (slug: string) => {
                     [
                         rehypeShiki,
                         {
-                            theme: 'aurora-x',
+                            theme: 'nord',
                         }
                     ],
                     rehypeSlug]
