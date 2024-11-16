@@ -1,11 +1,11 @@
 import { MdxCompiled } from '@/lib/types'
-import rehypeShiki from '@shikijs/rehype'
 import { compileMDX } from 'next-mdx-remote/rsc'
 import path from 'path'
 import { cache } from 'react'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 import { mdxComponents } from './mdx-config'
+import rehypeShiki from '@shikijs/rehype'
 import * as fs from 'fs/promises'
 import readingTime from 'reading-time'
 import { serialize } from 'next-mdx-remote/serialize'
@@ -22,13 +22,7 @@ export const getPostBySlug = async (slug: string) => {
             mdxOptions: {
                 remarkPlugins: [remarkGfm],
                 rehypePlugins: [
-                    [
-                        rehypeShiki,
-                        {
-                            theme: 'aurora-x',
-                            useBackground: false
-                        }
-                    ],
+
                     rehypeSlug
                 ]
             }
@@ -53,6 +47,10 @@ export const getPostsMetaData = cache(async () => {
         const { frontmatter } = await getPostBySlug(fileName)
         posts.push({ ...frontmatter })
     }
+    if (!posts) {
+        throw new Error('No posts found')
+    }
+
     return posts
 })
 
@@ -103,4 +101,5 @@ export const getOnePost = async (slug: string) => {
         frontmatter,
         compiledSource: content
     }
+
 }
