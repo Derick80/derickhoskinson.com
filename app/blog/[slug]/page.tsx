@@ -23,8 +23,6 @@ export default async function Page(props: {
     }
 
     const { frontmatter, compiledSource } = await getOnePost(slug)
-    // const post = compiledSource
-    const Component = compiledSource
     return (
         <div className='prose prose-zinc mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
             {compiledSource}
