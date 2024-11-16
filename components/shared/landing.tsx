@@ -1,6 +1,5 @@
-import Socials from '@/components/about/socials'
 import { aboutMeDetails, hobbies } from '../about/about'
-import { Briefcase, GraduationCap, Heart, MapPin } from 'lucide-react'
+import { Briefcase, GraduationCap, Heart, MailIcon, MapPin } from 'lucide-react'
 import {
     Card,
     CardContent,
@@ -9,8 +8,10 @@ import {
     CardTitle
 } from '../ui/card'
 import { Badge } from '../ui/badge'
-import Image from 'next/image'
 import { Button } from '../ui/button'
+import CldImage from './client-cloudinary'
+import Link from 'next/link'
+import { LinkedInLogoIcon, GitHubLogoIcon, TwitterLogoIcon } from '@radix-ui/react-icons'
 
 const LandingAbout = ({ preview = true }: { preview?: boolean }) => {
     return (
@@ -21,29 +22,36 @@ const LandingAbout = ({ preview = true }: { preview?: boolean }) => {
             >
                 <div className='flex h-full flex-col justify-between space-y-4 md:justify-normal'>
                     <div className='space-y-1'>
-                        <h3>{aboutMeDetails.fullname}</h3>
+                        <h3>{ aboutMeDetails.fullname }</h3>
                         <p className='text-xl italic text-muted-foreground'>
-                            {aboutMeDetails.title}
+                            { aboutMeDetails.title }
                         </p>
 
                         <Card>
                             <CardContent className='flex pt-6'>
-                                <div className='space-y-1 md:space-y-4'>
+                                <div className='space-y-2 md:space-y-4'>
                                     <p className='mb-4 text-lg'>
-                                        {aboutMeDetails.description}
+                                        { aboutMeDetails.description }
                                     </p>
                                     <div className='mb-4 flex items-center text-muted-foreground'>
                                         <MapPin className='mr-2 h-4 w-4' />
                                         <span>Chicago, IL</span>
                                     </div>
-                                    <Button
-                                        variant='outline'
-                                        size='sm'
-                                        asChild
-                                        className='mt-auto'
-                                    >
-                                        <a href='about'>Read more about me</a>
-                                    </Button>
+                                    {
+                                        preview && <Button
+                                            variant='outline'
+                                            size='sm'
+                                            asChild
+                                            className='mt-auto'
+                                        >
+                                            <Link
+                                                href='/about'
+                                                prefetch
+                                            >
+                                                Read More About Me
+                                            </Link>
+                                        </Button>
+                                    }
                                 </div>
                             </CardContent>
                             <CardFooter>
@@ -54,23 +62,23 @@ const LandingAbout = ({ preview = true }: { preview?: boolean }) => {
                 </div>
                 <div className='mt-20 hidden items-center md:flex md:flex-col'>
                     <div className='relative aspect-square overflow-hidden rounded-lg shadow-lg'>
-                        <Image
-                            src='https://res.cloudinary.com/dch-photo/image/upload/c_crop,ar_3:4/v1731380562/blog_test_photos_23/voted24_lsaf4p.jpg'
-                            alt={`Photo of ${aboutMeDetails.fullname}`}
+                        <CldImage
+                            src={ aboutMeDetails.imageUrl }
+                            alt={ `Photo of ${aboutMeDetails.fullname}` }
                             priority
-                            style={{
+                            style={ {
                                 width: '100%',
                                 height: 'auto'
-                            }}
-                            width={500}
-                            height={300}
+                            } }
+                            width={ 500 }
+                            height={ 500 }
                             className='object-contain transition-transform duration-300 hover:scale-105'
                         />
                     </div>
                 </div>
             </div>
 
-            {!preview && (
+            { !preview && (
                 <>
                     <Card>
                         <CardHeader>
@@ -79,21 +87,21 @@ const LandingAbout = ({ preview = true }: { preview?: boolean }) => {
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className='mb-4'>{aboutMeDetails.hobbies}</p>
+                            <p className='mb-4'>{ aboutMeDetails.hobbies }</p>
                             <div className='space-y-4'>
-                                {hobbies.map((hobby, index) => (
-                                    <div key={index}>
+                                { hobbies.map((hobby, index) => (
+                                    <div key={ index }>
                                         <Badge
                                             variant='secondary'
                                             className='mb-2'
                                         >
-                                            {hobby.hobby}
+                                            { hobby.hobby }
                                         </Badge>
                                         <p className='text-sm text-muted-foreground'>
-                                            {hobby.description}
+                                            { hobby.description }
                                         </p>
                                     </div>
-                                ))}
+                                )) }
                             </div>
                         </CardContent>
                     </Card>
@@ -105,7 +113,7 @@ const LandingAbout = ({ preview = true }: { preview?: boolean }) => {
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p>{aboutMeDetails.origin}</p>
+                            <p>{ aboutMeDetails.origin }</p>
                         </CardContent>
                     </Card>
 
@@ -114,32 +122,88 @@ const LandingAbout = ({ preview = true }: { preview?: boolean }) => {
                             Professional Summary
                         </h2>
                         <div className='flex w-full flex-row gap-4'>
-                            {aboutMeDetails.summary.map((item, index) => (
-                                <Card key={index}>
+                            { aboutMeDetails.summary.map((item, index) => (
+                                <Card key={ index }>
                                     <CardHeader>
                                         <CardTitle className='flex items-center'>
-                                            {index === 0 ? (
+                                            { index === 0 ? (
                                                 <Briefcase className='mr-2 h-5 w-5' />
                                             ) : (
                                                 <GraduationCap className='mr-2 h-5 w-5' />
-                                            )}
-                                            {item.title}
+                                            ) }
+                                            { item.title }
                                         </CardTitle>
                                         <p className='text-sm text-muted-foreground'>
-                                            {item.duration}
+                                            { item.duration }
                                         </p>
                                     </CardHeader>
                                     <CardContent>
-                                        <p>{item.description}</p>
+                                        <p>{ item.description }</p>
                                     </CardContent>
                                 </Card>
-                            ))}
+                            )) }
                         </div>
                     </div>
                 </>
-            )}
+            ) }
         </>
     )
 }
 
 export default LandingAbout
+
+
+
+
+const Socials = () => {
+    return (
+        <div className='mt-auto flex flex-col gap-4 prose dark:prose-invert'>
+            <p className='text-muted-foreground'>
+                Connect with me on social media
+            </p>
+
+            <div className='flex flex-wrap gap-4'>
+                { socialsArray.map((soc) => (
+                    <Button
+                        key={ soc.social }
+                        variant='outline'
+                        size='icon'
+                        asChild
+                    >
+                        <Link
+                            href={ soc.link }
+                            target='_blank'
+                            aria-label={ `Visit ${soc.social}` }
+                        >
+                            { soc.icon }
+                        </Link>
+                    </Button>
+                )) }
+            </div>
+        </div>
+    )
+}
+
+
+const socialsArray = [
+    {
+        social: 'LinkedIn',
+        link: 'https://www.linkedin.com/in/dhoskinson/',
+        icon: <LinkedInLogoIcon className='h-4 w-4' />
+    },
+    {
+        social: 'GitHub',
+        link: 'https://github.com/Derick80',
+        icon: <GitHubLogoIcon className='h-4 w-4' />
+    },
+    {
+        social: 'Twitter',
+        link: 'https://www.twitter.com/GeneticsStar',
+        icon: <TwitterLogoIcon className='h-4 w-4' />
+    },
+    {
+        social: 'Email',
+        link: 'mailto:derickchoskinson@gmail.com',
+        icon: <MailIcon className='h-4 w-4' />
+    }
+]

@@ -1,14 +1,7 @@
 import { blogPostSchema } from '@/lib/types'
 import { getOnePost } from '@/app/actions/blog'
 
-// import { MDXPre } from '@/components/mdx/sync-functions'
-// export async function generateStaticParams () {
-//   const frontmatter = await getPostsMetaData()
-//   if (!frontmatter) return []
-
-//   return frontmatter.map((post) => ({ params: { slug: post.slug } }))
-// }
-export default async function Page(props: {
+export default async function Page (props: {
     params: Promise<{
         slug: string
     }>
@@ -30,7 +23,7 @@ export default async function Page(props: {
 
     return (
         <div className='prose prose-zinc mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
-            {compiledSource}
+            { compiledSource }
         </div>
     )
 }

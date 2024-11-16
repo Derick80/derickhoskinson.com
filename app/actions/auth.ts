@@ -6,6 +6,7 @@ import { cookies, type UnsafeUnwrappedCookies } from 'next/headers'
 import prisma from '@/lib/prisma'
 import { cache } from 'react'
 import { sendEmailVerification } from '@/components/auth/send-verification-email'
+import { deleteSession } from './session'
 
 const schema = z.object({
     // username: z.string(
@@ -173,11 +174,6 @@ export const verifySession = cache(async () => {
     } as AuthCookie
 })
 
-export const deleteSession = async () => {
-    ;(cookies() as unknown as UnsafeUnwrappedCookies).delete('session-token')
-    redirect('/')
-}
-
 export const createUserSession = async (userId: string) => {
     console.log('Creating session for user', userId)
     const sessionToken = crypto.randomBytes(32).toString('hex')
@@ -206,25 +202,13 @@ export const createUserSession = async (userId: string) => {
         expires: sessionExpires
     }
 
-    // set the session cookie
-    ;(await cookies()).set('session-token', sessionData, cookieOptions)
+        // set the session cookie
+        ; (await cookies()).set('session-token', sessionData, cookieOptions)
     redirect('/')
 }
-
-export const logout = async () => {
-    const cookie = (await cookies()).get('session-token')
-    if (!cookie) {
-        return
-    }
-
-    try {
-        ;(await cookies()).delete('session-token')
-        ;(await cookies()).set('session-token', '')
-    } catch (error) {
-        console.error('Error in logout:', error)
-        throw new Error('Unable to logout')
-    }
-    redirect('/')
+export async function logout () {
+    deleteSession()
+    redirect('/login')
 }
 
 export const getUser = cache(async () => {
