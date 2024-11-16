@@ -50,8 +50,8 @@ export const getPostsMetaData = cache(async () => {
 
     const posts = []
     for (const fileName of files) {
-        const { compiledSource, frontmatter } = await getPostBySlug(fileName)
-        posts.push({ compiledSource, ...frontmatter })
+        const { frontmatter } = await getPostBySlug(fileName)
+        posts.push({ ...frontmatter })
     }
     return posts
 })
@@ -80,6 +80,7 @@ export const getOnePost = async (slug: string) => {
                         rehypeShiki,
                         {
                             theme: 'nord',
+                            langs: ['typescript', 'javascript', 'html', 'css', 'mdx']
                         }
                     ],
                     rehypeSlug]
