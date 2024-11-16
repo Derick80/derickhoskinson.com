@@ -14,8 +14,7 @@ export const ShikiCodeBlock = async ({ code }: { code: string }) => {
         themes: {
             dark: 'nord',
             light: 'nord'
-        },
-
+        }
     })
     return toJsxRuntime(out, {
         Fragment,
@@ -27,6 +26,6 @@ export const ShikiCodeBlock = async ({ code }: { code: string }) => {
             props: JSX.IntrinsicAttributes &
                 ClassAttributes<HTMLPreElement> &
                 HTMLAttributes<HTMLPreElement>
-        ) => <pre { ...props } />
+        ) => <pre {...props} />
     })
 }

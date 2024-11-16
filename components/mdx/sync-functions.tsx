@@ -1,12 +1,13 @@
 import React, { DetailedHTMLProps, HTMLAttributes } from 'react'
 import { createHighlighter } from 'shiki'
 
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkRehype from 'remark-rehype';
-import rehypeStringify from 'rehype-stringify';
-import rehypePrettyCode from 'rehype-pretty-code';
-import { transformerCopyButton } from '@rehype-pretty/transformers'; export const MDXPre = (
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
+import rehypePrettyCode from 'rehype-pretty-code'
+import { transformerCopyButton } from '@rehype-pretty/transformers'
+export const MDXPre = (
     MDXPreProps: DetailedHTMLProps<
         HTMLAttributes<HTMLPreElement>,
         HTMLPreElement
@@ -17,10 +18,10 @@ import { transformerCopyButton } from '@rehype-pretty/transformers'; export cons
     return (
         <div className='group relative'>
             <pre
-                { ...rest }
+                {...rest}
                 className='scrollbar-thinscrollbar-thumb-secondary scrollbar-thumb-rounded-full my- text-primsary w-full overflow-x-auto rounded-xl p-4 transition ease-in-out'
             >
-                { children }
+                {children}
             </pre>
         </div>
     )
@@ -37,22 +38,22 @@ const highlighter = await createHighlighter({
     langs: ['typescript', 'javascript', 'html', 'css']
 })
 export const CodeBlock = async ({ code }: { code: string }) => {
-    const out = (highlighter).codeToHast(code, options)
-    return <div dangerouslySetInnerHTML={ { __html: out } } />
+    const out = highlighter.codeToHast(code, options)
+    return <div dangerouslySetInnerHTML={{ __html: out }} />
 }
 
-export async function Code ({ code }: { code: string }) {
-    const highlightedCode = await highlightCode(code);
+export async function Code({ code }: { code: string }) {
+    const highlightedCode = await highlightCode(code)
     return (
         <section
-            dangerouslySetInnerHTML={ {
-                __html: highlightedCode,
-            } }
+            dangerouslySetInnerHTML={{
+                __html: highlightedCode
+            }}
         />
-    );
+    )
 }
 
-async function highlightCode (code: string) {
+async function highlightCode(code: string) {
     const file = await unified()
         .use(remarkParse)
         .use(remarkRehype)
@@ -60,12 +61,12 @@ async function highlightCode (code: string) {
             transformers: [
                 transformerCopyButton({
                     visibility: 'always',
-                    feedbackDuration: 3_000,
-                }),
-            ],
+                    feedbackDuration: 3_000
+                })
+            ]
         })
         .use(rehypeStringify)
-        .process(code);
+        .process(code)
 
-    return String(file);
+    return String(file)
 }

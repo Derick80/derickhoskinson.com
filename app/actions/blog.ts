@@ -29,7 +29,8 @@ export const getPostBySlug = async (slug: string) => {
                             useBackground: false
                         }
                     ],
-                    rehypeSlug]
+                    rehypeSlug
+                ]
             }
         },
         components: mdxComponents.components
@@ -40,8 +41,7 @@ export const getPostBySlug = async (slug: string) => {
     frontmatter.wordCount = source.split(/\s+/g).length
     frontmatter.content = source
     return {
-        frontmatter,
-        compiledSource: content
+        frontmatter
     }
 }
 
@@ -61,7 +61,6 @@ export const getPageData = cache(async (slug: string) => {
     return await getPostBySlug(slug)
 })
 
-
 export const getOnePost = async (slug: string) => {
     const filePath = path.join(POSTS_FOLTER, `${slug}`)
 
@@ -80,10 +79,17 @@ export const getOnePost = async (slug: string) => {
                         rehypeShiki,
                         {
                             theme: 'nord',
-                            langs: ['typescript', 'javascript', 'html', 'css', 'mdx']
+                            langs: [
+                                'typescript',
+                                'javascript',
+                                'html',
+                                'css',
+                                'mdx'
+                            ]
                         }
                     ],
-                    rehypeSlug]
+                    rehypeSlug
+                ]
             }
         },
         components: mdxComponents.components
@@ -97,6 +103,4 @@ export const getOnePost = async (slug: string) => {
         frontmatter,
         compiledSource: content
     }
-
-
 }

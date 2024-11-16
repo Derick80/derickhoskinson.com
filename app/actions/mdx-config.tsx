@@ -11,16 +11,17 @@ export const mdxComponents = {
         pre: MDXPre,
         img: ({ src, alt, ...rest }: ImageProps) => {
             return (
-                <Suspense fallback={ <p>Loading Image...</p> }>
+                <Suspense fallback={<p>Loading Image...</p>}>
                     <CldImage
-                        src={ src
-                            ? src.toString()
-                            : 'assets/images/placeholder-user.png'
+                        src={
+                            src
+                                ? src.toString()
+                                : 'assets/images/placeholder-user.png'
                         }
-                        alt={ alt }
-                        width={ 500 }
-                        height={ 500 }
-                        { ...rest }
+                        alt={alt}
+                        width={500}
+                        height={500}
+                        {...rest}
                     />
                 </Suspense>
             )
@@ -33,10 +34,7 @@ export const mdxOptions = {
         parseFrontmatter: true,
         mdxOptions: {
             remarkPlugins: [remarkGfm],
-            rehypePlugins: [
-                rehypeSlug,
-
-            ]
+            rehypePlugins: [rehypeSlug]
         }
     }
 }

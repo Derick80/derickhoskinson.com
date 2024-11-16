@@ -36,24 +36,24 @@ const CategoryBadges = ({ posts }: { posts: MdxCompiled[] }) => {
 
     return (
         <div className='mt-4 flex flex-wrap gap-2'>
-            { ' ' }
-            { filteredCategories.map((cat) => (
+            {' '}
+            {filteredCategories.map((cat) => (
                 <div
-                    key={ cat.category }
-                    className={ cn(
+                    key={cat.category}
+                    className={cn(
                         'flex gap-2',
                         selectedCategories.includes(cat.category)
                             ? 'border-2 border-primary-foreground bg-primary-foreground/90'
                             : ''
-                    ) }
+                    )}
                 >
                     <CategoryButton
-                        category={ cat.category }
-                        count={ cat.count }
-                        onCategorySelect={ handleCategorySelect }
+                        category={cat.category}
+                        count={cat.count}
+                        onCategorySelect={handleCategorySelect}
                     />
                 </div>
-            )) }
+            ))}
         </div>
     )
 }
