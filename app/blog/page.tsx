@@ -3,10 +3,12 @@ import React, { Suspense } from 'react'
 import { BlogCard } from '@/components/blog/blog-card'
 import { getPostsMetaData } from '../actions/blog'
 
+
+
+
 export default async function Blog () {
     const frontmatter = await getPostsMetaData()
     if (!frontmatter) return null
-    console.log(frontmatter, 'frontmatter at blog.tsx')
     return (
         <div className='flex min-h-screen flex-col gap-4 py-2 md:gap-6'>
             <h1>Blog</h1>
