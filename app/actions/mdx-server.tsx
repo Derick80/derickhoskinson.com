@@ -26,6 +26,8 @@ export const ShikiCodeBlock = async ({ code }: { code: string }) => {
             props: JSX.IntrinsicAttributes &
                 ClassAttributes<HTMLPreElement> &
                 HTMLAttributes<HTMLPreElement>
-        ) => <pre {...props} />
+        ) => <pre { ...props } />
     })
 }
+
+

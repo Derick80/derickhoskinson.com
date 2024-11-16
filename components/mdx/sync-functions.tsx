@@ -18,10 +18,10 @@ export const MDXPre = (
     return (
         <div className='group relative'>
             <pre
-                {...rest}
+                { ...rest }
                 className='scrollbar-thinscrollbar-thumb-secondary scrollbar-thumb-rounded-full my- text-primsary w-full overflow-x-auto rounded-xl p-4 transition ease-in-out'
             >
-                {children}
+                { children }
             </pre>
         </div>
     )
@@ -39,21 +39,21 @@ const highlighter = await createHighlighter({
 })
 export const CodeBlock = async ({ code }: { code: string }) => {
     const out = highlighter.codeToHast(code, options)
-    return <div dangerouslySetInnerHTML={{ __html: out }} />
+    return <div dangerouslySetInnerHTML={ { __html: out } } />
 }
 
-export async function Code({ code }: { code: string }) {
+export async function Code ({ code }: { code: string }) {
     const highlightedCode = await highlightCode(code)
     return (
         <section
-            dangerouslySetInnerHTML={{
+            dangerouslySetInnerHTML={ {
                 __html: highlightedCode
-            }}
+            } }
         />
     )
 }
 
-async function highlightCode(code: string) {
+async function highlightCode (code: string) {
     const file = await unified()
         .use(remarkParse)
         .use(remarkRehype)
@@ -69,4 +69,34 @@ async function highlightCode(code: string) {
         .process(code)
 
     return String(file)
+}
+
+
+function Table ({
+    data
+}: {
+    data: {
+        headers: string[]
+        rows: string[][]
+    }
+}) {
+    const headers = data.headers.map((header, index) => (
+        <th key={ index }>{ header }</th>
+    ))
+    const rows = data.rows.map((row, index) => (
+        <tr key={ index }>
+            { row.map((cell, cellIndex) => (
+                <td key={ cellIndex }>{ cell }</td>
+            )) }
+        </tr>
+    ))
+
+    return (
+        <table>
+            <thead>
+                <tr>{ headers }</tr>
+            </thead>
+            <tbody>{ rows }</tbody>
+        </table>
+    )
 }

@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     }
 }
 
-export default async function Home() {
+export default async function Home () {
     const frontmatter = await getPostsMetaData()
     return (
         <>
@@ -45,18 +45,18 @@ export default async function Home() {
                     to my work.
                 </p>
 
-                <Suspense fallback={<p>Loading results...</p>}>
-                    {frontmatter.map(
+                <Suspense fallback={ <p>Loading results...</p> }>
+                    { frontmatter.map(
                         (post) =>
-                            post.slug && <BlogCard key={post.slug} {...post} />
-                    )}
+                            post.slug && <BlogCard key={ post.slug } { ...post } />
+                    ) }
                 </Suspense>
             </section>
             <section id='contact' className='space-y-6'>
                 <h2 className='mb-10'>Get in Touch</h2>
                 <ContactForm />
             </section>
-            <PageOverLayBar sectionIds={['Introduction', 'Blog', 'Contact']} />
+            <PageOverLayBar sectionIds={ ['Introduction', 'Blog', 'Contact'] } />
         </>
     )
 }
