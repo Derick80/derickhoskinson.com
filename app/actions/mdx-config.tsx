@@ -39,6 +39,7 @@ export const mdxComponents = {
         }: {
             className?: string
         } & ComponentPropsWithoutRef<'pre'>) => (
+
             <pre
                 className={ cn(
                     'mb-4 mt-2 overflow-x-auto rounded-lg',

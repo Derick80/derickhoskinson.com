@@ -112,7 +112,6 @@ _You **can** combine them_
 Format: ![Alt Text](url)
 ```
 
-![GitHub Logo](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
 
 ## Links
 

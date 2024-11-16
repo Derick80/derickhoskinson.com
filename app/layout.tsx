@@ -1,4 +1,3 @@
-import {} from 'module'
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
@@ -6,6 +5,7 @@ import { ThemeProvider } from '@/components/theme/theme-provider'
 import NavigationBar from '@/components/shared/nav-bar'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from 'react-hot-toast'
+import ErrorPage from './errors'
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -24,23 +24,29 @@ export const metadata: Metadata = {
         'A personal web app for Derick Hoskinson with a blog, curriculum vitae, and other resources.'
 }
 
-export default function RootLayout({
-    children
+export default function RootLayout ({
+    children,
+    error
 }: Readonly<{
     children: React.ReactNode
+    error?: Error
 }>) {
+    if (error) {
+        return <ErrorPage error={ error }
+        />
+    }
     return (
         <html lang='en' suppressHydrationWarning>
             <body
-                className={`${geistSans.variable} ${geistMono.variable} gap-20 antialiased`}
+                className={ `${geistSans.variable} ${geistMono.variable} gap-20 antialiased` }
             >
-                {/* <Analytics /> */}
+                {/* <Analytics /> */ }
                 <ThemeProvider attribute='class'>
                     <Toaster />
 
                     <main className='container relative mx-auto mt-10 flex-grow space-y-6 px-4 py-2 sm:px-6 md:mt-20 md:space-y-10 lg:px-8'>
                         <NavigationBar />
-                        {children}
+                        { children }
                     </main>
                 </ThemeProvider>
             </body>
