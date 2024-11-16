@@ -9,7 +9,6 @@ import { mdxComponents } from './mdx-config'
 import * as fs from 'fs/promises'
 import readingTime from 'reading-time'
 
-
 const POSTS_FOLTER = path.join(process.cwd(), 'app/blog/content')
 
 export const getPostBySlug = cache(async (slug: string) => {
@@ -47,6 +46,7 @@ export const getPostBySlug = cache(async (slug: string) => {
 
 export const getPostsMetaData = cache(async () => {
     const files = await fs.readdir(POSTS_FOLTER)
+
     const posts = []
     for (const fileName of files) {
         const { compiledSource, frontmatter } = await getPostBySlug(fileName)

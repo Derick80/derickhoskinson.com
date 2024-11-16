@@ -20,6 +20,7 @@ export default async function Page (props: {
     throw new Error('No slug provided')
   }
   const { compiledSource } = await getPostBySlug(slug)
+  // const { compiledSource } = await getPageData(slug)
   return (
     <div className='prose prose-zinc mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
       { compiledSource }

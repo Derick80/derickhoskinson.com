@@ -1,5 +1,4 @@
-import React, { Suspense } from 'react'
-
+import React from 'react'
 import { BlogCard } from '@/components/blog/blog-card'
 import { getPostsMetaData } from '../actions/blog'
 
