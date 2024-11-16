@@ -8,14 +8,16 @@ import { mdxComponents } from './mdx-config'
 import rehypeShiki from '@shikijs/rehype'
 import * as fs from 'fs/promises'
 import readingTime from 'reading-time'
-import { serialize } from 'next-mdx-remote/serialize'
 
-const POSTS_FOLTER = path.join(process.cwd(), 'app/blog/content')
+const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
 
 export const getPostBySlug = async (slug: string) => {
-    const filePath = path.join(POSTS_FOLTER, `${slug}`)
+    const filePath = path.join(POSTS_FOLDER, `${slug}`)
     const source = await fs.readFile(filePath, 'utf8')
-    const { content, frontmatter } = await compileMDX<MdxCompiled>({
+    if (!source) {
+        throw new Error('No file found')
+    }
+    const { frontmatter } = await compileMDX<MdxCompiled>({
         source: source,
         options: {
             parseFrontmatter: true,
@@ -30,6 +32,10 @@ export const getPostBySlug = async (slug: string) => {
         components: mdxComponents.components
     })
 
+    if (!frontmatter) {
+        throw new Error('No frontmatter found')
+    }
+
     frontmatter.slug = slug
     frontmatter.readingTime = readingTime(source).text
     frontmatter.wordCount = source.split(/\s+/g).length
@@ -40,8 +46,10 @@ export const getPostBySlug = async (slug: string) => {
 }
 
 export const getPostsMetaData = cache(async () => {
-    const files = await fs.readdir(POSTS_FOLTER)
-
+    const files = await fs.readdir(POSTS_FOLDER)
+    if (!files) {
+        throw new Error('No files found')
+    }
     const posts = []
     for (const fileName of files) {
         const { frontmatter } = await getPostBySlug(fileName)
@@ -54,13 +62,9 @@ export const getPostsMetaData = cache(async () => {
     return posts
 })
 
-// Uses the getPostBySlug function to get the content and meta data of a page.
-export const getPageData = cache(async (slug: string) => {
-    return await getPostBySlug(slug)
-})
 
 export const getOnePost = async (slug: string) => {
-    const filePath = path.join(POSTS_FOLTER, `${slug}`)
+    const filePath = path.join(POSTS_FOLDER, `${slug}`)
 
     const postFile = await fs.readFile(filePath, 'utf8')
     if (!postFile) {

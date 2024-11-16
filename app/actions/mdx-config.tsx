@@ -7,6 +7,8 @@ import { ComponentPropsWithoutRef, Suspense } from 'react'
 import CldImage from '@/components/shared/client-cloudinary'
 import { cn } from '@/lib/utils'
 import { Table } from '@/components/ui/table'
+
+
 export default function CodeBlock ({
     children
 }: {
@@ -38,16 +40,22 @@ export const mdxComponents = {
             ...props
         }: {
             className?: string
-        } & ComponentPropsWithoutRef<'pre'>) => (
+        } & ComponentPropsWithoutRef<'pre'>) => {
 
-            <pre
-                className={ cn(
-                    'mb-4 mt-2 overflow-x-auto rounded-lg',
-                    className
-                ) }
-                { ...props }
-            />
-        ),
+            return (
+                <pre
+                    className={
+                        cn(
+                            'mb-4 mt-2 overflow-x-auto rounded-lg',
+                            className
+                        )
+                    }
+                    { ...props }
+                />
+            )
+        }
+        ,
+
         img: ({ src, alt, ...rest }: ImageProps) => {
             return (
                 <CldImage
@@ -62,16 +70,6 @@ export const mdxComponents = {
                     { ...rest }
                 />
             )
-        }
-    }
-}
-
-export const mdxOptions = {
-    options: {
-        parseFrontmatter: true,
-        mdxOptions: {
-            remarkPlugins: [remarkGfm],
-            rehypePlugins: [rehypeSlug]
         }
     }
 }

@@ -14,6 +14,10 @@ export default async function Page (props: {
     }>
 }) {
     const params = await props.params
+    if (!params) {
+        throw new Error('No params provided')
+    }
+
     const { slug } = blogPostSchema.parse(params)
     if (!slug) {
         throw new Error('No slug provided')
