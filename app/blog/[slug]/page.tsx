@@ -8,7 +8,7 @@ import { getOnePost } from '@/app/actions/blog'
 
 //   return frontmatter.map((post) => ({ params: { slug: post.slug } }))
 // }
-export default async function Page (props: {
+export default async function Page(props: {
     params: Promise<{
         slug: string
     }>
@@ -30,7 +30,7 @@ export default async function Page (props: {
 
     return (
         <div className='prose prose-zinc mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
-            { compiledSource }
+            {compiledSource}
         </div>
     )
 }

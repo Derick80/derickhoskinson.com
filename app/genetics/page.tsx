@@ -1,6 +1,6 @@
 import EvidenceTabs from './evidence-block/evidence-tabs'
 
-export default function Page () {
+export default function Page() {
     // get unique primary categories
     return (
         <div id='home' className='flex min-h-screen flex-col gap-2 py-2'>

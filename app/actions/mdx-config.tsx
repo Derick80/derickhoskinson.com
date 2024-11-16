@@ -8,8 +8,7 @@ import CldImage from '@/components/shared/client-cloudinary'
 import { cn } from '@/lib/utils'
 import { Table } from '@/components/ui/table'
 
-
-export default function CodeBlock ({
+export default function CodeBlock({
     children
 }: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,12 +20,12 @@ export default function CodeBlock ({
     const language = 'typescript'
     return (
         <code
-            className={ cn(
+            className={cn(
                 `language-${language} text-xs leading-tight md:text-base`,
                 className
-            ) }
+            )}
         >
-            { children }
+            {children}
         </code>
     )
 }
@@ -41,21 +40,16 @@ export const mdxComponents = {
         }: {
             className?: string
         } & ComponentPropsWithoutRef<'pre'>) => {
-
             return (
                 <pre
-                    className={
-                        cn(
-                            'mb-4 mt-2 overflow-x-auto rounded-lg',
-                            className
-                        )
-                    }
-                    { ...props }
+                    className={cn(
+                        'mb-4 mt-2 overflow-x-auto rounded-lg',
+                        className
+                    )}
+                    {...props}
                 />
             )
-        }
-        ,
-
+        },
         img: ({ src, alt, ...rest }: ImageProps) => {
             return (
                 <CldImage
@@ -64,10 +58,10 @@ export const mdxComponents = {
                             ? src.toString()
                             : 'assets/images/placeholder-user.png'
                     }
-                    alt={ alt }
-                    width={ 500 }
-                    height={ 500 }
-                    { ...rest }
+                    alt={alt}
+                    width={500}
+                    height={500}
+                    {...rest}
                 />
             )
         }

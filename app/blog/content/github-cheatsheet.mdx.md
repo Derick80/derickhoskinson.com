@@ -112,7 +112,6 @@ _You **can** combine them_
 Format: ![Alt Text](url)
 ```
 
-
 ## Links
 
 ```mdx

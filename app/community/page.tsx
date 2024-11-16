@@ -6,7 +6,7 @@ import CategoryFilter, { Entry, Tag } from '@/components/shared/category-filter'
 import { getForumData, getForumEntries } from '../actions/forums'
 import React, { Suspense } from 'react'
 
-export default function CommunityPage () {
+export default function CommunityPage() {
     const [entries, setEntries] = React.useState<Entry[]>([])
     const [filteredPosts, setFilteredPosts] = React.useState<Entry[]>([])
 
@@ -32,24 +32,24 @@ export default function CommunityPage () {
         <div className='flex min-h-screen flex-col items-center gap-4 space-y-4'>
             <h1>Community Page</h1>
             <CategoryFilter
-                tags={ tags }
-                entries={ entries }
-                onFilterChange={ setFilteredPosts }
+                tags={tags}
+                entries={entries}
+                onFilterChange={setFilteredPosts}
             />
-            <Suspense fallback={ <p>Loading posts...</p> }>
-                { filteredPosts &&
+            <Suspense fallback={<p>Loading posts...</p>}>
+                {filteredPosts &&
                     filteredPosts?.map((post) => (
-                        <div className='w-full' key={ post.id }>
-                            <h2>{ post.title }</h2>
-                            <p>{ post.content }</p>
+                        <div className='w-full' key={post.id}>
+                            <h2>{post.title}</h2>
+                            <p>{post.content}</p>
                             <p>
                                 Tags:
-                                { post?.tags?.map((tag) => (
-                                    <span key={ tag.id }>{ tag.title }</span>
-                                )) }
+                                {post?.tags?.map((tag) => (
+                                    <span key={tag.id}>{tag.title}</span>
+                                ))}
                             </p>
                         </div>
-                    )) }
+                    ))}
             </Suspense>
         </div>
     )

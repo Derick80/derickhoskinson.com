@@ -23,10 +23,7 @@ export const getPostBySlug = async (slug: string) => {
             parseFrontmatter: true,
             mdxOptions: {
                 remarkPlugins: [remarkGfm],
-                rehypePlugins: [
-
-                    rehypeSlug
-                ]
+                rehypePlugins: [rehypeSlug]
             }
         },
         components: mdxComponents.components
@@ -61,7 +58,6 @@ export const getPostsMetaData = cache(async () => {
 
     return posts
 })
-
 
 export const getOnePost = async (slug: string) => {
     const filePath = path.join(POSTS_FOLDER, `${slug}`)
@@ -105,5 +101,4 @@ export const getOnePost = async (slug: string) => {
         frontmatter,
         compiledSource: content
     }
-
 }
