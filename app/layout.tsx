@@ -40,10 +40,10 @@ export default function RootLayout ({
                 className={ `${geistSans.variable} ${geistMono.variable}  gap-20 antialiased` }
             >
                 {/* <Analytics /> */ }
-                <ThemeProvider attribute='class'>
+                <ThemeProvider attribute='selector'>
                     <Toaster />
 
-                    <main className='container relative mx-auto mt-10 flex-grow space-y-6 px-4 py-2 sm:px-6 md:mt-20 md:space-y-10 lg:px-8'>
+                    <main className='container relative mx-auto max-w-5xl flex-grow space-y-6 px-4 py-2 sm:px-6 md:space-y-10 lg:px-8'>
                         <NavigationBar />
                         { children }
                     </main>

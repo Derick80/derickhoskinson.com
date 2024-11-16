@@ -19,7 +19,7 @@ const NavigationBar = async () => {
     const userData = await getUser()
 
     return (
-        <nav className='fixed left-0 right-0 top-0 z-50 flex items-center justify-between bg-background/80 px-4shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out sm:px-6 lg:px-8'>
+        <nav className='sticky border-2 border-purple-500 left-0 right-0 top-0 z-50 max-w-5xl flex items-center justify-between bg-background/80 px-4shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out sm:px-6 lg:px-8'>
             <div
                 className='flex flex-col w-full  items-center gap-2'>
 

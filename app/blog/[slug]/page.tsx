@@ -22,7 +22,7 @@ export default async function Page (props: {
     }
 
     return (
-        <div className='prose prose-zinc mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
+        <div className='prose prose-neutral dark:prose-invert mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
             { compiledSource }
         </div>
     )

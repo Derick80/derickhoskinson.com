@@ -12,7 +12,7 @@ export const MDXPre = (
         <div className='group relative'>
             <pre
                 { ...rest }
-                className='scrollbar-thinscrollbar-thumb-secondary scrollbar-thumb-rounded-full my- text-primsary w-full overflow-x-auto rounded-xl p-4 transition ease-in-out'
+                className='scrollbar-thinscrollbar-thumb-secondary scrollbar-thumb-rounded-full py-0 text-primsary w-full overflow-x-auto rounded-xl p-4 transition ease-in-out'
             >
                 { children }
             </pre>

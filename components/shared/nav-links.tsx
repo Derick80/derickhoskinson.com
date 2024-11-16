@@ -29,7 +29,7 @@ const NavLinks = () => {
                             prefetch
                             className={ `rounded-md px-3 py-2 text-lg font-semibold hover:text-primary ${pathname === item.url
                                 ? 'font-medium text-primary underline'
-                                : 'text-muted-foreground'
+                                : ''
                                 }` }
                         >
                             { item.title }
@@ -67,7 +67,7 @@ const NavLinks = () => {
                                     prefetch
                                     className={ `w-full px-3 py-2 text-lg ${pathname === item.url
                                         ? 'font-medium text-primary underline'
-                                        : 'text-muted-foreground'
+                                        : ''
                                         }` }
                                 >
                                     { item.title }
