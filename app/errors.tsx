@@ -1,32 +1,32 @@
-'use client' // Error boundaries must be Client Components
+'use client'
 
 import { useEffect } from 'react'
-import { Button } from '../components/ui/button'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-export default function Error({
-    error,
-    reset
-}: {
-    error: Error & { digest?: string }
-    reset: () => void
-}) {
+export default function ErrorPage ({ error }: { error: Error }) {
+    const router = useRouter()
+
     useEffect(() => {
         // Log the error to an error reporting service
-        console.error(error)
+        console.error('Error occurred:', error)
     }, [error])
 
     return (
-        <div>
-            <h1>Uh oh... Something went wrong</h1>
-            <Button
-                type='button'
-                onClick={
-                    // Attempt to recover by trying to re-render the segment
-                    () => reset()
-                }
-            >
-                Try again
-            </Button>
+        <div className="flex items-center justify-center min-h-screen bg-background">
+            <Card className="w-full max-w-md">
+                <CardHeader>
+                    <CardTitle className="text-2xl font-bold">Something went wrong</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="mb-4">We&apos;re sorry, but an unexpected error occurred.</p>
+                    <p className="mb-4">Error details: { error.message }</p>
+                    <Button onClick={ () => router.back() } className="w-full">
+                        Go back
+                    </Button>
+                </CardContent>
+            </Card>
         </div>
     )
 }
