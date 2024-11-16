@@ -72,7 +72,9 @@ export const BlogCard = (props: MdxCompiled) => {
                     { description }
                 </p>
                 <Button variant='outline' size='sm' asChild className='mt-auto'>
-                    <Link href={ `/blog/${slug}` }>Read More</Link>
+                    <Link href={ `/blog/${slug}` }
+                        prefetch
+                    >Read More</Link>
                 </Button>
             </CardContent>
             <CardFooter className='flex items-center justify-between border-t p-2'>
