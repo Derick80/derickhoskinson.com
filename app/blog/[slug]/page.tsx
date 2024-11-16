@@ -1,14 +1,25 @@
 
-import { Suspense } from 'react'
+import { DetailedHTMLProps, HTMLAttributes, Suspense } from 'react'
 import { blogPostSchema } from '@/lib/types'
-import { getPageData, getPostBySlug, getPostsMetaData } from '@/app/actions/blog'
+import { getOnePost, getPageData, getPostBySlug, getPostsMetaData } from '@/app/actions/blog'
+import { serialize } from 'next-mdx-remote/serialize'
+import { MDXRemote } from 'next-mdx-remote/rsc'
+import * as fs from 'fs/promises'
+import path from 'path'
+import { cn } from '@/lib/utils'
+import { ImageProps } from 'next/image'
+import remarkGfm from 'remark-gfm'
+import { MDXPre } from '@/components/mdx/sync-functions'
+import CldImage from '@/components/shared/client-cloudinary'
+import { mdxComponents } from '@/app/actions/mdx-config'
 
-export async function generateStaticParams () {
-  const frontmatter = await getPostsMetaData()
-  if (!frontmatter) return []
+// import { MDXPre } from '@/components/mdx/sync-functions'
+// export async function generateStaticParams () {
+//   const frontmatter = await getPostsMetaData()
+//   if (!frontmatter) return []
 
-  return frontmatter.map((post) => ({ params: { slug: post.slug } }))
-}
+//   return frontmatter.map((post) => ({ params: { slug: post.slug } }))
+// }
 export default async function Page (props: {
   params: Promise<{
     slug: string
@@ -20,11 +31,18 @@ export default async function Page (props: {
     throw new Error('No slug provided')
   }
   const { compiledSource } = await getPostBySlug(slug)
-  // const { compiledSource } = await getPageData(slug)
+  const postFile = await fs.readFile(path.join(process.cwd(), 'app/blog/content', slug), 'utf8')
+  if (!postFile) {
+    throw new Error('No file found')
+  }
+  const post = await serialize(postFile)
+  console.log(post)
+  // const post = compiledSource
   return (
     <div className='prose prose-zinc mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
-      { compiledSource }
-
+      <Suspense fallback={ <p>Loading...</p> }>
+        { compiledSource }
+      </Suspense>
     </div>
   )
 }

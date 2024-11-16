@@ -8,6 +8,7 @@ import remarkGfm from 'remark-gfm'
 import { mdxComponents } from './mdx-config'
 import * as fs from 'fs/promises'
 import readingTime from 'reading-time'
+import { serialize } from 'next-mdx-remote/serialize'
 
 const POSTS_FOLTER = path.join(process.cwd(), 'app/blog/content')
 
@@ -37,7 +38,7 @@ export const getPostBySlug = cache(async (slug: string) => {
     frontmatter.slug = slug
     frontmatter.readingTime = readingTime(source).text
     frontmatter.wordCount = source.split(/\s+/g).length
-
+    frontmatter.content = source
     return {
         frontmatter,
         compiledSource: content
@@ -61,3 +62,31 @@ export const getPageData = cache(async (slug: string) => {
 })
 
 
+export const getOnePost = cache(async (slug: string) => {
+    const filePath = path.join(POSTS_FOLTER, `${slug}`)
+
+    const postFile = await fs.readFile(filePath, 'utf8')
+    if (!postFile) {
+        throw new Error('No file found')
+    }
+    return await serialize(postFile,
+        {
+            mdxOptions: {
+                remarkPlugins: [remarkGfm],
+                rehypePlugins: [
+                    [
+                        rehypeShiki,
+                        {
+                            theme: 'aurora-x',
+                            useBackground: false
+                        }
+                    ],
+                    rehypeSlug]
+            },
+        }
+
+    )
+
+
+}
+)
