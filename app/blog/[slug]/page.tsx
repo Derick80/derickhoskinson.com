@@ -1,17 +1,8 @@
 
-import { DetailedHTMLProps, HTMLAttributes, Suspense } from 'react'
+import { DetailedHTMLProps, HTMLAttributes } from 'react'
 import { blogPostSchema } from '@/lib/types'
-import { getOnePost, getPageData, getPostBySlug, getPostsMetaData } from '@/app/actions/blog'
-import { serialize } from 'next-mdx-remote/serialize'
-import { MDXRemote } from 'next-mdx-remote/rsc'
-import * as fs from 'fs/promises'
-import path from 'path'
-import { cn } from '@/lib/utils'
+import { getOnePost } from '@/app/actions/blog'
 import { ImageProps } from 'next/image'
-import remarkGfm from 'remark-gfm'
-import { MDXPre } from '@/components/mdx/sync-functions'
-import CldImage from '@/components/shared/client-cloudinary'
-import { mdxComponents } from '@/app/actions/mdx-config'
 
 // import { MDXPre } from '@/components/mdx/sync-functions'
 // export async function generateStaticParams () {
@@ -34,14 +25,13 @@ export default async function Page (props: {
 
   const { frontmatter, compiledSource } = await getOnePost(slug)
   // const post = compiledSource
+  const Component = compiledSource
   return (
     <div className='prose prose-zinc mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
-      <Suspense fallback={ <p>Loading...</p> }>
-        {
 
-          compiledSource
-        }
-      </Suspense>
+      {
+        compiledSource
+      }
     </div>
   )
 }

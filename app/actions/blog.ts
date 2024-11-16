@@ -12,7 +12,7 @@ import { serialize } from 'next-mdx-remote/serialize'
 
 const POSTS_FOLTER = path.join(process.cwd(), 'app/blog/content')
 
-export const getPostBySlug = cache(async (slug: string) => {
+export const getPostBySlug = async (slug: string) => {
     const filePath = path.join(POSTS_FOLTER, `${slug}`)
     const source = await fs.readFile(filePath, 'utf8')
     const { content, frontmatter } = await compileMDX<MdxCompiled>({
@@ -43,7 +43,7 @@ export const getPostBySlug = cache(async (slug: string) => {
         frontmatter,
         compiledSource: content
     }
-})
+}
 
 export const getPostsMetaData = cache(async () => {
     const files = await fs.readdir(POSTS_FOLTER)
@@ -62,7 +62,7 @@ export const getPageData = cache(async (slug: string) => {
 })
 
 
-export const getOnePost = cache(async (slug: string) => {
+export const getOnePost = async (slug: string) => {
     const filePath = path.join(POSTS_FOLTER, `${slug}`)
 
     const postFile = await fs.readFile(filePath, 'utf8')
@@ -99,4 +99,3 @@ export const getOnePost = cache(async (slug: string) => {
 
 
 }
-)
