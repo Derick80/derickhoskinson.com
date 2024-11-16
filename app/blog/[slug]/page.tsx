@@ -30,18 +30,17 @@ export default async function Page (props: {
   if (!slug) {
     throw new Error('No slug provided')
   }
-  const { compiledSource } = await getPostBySlug(slug)
-  const postFile = await fs.readFile(path.join(process.cwd(), 'app/blog/content', slug), 'utf8')
-  if (!postFile) {
-    throw new Error('No file found')
-  }
-  const post = await serialize(postFile)
-  console.log(post)
+
+
+  const { frontmatter, compiledSource } = await getOnePost(slug)
   // const post = compiledSource
   return (
     <div className='prose prose-zinc mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
       <Suspense fallback={ <p>Loading...</p> }>
-        { compiledSource }
+        {
+
+          compiledSource
+        }
       </Suspense>
     </div>
   )

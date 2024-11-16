@@ -69,8 +69,10 @@ export const getOnePost = cache(async (slug: string) => {
     if (!postFile) {
         throw new Error('No file found')
     }
-    return await serialize(postFile,
-        {
+    const { content, frontmatter } = await compileMDX<MdxCompiled>({
+        source: postFile,
+        options: {
+            parseFrontmatter: true,
             mdxOptions: {
                 remarkPlugins: [remarkGfm],
                 rehypePlugins: [
@@ -78,14 +80,22 @@ export const getOnePost = cache(async (slug: string) => {
                         rehypeShiki,
                         {
                             theme: 'aurora-x',
-                            useBackground: false
                         }
                     ],
                     rehypeSlug]
-            },
-        }
+            }
+        },
+        components: mdxComponents.components
+    })
 
-    )
+    frontmatter.slug = slug
+    frontmatter.readingTime = readingTime(postFile).text
+    frontmatter.wordCount = postFile.split(/\s+/g).length
+    frontmatter.content = postFile
+    return {
+        frontmatter,
+        compiledSource: content
+    }
 
 
 }
