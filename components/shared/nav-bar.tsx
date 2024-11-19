@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { getUser, logout } from '@/app/actions/auth'
 import { NavLinks } from './nav-links'
 import React from 'react'
-import NavigationPath from './nav-path'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,25 +12,21 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Button } from '../ui/button'
 import { User } from 'lucide-react'
 import ToggleTheme from '../theme/toggle-theme'
-import { N } from 'vitest/dist/chunks/reporters.anwo7Y6a.js'
 
 const NavigationBar = async () => {
     const userData = await getUser()
 
     return (
-        <nav className='sticky z-50 max-w-5xl flex items-center justify-between bg-background/80 px-4shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out'>
+        <nav className='sticky z-50  flex justify-between bg-background/80 px-4shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out'>
             <div
-                className='flex flex-col w-full  items-center gap-2'>
+                className='flex flex-col w-full justify-between  gap-2'>
 
 
                 <div
-                    className='flex items-center justify-between space-x-4 w-full'>
+                    className='flex items-center justify-between space-x-4 w-fulsl'>
 
                     <NavLinks />
 
-                    <div className='flex items-center  w-full space-x-4'>
-
-                    </div>
 
                     { !userData && <Link href='/login'>Login</Link> }
                     <ToggleTheme />
@@ -44,7 +39,7 @@ const NavigationBar = async () => {
                                     variant='ghost'
                                     className='relative px-4  pr-2rounded-full'
                                 >
-                                    <Avatar className='h-6 w-6'>
+                                    <Avatar >
                                         <AvatarImage
                                             className='object-cover'
                                             src={
@@ -90,7 +85,7 @@ const NavigationBar = async () => {
 
 
                 </div>
-                <NavigationPath />
+                {/* <NavigationPath /> */ }
             </div>
         </nav>
     )

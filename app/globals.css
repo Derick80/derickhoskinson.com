@@ -122,3 +122,9 @@ body {
     border: none !important;
     box-shadow: none !important;
 }
+
+
+pre:has(.hljs), .hljs {
+    color: #c9d1d9;
+    background: #0d1117;
+}

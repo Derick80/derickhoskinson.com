@@ -1,6 +1,20 @@
 import { blogPostSchema } from '@/lib/types'
-import { getOnePost } from '@/app/actions/blog'
+import { getOnePost, getPost, POSTS_FOLDER } from '@/app/actions/blog'
+import { MDXRemote } from 'next-mdx-remote/rsc'
+import { mdxComponents } from '@/app/actions/mdx-config'
+import fs from 'fs'
+import path from 'path'
+import matter from 'gray-matter'
+import MDXButton from '@/components/mdx/mdx-button'
+export async function generateStaticParams () {
+    const files = fs.readdirSync(POSTS_FOLDER)
 
+    const paths = files.map(filename => ({
+        slug: filename.replace('.mdx', '')
+    }))
+
+    return paths
+}
 export default async function Page (props: {
     params: Promise<{
         slug: string
@@ -16,14 +30,23 @@ export default async function Page (props: {
         throw new Error('No slug provided')
     }
 
-    const { frontmatter, compiledSource } = await getOnePost(slug)
-    if (!frontmatter || !compiledSource) {
-        throw new Error('No post found')
-    }
-
+    const post = await getPost({ slug })
     return (
-        <div className='prose prose-neutral dark:prose-invert mx-auto max-w-2xl p-4 dark:prose-invert prose-a:no-underline'>
-            { compiledSource }
-        </div>
+        <section className='prose prose-neutral  mx-auto max-w-4xl p-4 dark:prose-invert prose-a:no-underline'>
+            {/* @ts-iexpect-error server comp */ }
+            <MDXRemote
+                source={ post.content }
+
+                components={ {
+                    ...mdxComponents.components,
+                    MDXButton
+                }
+                }
+
+
+
+            />
+        </section>
+
     )
 }

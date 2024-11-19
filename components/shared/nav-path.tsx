@@ -12,7 +12,10 @@ import {
 
 const NavigationPath = () => {
     const pathname = usePathname()
-    const segments = pathname.split('/').filter(segment => segment !== '')
+    //    get the segments but remove the .mdx if it's there
+    const segments = pathname.split('/').filter((segment) => segment !== '' && !segment.includes('.mdx'))
+
+    console.log(segments)
 
     return (
 
