@@ -1,5 +1,3 @@
-import nextMDX from "@next/mdx";
-import rehypePrettyCode from "rehype-pretty-code";
 
 const nextConfig = {
   images: {
@@ -28,23 +26,4 @@ const nextConfig = {
   // Optionally, add any other Next.js config below
 };
 
-
-
-/** @type {import('rehype-pretty-code').Options} */
-const options = {
- lang: 'typescript',
-    themes: {
-        dark: 'nord',
-        light: 'nord'
-    }
-};
-
-const withMDX = nextMDX({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [],
-    rehypePlugins: [[rehypePrettyCode, options]],
-  },
-});
-
-export default withMDX(nextConfig);
+export default nextConfig;

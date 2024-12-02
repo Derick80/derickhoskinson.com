@@ -6,10 +6,26 @@ import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 import { mdxComponents } from './mdx-config'
 import rehypeShiki from '@shikijs/rehype'
+import rehypeHighlight from 'rehype-highlight'
 import * as fs from 'fs/promises'
 import readingTime from 'reading-time'
+import matter from 'gray-matter'
 
-const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
+export const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
+
+export const getPost = async ({ slug }: {
+    slug: string
+}) => {
+    const mdxfile = await fs.readFile(path.join(POSTS_FOLDER, slug), 'utf8')
+
+    const { data: frontMatter, content } = matter(mdxfile)
+
+    return {
+        frontMatter,
+        slug,
+        content
+    }
+}
 
 export const getPostBySlug = async (slug: string) => {
     const filePath = path.join(POSTS_FOLDER, `${slug}`)
@@ -23,10 +39,7 @@ export const getPostBySlug = async (slug: string) => {
             parseFrontmatter: true,
             mdxOptions: {
                 remarkPlugins: [remarkGfm],
-                rehypePlugins: [
-
-                    rehypeSlug
-                ]
+                rehypePlugins: [rehypeSlug]
             }
         },
         components: mdxComponents.components
@@ -62,7 +75,6 @@ export const getPostsMetaData = cache(async () => {
     return posts
 })
 
-
 export const getOnePost = async (slug: string) => {
     const filePath = path.join(POSTS_FOLDER, `${slug}`)
 
@@ -77,7 +89,7 @@ export const getOnePost = async (slug: string) => {
             mdxOptions: {
                 remarkPlugins: [remarkGfm],
                 rehypePlugins: [
-                    [
+                    [rehypeHighlight, { subset: true },
                         rehypeShiki,
                         {
                             theme: 'nord',
@@ -86,11 +98,12 @@ export const getOnePost = async (slug: string) => {
                                 'javascript',
                                 'html',
                                 'css',
+                                'json',
                                 'mdx'
                             ]
                         }
                     ],
-                    rehypeSlug
+                    [rehypeSlug, { prefix: 'toc' }]
                 ]
             }
         },
@@ -105,5 +118,7 @@ export const getOnePost = async (slug: string) => {
         frontmatter,
         compiledSource: content
     }
-
 }
+
+
+

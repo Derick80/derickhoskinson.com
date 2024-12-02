@@ -1,46 +1,17 @@
+import { cn } from '@/lib/utils'
 import React, { DetailedHTMLProps, HTMLAttributes } from 'react'
+// import { codeToHtml } from 'shiki'
+import { codeToHtml } from 'shiki/bundle/full'
 
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
-import rehypeStringify from 'rehype-stringify'
-import rehypePrettyCode from 'rehype-pretty-code'
-import { transformerCopyButton } from '@rehype-pretty/transformers'
-export const MDXPre = (
-    MDXPreProps: DetailedHTMLProps<
-        HTMLAttributes<HTMLPreElement>,
-        HTMLPreElement
-    >
-) => {
-    const { children, ...rest } = MDXPreProps
 
-    return (
-        <div className='group relative'>
-            <pre
-                { ...rest }
-                className='scrollbar-thinscrollbar-thumb-secondary scrollbar-thumb-rounded-full my- text-primsary w-full overflow-x-auto rounded-xl p-4 transition ease-in-out'
-            >
-                { children }
-            </pre>
-        </div>
-    )
-}
-const options = {
-    lang: 'typescript',
-    themes: {
-        dark: 'github-dark',
-        light: 'github-light'
-    }
-}
-
-function Table ({
+export const Table = ({
     data
 }: {
     data: {
         headers: string[]
         rows: string[][]
     }
-}) {
+}) => {
     const headers = data.headers.map((header, index) => (
         <th key={ index }>{ header }</th>
     ))
@@ -85,3 +56,5 @@ export const Paragraph = (props: { children?: React.ReactNode }) => {
 
     return <p className='leading-7 [&:not(:first-child)]:mt-6' { ...props } />
 }
+
+

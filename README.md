@@ -38,3 +38,5 @@ I wanted to create a blog section for my site and I was really interested in usi
 
 - [reading-time](https://www.npmjs.com/package/reading-time)
 - [shiki](https://www.npmjs.com/package/shiki)
+
+- [mdxButton](https://gaudion.dev/blog/nextjs-mdx-blog)

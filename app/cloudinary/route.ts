@@ -1,9 +1,5 @@
-import { NextRequest } from 'next/server'
-import { z } from 'zod'
-import { redirect } from 'next/navigation'
 import { create } from '../actions/cloudinary'
 import { NextResponse } from 'next/server'
-import cloudinary, { UploadApiResponse } from 'cloudinary'
 import { getUser } from '../actions/auth'
 
 // const NewImageSchema = z.object({
@@ -14,7 +10,7 @@ import { getUser } from '../actions/auth'
 //     })
 // })
 
-export async function POST(request: Request) {
+export async function POST (request: Request) {
     const userData = await getUser()
     const userId = userData?.id
 

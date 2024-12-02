@@ -38,5 +38,6 @@ export const aboutMeDetails = {
     description: `Hey, I'm Derick. This space is for me to experiment with web development, showcase my curriculum vitae, develop fun genetic tools and occasionally report my musings.`,
     origin: `When I was twelve , I moved to Bolivar, Missouri, where I attended high school and had a short stint at Missouri University Columbia.  Before Missouri, I lived near Lake Ontario in Western New York.  In 2001, I moved to Boston, Massachusetts-- a city where I went to school(s), grew up, ate my feelings, played entirely too much World of Warcraft, danced the Thursday nights away at the Phoenix Landing, and proudly embraced being a New Englander.`,
     hobbies: `My hobbies are numerous and usually changing, though I can always count on music, reading, and genetics to be sources of inspiration. Right now, I'm enjoying watching new movies and catching up on about 10 years of movies that I missed during my studies.`,
+    imageUrl: 'https://res.cloudinary.com/dch-photo/image/upload/v1731123876/blog_testing_24/voted24_ejx32j.jpg',
     summary: aboutMeSummary
 }

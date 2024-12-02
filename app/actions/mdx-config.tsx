@@ -1,61 +1,40 @@
-import remarkGfm from 'remark-gfm'
-import rehypeSlug from 'rehype-slug'
-import { MDXPre, Paragraph } from '@/components/mdx/sync-functions'
+import { Paragraph } from '@/components/mdx/sync-functions'
 
 import { ImageProps } from 'next/image'
-import { ComponentPropsWithoutRef, Suspense } from 'react'
 import CldImage from '@/components/shared/client-cloudinary'
-import { cn } from '@/lib/utils'
 import { Table } from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import CodeBlock from './code-block-b'
 
-
-export default function CodeBlock ({
-    children
-}: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    children: any
-    className: string
-}) {
-    const { className } = children
-
-    const language = 'typescript'
-    return (
-        <code
-            className={ cn(
-                `language-${language} text-xs leading-tight md:text-base`,
-                className
-            ) }
-        >
-            { children }
-        </code>
-    )
-}
 export const mdxComponents = {
     components: {
         p: Paragraph,
         table: Table,
-        code: CodeBlock,
         pre: ({
-            className,
             ...props
-        }: {
-            className?: string
-        } & ComponentPropsWithoutRef<'pre'>) => {
+        }) => {
 
+            const classNames = props.children.props.className.split("-")[1];
+            const language = classNames.split(" ")[0];
             return (
-                <pre
-                    className={
-                        cn(
-                            'mb-4 mt-2 overflow-x-auto rounded-lg',
-                            className
-                        )
-                    }
-                    { ...props }
-                />
-            )
-        }
-        ,
 
+                <div className='relative p-6  rounded-md bg-primary-foreground/80 '>
+
+
+                    <CodeBlock
+                        props={ props }
+                    />
+                    <Button
+                        variant='default'
+                        size='sm'
+                        className='absolute top-0 right-0  p-1'
+                    >
+                        { language }
+                    </Button>
+                </div>
+
+            )
+        },
         img: ({ src, alt, ...rest }: ImageProps) => {
             return (
                 <CldImage
@@ -64,12 +43,15 @@ export const mdxComponents = {
                             ? src.toString()
                             : 'assets/images/placeholder-user.png'
                     }
+                    rawTransformations={ ['f_auto'] }
+
+                    format='webp'
                     alt={ alt }
                     width={ 500 }
                     height={ 500 }
                     { ...rest }
                 />
             )
-        }
+        },
     }
 }

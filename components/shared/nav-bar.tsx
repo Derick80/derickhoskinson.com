@@ -1,8 +1,7 @@
 import Link from 'next/link'
-import { getUser } from '@/app/actions/auth'
+import { getUser, logout } from '@/app/actions/auth'
 import { NavLinks } from './nav-links'
 import React from 'react'
-import NavigationPath from './nav-path'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -18,57 +17,75 @@ const NavigationBar = async () => {
     const userData = await getUser()
 
     return (
-        <nav className='fixed left-0 right-0 top-0 z-50 flex items-center justify-between bg-background/80 px-4 shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out sm:px-6 lg:px-8'>
-            <NavLinks />
+        <nav className='sticky z-50  flex justify-between bg-background/80 px-4shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out'>
+            <div
+                className='flex flex-col w-full justify-between  gap-2'>
 
-            <NavigationPath />
-            <div className='flex items-center space-x-4'>
-                {userData !== null && (
-                    <DropdownMenu modal={false}>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                variant='ghost'
-                                className='relative h-8 w-8 rounded-full'
-                            >
-                                <Avatar className='h-8 w-8'>
-                                    <AvatarImage
-                                        className='object-cover'
-                                        src={
-                                            userData.userImages.length > 0 &&
-                                            userData.userImages[0]
-                                                .userAvatar === true
-                                                ? userData.userImages[0]
-                                                      .imageUrl
-                                                : '/assets/images/placeholder-user.jpg'
-                                        }
-                                        alt={userData.name || 'User avatar'}
-                                    />
-                                    <AvatarFallback>
-                                        {userData.name ? (
-                                            userData.name
-                                                .charAt(0)
-                                                .toUpperCase()
-                                        ) : (
-                                            <User />
-                                        )}
-                                    </AvatarFallback>
-                                </Avatar>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent avoidCollisions={true}>
-                            <DropdownMenuItem>
-                                <Link href='/profile'>Profile</Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem></DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Link href='/logout'>Logout</Link>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                )}
 
-                {!userData && <Link href='/login'>Login</Link>}
-                <ToggleTheme />
+                <div
+                    className='flex items-center justify-between space-x-4 w-fulsl'>
+
+                    <NavLinks />
+
+
+                    { !userData && <Link href='/login'>Login</Link> }
+                    <ToggleTheme />
+                    { userData !== null && (
+                        <DropdownMenu
+
+                            modal={ false }>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant='ghost'
+                                    className='relative px-4  pr-2rounded-full'
+                                >
+                                    <Avatar >
+                                        <AvatarImage
+                                            className='object-cover'
+                                            src={
+                                                userData.userImages.length > 0 &&
+                                                    userData.userImages[0]
+                                                        .userAvatar === true
+                                                    ? userData.userImages[0]
+                                                        .imageUrl
+                                                    : '/assets/images/placeholder-user.jpg'
+                                            }
+                                            alt={ userData.name || 'User avatar' }
+                                        />
+                                        <AvatarFallback>
+                                            { userData.name ? (
+                                                userData.name
+                                                    .charAt(0)
+                                                    .toUpperCase()
+                                            ) : (
+                                                <User />
+                                            ) }
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent avoidCollisions={ true }>
+                                <DropdownMenuItem>
+                                    <Link href='/profile'>Profile</Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem></DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Button
+                                        variant='outline'
+                                        onClick={ logout }
+                                    >
+                                        Logout
+                                    </Button>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    ) }
+
+
+
+
+                </div>
+                {/* <NavigationPath /> */ }
             </div>
         </nav>
     )

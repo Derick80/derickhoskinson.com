@@ -1,3 +1,9 @@
+
+
+
+
+
+
 export default async function CategoryPage (props: {
     params: Promise<{
         category: string
