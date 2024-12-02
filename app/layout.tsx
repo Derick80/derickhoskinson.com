@@ -6,7 +6,9 @@ import NavigationBar from '@/components/shared/nav-bar'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from 'react-hot-toast'
 import ErrorPage from './errors'
-import './nordTheme.css'
+import './nordtheme.css'
+
+
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
     variable: '--font-geist-sans',
@@ -39,7 +41,7 @@ export default function RootLayout ({
             <body
                 className={ `${geistSans.variable} ${geistMono.variable}  gap-20 antialiased` }
             >
-                {/* <Analytics /> */ }
+                <Analytics />
                 <ThemeProvider attribute='selector'>
                     <Toaster />
 
