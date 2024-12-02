@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
-import { ThemeProvider } from '@/components/theme/theme-provider'
 import NavigationBar from '@/components/shared/nav-bar'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from 'react-hot-toast'
 import ErrorPage from './errors'
 import './nordtheme.css'
+import { ThemeProvider } from '@/components/theme/theme-provider'
 
 
 const geistSans = localFont({
@@ -23,7 +23,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
     title: "Derick Hoskinson's Personal Website",
     description:
-        'A personal web app for Derick Hoskinson with a blog, curriculum vitae, and other resources.'
+        'A personal web app for Derick Hoskinson with a blog, curriculum vitae, and other genetic resources.'
 }
 
 export default function RootLayout ({
@@ -42,7 +42,9 @@ export default function RootLayout ({
                 className={ `${geistSans.variable} ${geistMono.variable}  gap-20 antialiased` }
             >
                 <Analytics />
-                <ThemeProvider attribute='selector'>
+                <ThemeProvider
+                    attribute='class'
+                >
                     <Toaster />
 
                     <main className='container relative mx-auto w-full max-w-4xl space-y-6 px-4 py-2 sm:px-6 md:space-y-10 lg:px-8'>
