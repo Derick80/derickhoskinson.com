@@ -14,6 +14,15 @@ const userHelp: userHelp[] = [
             '3. Note that the default direcition is pathogenic.',
             '4. Click the expand button to view additional information.'
         ]
+    },
+    {
+        id: 'artificial-intelligence',
+        title: 'Artificial Intelligence Statement',
+        content: [
+            'I use artificial intelligence to suggest code and styling improvments.',
+            'Some early posts might contain some AI suggested words and phrases',
+            'Eventually I will mark content that was AI generated.'
+        ]
     }
 ]
 
