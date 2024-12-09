@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import LandingAbout from '@/components/shared/landing'
+import LandingAbout from '@/components/shared/about/landing'
 import ContactForm from '../components/about/contact-form'
 import PageOverLayBar from '@/components/shared/page-overlay-bar'
 import { BlogCard } from '@/components/blog/blog-card'
 import { getPostsMetaData } from './actions/blog'
+import TestLanding from '@/components/shared/about/landing_test'
 
 export const metadata: Metadata = {
     title: "Dr. Hoskinson's Blog",
@@ -37,7 +38,7 @@ export default async function Home() {
         <>
             <section id='Introduction'>
                 <h2 className='mb-10'>Welcome!</h2>
-                <LandingAbout />
+                <TestLanding />
             </section>
             <section id='blog' className='space-y-6'>
                 <h2 className='mb-10'>Welcome to my blog</h2>

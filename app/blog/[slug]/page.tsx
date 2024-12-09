@@ -6,16 +6,16 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import MDXButton from '@/components/mdx/mdx-button'
-export async function generateStaticParams () {
+export async function generateStaticParams() {
     const files = fs.readdirSync(POSTS_FOLDER)
 
-    const paths = files.map(filename => ({
+    const paths = files.map((filename) => ({
         slug: filename.replace('.mdx', '')
     }))
 
     return paths
 }
-export default async function Page (props: {
+export default async function Page(props: {
     params: Promise<{
         slug: string
     }>
@@ -32,21 +32,15 @@ export default async function Page (props: {
 
     const post = await getPost({ slug })
     return (
-        <section className='prose prose-neutral  mx-auto max-w-4xl p-4 dark:prose-invert prose-a:no-underline'>
-            {/* @ts-iexpect-error server comp */ }
+        <section className='prose prose-neutral dark:prose-invert prose-a:no-underline mx-auto max-w-4xl p-4'>
+            {/* @ts-iexpect-error server comp */}
             <MDXRemote
-                source={ post.content }
-
-                components={ {
+                source={post.content}
+                components={{
                     ...mdxComponents.components,
                     MDXButton
-                }
-                }
-
-
-
+                }}
             />
         </section>
-
     )
 }

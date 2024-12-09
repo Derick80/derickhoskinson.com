@@ -1,4 +1,4 @@
-import LandingAbout from '@/components/shared/landing'
+import LandingAbout from '@/components/shared/about/landing'
 import ContactForm from '@/components/about/contact-form'
 
 export default function AboutPage() {

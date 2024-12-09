@@ -3,7 +3,6 @@ import React, { DetailedHTMLProps, HTMLAttributes } from 'react'
 // import { codeToHtml } from 'shiki'
 import { codeToHtml } from 'shiki/bundle/full'
 
-
 export const Table = ({
     data
 }: {
@@ -13,22 +12,22 @@ export const Table = ({
     }
 }) => {
     const headers = data.headers.map((header, index) => (
-        <th key={ index }>{ header }</th>
+        <th key={index}>{header}</th>
     ))
     const rows = data.rows.map((row, index) => (
-        <tr key={ index }>
-            { row.map((cell, cellIndex) => (
-                <td key={ cellIndex }>{ cell }</td>
-            )) }
+        <tr key={index}>
+            {row.map((cell, cellIndex) => (
+                <td key={cellIndex}>{cell}</td>
+            ))}
         </tr>
     ))
 
     return (
         <table>
             <thead>
-                <tr>{ headers }</tr>
+                <tr>{headers}</tr>
             </thead>
-            <tbody>{ rows }</tbody>
+            <tbody>{rows}</tbody>
         </table>
     )
 }
@@ -38,23 +37,21 @@ interface CustomListProps {
 }
 // not usimng these yet.
 export const CustomUl: React.FC<CustomListProps> = ({ children }) => {
-    return <ul className='list-inside list-disc pl-4'>{ children }</ul>
+    return <ul className='list-inside list-disc pl-4'>{children}</ul>
 }
 
 export const CustomOl: React.FC<CustomListProps> = ({ children }) => {
-    return <ol className='list-inside list-decimal pl-4'>{ children }</ol>
+    return <ol className='list-inside list-decimal pl-4'>{children}</ol>
 }
 
 export const CustomLi = (props: { children: React.ReactNode }) => {
-    return <li className='text-base leading-7'>{ props.children }</li>
+    return <li className='text-base leading-7'>{props.children}</li>
 }
 
 export const Paragraph = (props: { children?: React.ReactNode }) => {
     if (typeof props.children !== 'string' && props.children === 'img') {
-        return <>{ props.children }</>
+        return <>{props.children}</>
     }
 
-    return <p className='leading-7 [&:not(:first-child)]:mt-6' { ...props } />
+    return <p className='leading-7 [&:not(:first-child)]:mt-6' {...props} />
 }
-
-

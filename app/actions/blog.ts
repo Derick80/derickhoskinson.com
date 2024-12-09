@@ -13,9 +13,7 @@ import matter from 'gray-matter'
 
 export const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
 
-export const getPost = async ({ slug }: {
-    slug: string
-}) => {
+export const getPost = async ({ slug }: { slug: string }) => {
     const mdxfile = await fs.readFile(path.join(POSTS_FOLDER, slug), 'utf8')
 
     const { data: frontMatter, content } = matter(mdxfile)
@@ -89,7 +87,9 @@ export const getOnePost = async (slug: string) => {
             mdxOptions: {
                 remarkPlugins: [remarkGfm],
                 rehypePlugins: [
-                    [rehypeHighlight, { subset: true },
+                    [
+                        rehypeHighlight,
+                        { subset: true },
                         rehypeShiki,
                         {
                             theme: 'nord',
@@ -119,6 +119,3 @@ export const getOnePost = async (slug: string) => {
         compiledSource: content
     }
 }
-
-
-

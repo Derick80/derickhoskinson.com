@@ -17,75 +17,61 @@ const NavigationBar = async () => {
     const userData = await getUser()
 
     return (
-        <nav className='sticky z-50  flex justify-between bg-background/80 px-4shadow-md backdrop-blur-sm transition-transform duration-300 ease-in-out'>
-            <div
-                className='flex flex-col w-full justify-between  gap-2'>
-
-
-                <div
-                    className='flex items-center justify-between space-x-4 w-fulsl'>
-
+        <nav className='px-4shadow-md sticky z-50 flex justify-between bg-background/80 backdrop-blur-sm transition-transform duration-300 ease-in-out'>
+            <div className='flex w-full flex-col justify-between gap-2'>
+                <div className='w-fulsl flex items-center justify-between space-x-4'>
                     <NavLinks />
 
-
-                    { !userData && <Link href='/login'>Login</Link> }
+                    {!userData && <Link href='/login'>Login</Link>}
                     <ToggleTheme />
-                    { userData !== null && (
-                        <DropdownMenu
-
-                            modal={ false }>
+                    {userData !== null && (
+                        <DropdownMenu modal={false}>
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     variant='ghost'
-                                    className='relative px-4  pr-2rounded-full'
+                                    className='pr-2rounded-full relative px-4'
                                 >
-                                    <Avatar >
+                                    <Avatar>
                                         <AvatarImage
                                             className='object-cover'
                                             src={
-                                                userData.userImages.length > 0 &&
-                                                    userData.userImages[0]
-                                                        .userAvatar === true
+                                                userData.userImages.length >
+                                                    0 &&
+                                                userData.userImages[0]
+                                                    .userAvatar === true
                                                     ? userData.userImages[0]
-                                                        .imageUrl
+                                                          .imageUrl
                                                     : '/assets/images/placeholder-user.jpg'
                                             }
-                                            alt={ userData.name || 'User avatar' }
+                                            alt={userData.name || 'User avatar'}
                                         />
                                         <AvatarFallback>
-                                            { userData.name ? (
+                                            {userData.name ? (
                                                 userData.name
                                                     .charAt(0)
                                                     .toUpperCase()
                                             ) : (
                                                 <User />
-                                            ) }
+                                            )}
                                         </AvatarFallback>
                                     </Avatar>
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent avoidCollisions={ true }>
+                            <DropdownMenuContent avoidCollisions={true}>
                                 <DropdownMenuItem>
                                     <Link href='/profile'>Profile</Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem></DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <Button
-                                        variant='outline'
-                                        onClick={ logout }
-                                    >
+                                    <Button variant='outline' onClick={logout}>
                                         Logout
                                     </Button>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
-                    ) }
-
-
-
-
+                    )}
                 </div>
-                {/* <NavigationPath /> */ }
+                {/* <NavigationPath /> */}
             </div>
         </nav>
     )
