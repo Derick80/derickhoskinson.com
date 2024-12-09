@@ -1,7 +1,4 @@
-import { getResumeById, updateExperience } from '@/app/actions/cv'
-import Experience from '@/app/cv/cv-experience'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { getResumeById } from '@/app/actions/cv'
 import { z } from 'zod'
 import ExperienceList from '../experience-list'
 
@@ -11,7 +8,7 @@ const resumeIdSchema = z.object({
     })
 })
 
-export default async function ResumeRoute(props: {
+export default async function ResumeRoute (props: {
     params: Promise<{
         id: string
     }>
@@ -41,7 +38,7 @@ export default async function ResumeRoute(props: {
                     Click on a field to edit it. Click the checkmark or press
                     enter to save. Click the x or press escape to cancel.
                 </p>
-                <ExperienceList cvId={id} />
+                <ExperienceList cvId={ id } />
             </div>
         </div>
     )
