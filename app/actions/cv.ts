@@ -94,49 +94,7 @@ export const getAllExperience = async () => {
     return experience
 }
 
-export const jobDuty = async ({
-    title,
-    experienceId
-}: {
-    title: string
-    experienceId: string
-}) => {
-    const newDuty = await prisma.duty.create({
-        data: {
-            title,
-            experienceId
-        }
-    })
-    return newDuty
-}
-
-export const deleteJobDuty = async ({ id }: { id: string }) => {
-    const duty = await prisma.duty.delete({
-        where: {
-            id
-        }
-    })
-    return duty
-}
-
-export const createNewJobResponsibility = async ({
-    title,
-    experienceId
-}: {
-    title: string
-    experienceId: string
-}) => {
-    const newDuty = await prisma.duty.create({
-        data: {
-            title,
-            experienceId
-        }
-    })
-    return newDuty
-}
-
 export const updateExperience = async (formData: FormData) => {
-
     const rawFormData = Object.fromEntries(formData.entries())
     const validatedFields = experienceSchema.safeParse(rawFormData)
 
@@ -221,4 +179,4 @@ export const updateExperience = async (formData: FormData) => {
 export const updateJobTitle = async (
     prevState: unknown,
     formData: FormData
-) => { }
+) => {}

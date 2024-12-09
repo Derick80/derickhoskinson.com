@@ -1,9 +1,5 @@
 import { getResumeById } from '@/app/actions/cv'
 import { z } from 'zod'
-import Form from 'next/form'
-import ResumeSkills from '@/components/resume/resume-skills'
-import JobDuties from './editable-experience-card'
-import EditableExperienceCard from './editable-experience-card'
 
 const resumeIdSchema = z.object({
     id: z.string({
@@ -11,7 +7,7 @@ const resumeIdSchema = z.object({
     })
 })
 
-export default async function ResumeRoute (props: {
+export default async function ResumeRoute(props: {
     params: Promise<{
         id: string
     }>
@@ -38,20 +34,12 @@ export default async function ResumeRoute (props: {
                 )
             } */}
 
-            <div className='mt-4 w-full gap-4 flex flex-col border-2 border-purple-500'>
+            <div className='mt-4 flex w-full flex-col gap-4 border-2 border-purple-500'>
                 <h3>Experience</h3>
                 <p>
-                    Click on a field to edit it. Click the checkmark or press enter to save. Click the x or press escape to cancel.
+                    Click on a field to edit it. Click the checkmark or press
+                    enter to save. Click the x or press escape to cancel.
                 </p>
-                { experience &&
-                    experience.map((exp) => {
-                        return (
-                            <EditableExperienceCard
-                                key={ exp.id }
-                                experience={ exp }
-                            />
-                        )
-                    }) }
             </div>
         </div>
     )

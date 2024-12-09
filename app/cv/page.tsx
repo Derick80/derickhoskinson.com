@@ -4,8 +4,7 @@ import { resume_basics } from '@/lib/resources/resume'
 import { generateResumeMetadata } from './resume-metadata'
 import { getResume } from '../actions/cv'
 import { verifySession } from '../actions/auth'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+
 import CreateResumeButton from '@/components/resume/new-resume-button'
 
 export const metadata = await generateResumeMetadata()
