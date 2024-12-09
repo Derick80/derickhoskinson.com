@@ -1,5 +1,9 @@
-import { getResumeById } from '@/app/actions/cv'
+import { getResumeById, updateExperience } from '@/app/actions/cv'
+import Experience from '@/app/cv/cv-experience'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { z } from 'zod'
+import ExperienceList from '../experience-list'
 
 const resumeIdSchema = z.object({
     id: z.string({
@@ -23,9 +27,6 @@ export default async function ResumeRoute(props: {
         throw new Error('No resume found')
     }
 
-    // get resume sections
-    const { skills, experience, education } = resume
-    console.log(experience)
     return (
         <div className='mt-4 flex min-h-screen flex-col items-center py-2'>
             {/* {
@@ -34,12 +35,13 @@ export default async function ResumeRoute(props: {
                 )
             } */}
 
-            <div className='mt-4 flex w-full flex-col gap-4 border-2 border-purple-500'>
+            <div className='mt-4 flex w-full flex-col gap-4 border-2 border-purple-500 p-4'>
                 <h3>Experience</h3>
                 <p>
                     Click on a field to edit it. Click the checkmark or press
                     enter to save. Click the x or press escape to cancel.
                 </p>
+                <ExperienceList cvId={id} />
             </div>
         </div>
     )

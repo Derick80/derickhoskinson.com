@@ -2,11 +2,11 @@
 
 import prisma from '@/lib/prisma'
 import { experienceSchema } from '@/lib/types'
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
-export const getResume = async () => {
+export const getResume = unstable_cache(async () => {
     // get the user's resume
     const resume = await prisma.curriculumVitae.findFirst({
         where: {
@@ -32,7 +32,7 @@ export const getResume = async () => {
     }
 
     return resume
-}
+})
 
 export const getResumeById = async ({ id }: { id: string }) => {
     // get the user's resume
@@ -94,89 +94,56 @@ export const getAllExperience = async () => {
     return experience
 }
 
-export const updateExperience = async (formData: FormData) => {
-    const rawFormData = Object.fromEntries(formData.entries())
-    const validatedFields = experienceSchema.safeParse(rawFormData)
+export const updateExperience = async (
+    experienceId: string,
+    field: string,
+    value: string
+) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
 
-    if (!validatedFields.success) {
+    try {
+        const updatedExperience = await prisma.experience.update({
+            where: { id: experienceId },
+            data: { [field]: value }
+        })
+        revalidateTag('experience')
         return {
-            errors: validatedFields.error.flatten().fieldErrors
+            success: true
         }
-    }
-
-    const { id, intent, cvId } = validatedFields.data
-
-    switch (intent) {
-        case 'update-company':
-            const companyUpdate = await prisma.experience.update({
-                where: {
-                    id
-                },
-                data: {
-                    company: validatedFields.data.company
-                }
-            })
-            if (!companyUpdate) {
-                throw new Error('Company not updated')
-            }
-            return {
-                message: 'company updated'
-            }
-
-            break
-        case 'update-job-title':
-            const jobTitleUpdate = await prisma.experience.update({
-                where: {
-                    id
-                },
-                data: {
-                    jobTitle: validatedFields.data.jobTitle
-                }
-            })
-            if (!jobTitleUpdate) {
-                throw new Error('Job title not updated')
-            }
-            return {
-                message: 'job title updated'
-            }
-            break
-        case 'update-location':
-            const locationUpdate = await prisma.experience.update({
-                where: {
-                    id
-                },
-                data: {
-                    location: validatedFields.data.location
-                }
-            })
-            if (!locationUpdate) {
-                throw new Error('Location not updated')
-            }
-            return {
-                message: 'location updated'
-            }
-            break
-        case 'update-duty':
-            const dutyUpdate = await prisma.duty.update({
-                where: {
-                    id
-                },
-                data: {
-                    title: validatedFields.data.title
-                }
-            })
-            if (!dutyUpdate) {
-                throw new Error('Duty not updated')
-            }
-            return {
-                message: 'Duty updated'
-            }
-            break
-        default:
-            throw new Error('Invalid intent')
+    } catch (error) {
+        console.error('Error updating experience:', error)
+        return { success: false, error: 'Failed to update experience' }
     }
 }
+
 export const updateJobTitle = async (
     prevState: unknown,
     formData: FormData
 ) => {}
+
+export const getExperienceByCvId = async ({ cvId }: { cvId: string }) => {
+    const experiences = await prisma.experience.findMany({
+        where: { cvId },
+        orderBy: {
+            startDate: 'desc'
+        }
+    })
+    // format the dates for display
+
+    // Format the dates for display
+    const formattedExperiences = experiences.map((exp) => ({
+        ...exp,
+        startDate: new Date(exp.startDate).toLocaleDateString('en-US', {
+            month: 'long',
+            year: 'numeric'
+        }),
+        endDate: exp.endDate
+            ? new Date(exp.endDate).toLocaleDateString('en-US', {
+                  month: 'long',
+                  year: 'numeric'
+              })
+            : 'Present' // Handle ongoing experiences
+    }))
+
+    return formattedExperiences
+}

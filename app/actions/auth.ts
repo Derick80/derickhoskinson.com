@@ -2,7 +2,7 @@
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import crypto from 'crypto'
-import { cookies, type UnsafeUnwrappedCookies } from 'next/headers'
+import { cookies } from 'next/headers'
 import prisma from '@/lib/prisma'
 import { cache } from 'react'
 import { sendEmailVerification } from '@/components/auth/send-verification-email'
@@ -202,11 +202,11 @@ export const createUserSession = async (userId: string) => {
         expires: sessionExpires
     }
 
-    // set the session cookie
-    ;(await cookies()).set('session-token', sessionData, cookieOptions)
+        // set the session cookie
+        ; (await cookies()).set('session-token', sessionData, cookieOptions)
     redirect('/')
 }
-export async function logout() {
+export async function logout () {
     deleteSession()
     redirect('/login')
 }

@@ -159,20 +159,6 @@ model CurriculumVitae {
   userId      String?
 }
 
-model Experience {
-  id        String          @id @default(cuid())
-  company   String
-  jobTitle  String
-  location  String
-  startDate DateTime
-  endDate   DateTime
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-  cv        CurriculumVitae @relation(fields: [cvId], references: [id], onDelete: Cascade)
-  cvId      String
-  duties    Duty[]
-}
-
 model Education {
   id          String              @id @default(cuid())
   institution String
@@ -196,6 +182,20 @@ model EducationProjects {
   updatedAt   DateTime   @updatedAt
   Education   Education? @relation(fields: [educationId], references: [id], onDelete: Cascade)
   educationId String?
+}
+
+model Experience {
+  id        String          @id @default(cuid())
+  company   String
+  jobTitle  String
+  location  String
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  cv        CurriculumVitae @relation(fields: [cvId], references: [id], onDelete: Cascade)
+  cvId      String
+  duties    Duty[]
 }
 
 model Duty {
