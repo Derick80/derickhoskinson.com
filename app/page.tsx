@@ -4,8 +4,8 @@ import LandingAbout from '@/components/shared/about/landing'
 import ContactForm from '../components/about/contact-form'
 import PageOverLayBar from '@/components/shared/page-overlay-bar'
 import { BlogCard } from '@/components/blog/blog-card'
-import { getPostsMetaData } from './actions/blog'
 import TestLanding from '@/components/shared/about/landing_test'
+import { getAllPosts } from './actions/blog'
 
 export const metadata: Metadata = {
     title: "Dr. Hoskinson's Blog",
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     }
 }
 
-export default async function Home() {
-    const frontmatter = await getPostsMetaData()
+export default async function Home () {
+    const frontmatter = await getAllPosts()
     if (!frontmatter) return null
 
     return (
@@ -48,16 +48,16 @@ export default async function Home() {
                     to my work.
                 </p>
 
-                {frontmatter.map(
+                { frontmatter.map(
                     (post) =>
-                        post.slug && <BlogCard key={post.slug} {...post} />
-                )}
+                        post.frontmatter.slug && <BlogCard key={ post.frontmatter.slug } { ...post.frontmatter } />
+                ) }
             </section>
             <section id='contact' className='space-y-6'>
                 <h2 className='mb-10'>Get in Touch</h2>
                 <ContactForm />
             </section>
-            <PageOverLayBar sectionIds={['Introduction', 'Blog', 'Contact']} />
+            <PageOverLayBar sectionIds={ ['Introduction', 'Blog', 'Contact'] } />
         </>
     )
 }

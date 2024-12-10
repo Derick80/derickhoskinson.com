@@ -7,7 +7,6 @@ import { Button } from '../ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { SharePostButton } from './share-button'
 import LikeButton from './like-button'
-import { getPostData } from '@/app/actions/blog'
 // inspo https://www.leohuynh.dev/
 export const BlogCard = async (props: MdxCompiled) => {
     const {
@@ -22,9 +21,6 @@ export const BlogCard = async (props: MdxCompiled) => {
         slug,
         imageUrl
     } = props
-
-    const postsData = await getPostData({ slug })
-    console.log(postsData, 'postsData')
 
     return (
         <Card className='flex flex-col'>
@@ -66,28 +62,23 @@ export const BlogCard = async (props: MdxCompiled) => {
                 </Button>
             </CardContent>
 
-            {
-                postsData && (
-                    <CardFooter className='flex items-center justify-between border-t p-2'>
-                        <LikeButton postId={ slug } onLike={ () => console.log('like') } />
-                        <Button
-                            variant='ghost'
-                            size='sm'
-                            className='flex items-center space-x-1'
-                        >
-                            <MessageCircle className='h-5 w-5' />
-                            <span>{ 6 }</span>
-                        </Button>
-                        <Button variant='ghost' size='sm'>
-                            <Bookmark
-                                className={ `h-5 w-5 ${1 ? 'fill-current' : ''}` }
-                            />
-                        </Button>
-                        <SharePostButton id={ slug } />
-                    </CardFooter>
-
-                )
-            }
+            <CardFooter className='flex items-center justify-between border-t p-2'>
+                <LikeButton postId={ slug } onLike={ () => console.log('like') } />
+                <Button
+                    variant='ghost'
+                    size='sm'
+                    className='flex items-center space-x-1'
+                >
+                    <MessageCircle className='h-5 w-5' />
+                    <span>{ 6 }</span>
+                </Button>
+                <Button variant='ghost' size='sm'>
+                    <Bookmark
+                        className={ `h-5 w-5 ${1 ? 'fill-current' : ''}` }
+                    />
+                </Button>
+                <SharePostButton id={ slug } />
+            </CardFooter>
         </Card>
     )
 }

@@ -1,6 +1,7 @@
 /* Mdx Blog types */
 import { z } from 'zod'
 
+export const BASE_URL = 'https://derickhoskinson.com'
 export const frontMatter = z.object({
     title: z.string({
         required_error:

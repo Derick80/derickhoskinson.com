@@ -6,9 +6,9 @@ const EvidenceButton = ({ experienceId }: { experienceId: string }) => {
     return (
         <Button
             type='button'
-            onClick={ (event) => {
+            onClick={(event) => {
                 event.preventDefault()
-            } }
+            }}
         >
             Edit
         </Button>

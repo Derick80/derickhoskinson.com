@@ -51,16 +51,16 @@ export const generateResumeMetadata = async () => {
     const experienceJobTitles = experience.map((work) => work.jobTitle)
 
     const metadata: Metadata = {
-        title: "Dr. Hoskinson's CV",
+        title: "Dr.Derick Hoskinson's CV",
         description: summary,
-        applicationName: 'Personal CV',
+        applicationName: 'derickhoskinson.com',
         authors: [
             {
-                name: 'Dr. Derick Hoskinson',
+                name: 'Dr. Derick Hoskinson, PhD',
                 url: 'https://derickhoskinson.com'
             }
         ],
-        creator: 'Dr. Derick Hoskinson',
+        creator: 'Dr. Derick Hoskinson, PhD',
         openGraph: {
             title: title,
             description: summary,

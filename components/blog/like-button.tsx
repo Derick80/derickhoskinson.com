@@ -17,13 +17,14 @@ const LikeButton = (props: LikeButtonProps) => {
 
     return (
         <Tooltip>
-            <TooltipTrigger content='Login to like'>
+            <TooltipTrigger content='Login to like'
+                asChild>
                 <Button
                     variant='ghost'
                     className='flex items-center gap-2'
-                    disabled={true}
+                    disabled={ true }
                 >
-                    <HeartIcon size={24} />
+                    <HeartIcon size={ 24 } />
                     <span>Like</span>
                 </Button>
             </TooltipTrigger>

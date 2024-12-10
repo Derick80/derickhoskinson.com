@@ -10,7 +10,7 @@ import { getUser } from '../actions/auth'
 //     })
 // })
 
-export async function POST (request: Request) {
+export async function POST(request: Request) {
     const userData = await getUser()
     const userId = userData?.id
 

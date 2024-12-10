@@ -7,9 +7,9 @@ const ExperienceList = async ({ cvId }: { cvId: string }) => {
     return (
         <div>
             <h2 className='mb-4 text-2xl font-bold'>Experience</h2>
-            { experiences.map((experience) => (
-                <ExperienceItem key={ experience.id } experience={ experience } />
-            )) }
+            {experiences.map((experience) => (
+                <ExperienceItem key={experience.id} experience={experience} />
+            ))}
         </div>
     )
 }

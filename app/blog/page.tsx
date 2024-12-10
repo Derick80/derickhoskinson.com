@@ -1,10 +1,18 @@
 import React from 'react'
 import { BlogCard } from '@/components/blog/blog-card'
-import { getPostsMetaData } from '../actions/blog'
+import { getAllPosts } from '../actions/blog'
 
-export default async function Blog () {
-    const frontmatter = await getPostsMetaData()
-    if (!frontmatter) return null
+export default async function Blog() {
+    const posts = await getAllPosts()
+    if (!posts.length) {
+        return null
+    }
+
+    const frontmatter = posts
+        .map((fm) => fm.frontmatter)
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    console.log('frontmatter', frontmatter)
+
     return (
         <div className='flex min-h-screen flex-col gap-4 py-2 md:gap-6'>
             <h1>Blog</h1>
@@ -15,9 +23,9 @@ export default async function Blog () {
                 the entire post by clicking on the Read More button.
             </p>
 
-            { frontmatter.map(
-                (post) => post.slug && <BlogCard key={ post.slug } { ...post } />
-            ) }
+            {frontmatter.map((post) => (
+                <BlogCard key={post.slug} {...post} />
+            ))}
         </div>
     )
 }
