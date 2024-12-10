@@ -10,29 +10,20 @@ export const mdxComponents = {
     components: {
         p: Paragraph,
         table: Table,
-        pre: ({
-            ...props
-        }) => {
-
-            const classNames = props.children.props.className.split("-")[1];
-            const language = classNames.split(" ")[0];
+        pre: ({ ...props }) => {
+            const classNames = props.children.props.className.split('-')[1]
+            const language = classNames.split(' ')[0]
             return (
-
-                <div className='relative p-6  rounded-md bg-primary-foreground/80 '>
-
-
-                    <CodeBlock
-                        props={ props }
-                    />
+                <div className='relative rounded-md bg-primary-foreground/80 p-6'>
+                    <CodeBlock props={props} />
                     <Button
                         variant='default'
                         size='sm'
-                        className='absolute top-0 right-0  p-1'
+                        className='absolute right-0 top-0 p-1'
                     >
-                        { language }
+                        {language}
                     </Button>
                 </div>
-
             )
         },
         img: ({ src, alt, ...rest }: ImageProps) => {
@@ -43,15 +34,14 @@ export const mdxComponents = {
                             ? src.toString()
                             : 'assets/images/placeholder-user.png'
                     }
-                    rawTransformations={ ['f_auto'] }
-
+                    rawTransformations={['f_auto']}
                     format='webp'
-                    alt={ alt }
-                    width={ 500 }
-                    height={ 500 }
-                    { ...rest }
+                    alt={alt}
+                    width={500}
+                    height={500}
+                    {...rest}
                 />
             )
-        },
+        }
     }
 }

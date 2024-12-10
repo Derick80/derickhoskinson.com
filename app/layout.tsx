@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast'
 import ErrorPage from './errors'
 import './nordtheme.css'
 import { ThemeProvider } from '@/components/theme/theme-provider'
-
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         'A personal web app for Derick Hoskinson with a blog, curriculum vitae, and other genetic resources.'
 }
 
-export default function RootLayout ({
+export default function RootLayout({
     children,
     error
 }: Readonly<{
@@ -34,23 +34,23 @@ export default function RootLayout ({
     error?: Error
 }>) {
     if (error) {
-        return <ErrorPage error={ error } />
+        return <ErrorPage error={error} />
     }
     return (
         <html lang='en' suppressHydrationWarning>
             <body
-                className={ `${geistSans.variable} ${geistMono.variable}  gap-20 antialiased` }
+                className={`${geistSans.variable} ${geistMono.variable} gap-20 antialiased`}
             >
-                <Analytics />
-                <ThemeProvider
-                    attribute='class'
-                >
-                    <Toaster />
+                {/* <Analytics /> */}
+                <ThemeProvider attribute='class'>
+                    <TooltipProvider>
+                        <Toaster />
 
-                    <main className='container relative mx-auto w-full max-w-4xl space-y-6 px-4 py-2 sm:px-6 md:space-y-10 lg:px-8'>
-                        <NavigationBar />
-                        { children }
-                    </main>
+                        <main className='container relative mx-auto w-full max-w-4xl space-y-6 px-4 py-2 sm:px-6 md:space-y-10 lg:px-8'>
+                            <NavigationBar />
+                            {children}
+                        </main>
+                    </TooltipProvider>
                 </ThemeProvider>
             </body>
         </html>

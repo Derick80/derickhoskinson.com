@@ -83,3 +83,52 @@ export type CustomUserImageType = {
     height: number
     userAvatar: boolean
 }
+
+export const experienceSchema = z.discriminatedUnion('intent', [
+    z.object({
+        intent: z.literal('update-company'),
+        company: z
+            .string({
+                required_error: 'Company is required'
+            })
+            .min(3, 'Company name must be at least 3 characters long'),
+        id: z.string(),
+        cvId: z.string()
+    }),
+    z.object({
+        intent: z.literal('update-job-title'),
+        jobTitle: z
+            .string({
+                required_error: 'Job title is required'
+            })
+            .min(3, 'Job title must be at least 3 characters long'),
+        id: z.string(),
+        cvId: z.string()
+    }),
+    z.object({
+        intent: z.literal('update-location'),
+        location: z
+            .string({
+                required_error: 'Location is required'
+            })
+            .min(3, 'Location must be at least 3 characters long'),
+        id: z.string(),
+        cvId: z.string()
+    }),
+    z.object({
+        intent: z.literal('update-duty'),
+        title: z.string({
+            required_error: 'Title is required'
+        }),
+        id: z.string({
+            required_error: 'Duty ID is required'
+        }),
+        cvId: z.string()
+    })
+])
+
+export type UpdateExperienceErrorType = z.inferFlattenedErrors<
+    typeof experienceSchema
+>
+
+export type updateExperienceType = z.infer<typeof experienceSchema>

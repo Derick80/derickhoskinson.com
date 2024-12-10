@@ -14,7 +14,7 @@
     "checkformat": "prettier \"app/**/*.ts\" \"app/**/*.tsx\" --check . ",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate && npx prisma db push"
+    "postinstall": "prisma generate && npx prisma db push  && npx prisma db seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

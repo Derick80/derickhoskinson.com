@@ -2,7 +2,7 @@
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import crypto from 'crypto'
-import { cookies, type UnsafeUnwrappedCookies } from 'next/headers'
+import { cookies } from 'next/headers'
 import prisma from '@/lib/prisma'
 import { cache } from 'react'
 import { sendEmailVerification } from '@/components/auth/send-verification-email'

@@ -1,12 +1,70 @@
 import { PrismaClient } from '@prisma/client'
+
 const prisma = new PrismaClient()
 import {
     initialForumUsers,
     initialForums,
     initialPosts
 } from '../lib/resources/test-forums'
+import { resume } from '@/lib/resources/curriculum-vitae'
 
 const seed = async () => {
+    // delete resume data
+    await prisma.curriculumVitae.deleteMany()
+    // generate resume data
+
+    const curriculumVitae = await prisma.curriculumVitae.create({
+        data: {
+            title: resume.basics.title,
+            phoneNumber: resume.basics.phoneNumber,
+            email: resume.basics.email,
+            website: resume.basics.website,
+            location: resume.basics.location,
+            summary: resume.basics.summary,
+            createdAt: new Date(),
+            description: 'initial resume',
+            isCurrent: true,
+            isPrimary: true,
+            skills: {
+                create: resume.skills.map((skill) => ({
+                    title: skill
+                }))
+            },
+            education: {
+                create: resume.education.map((edu) => ({
+                    institution: edu.institution,
+                    description: edu.description,
+                    degree: edu.degree,
+                    field: edu.field,
+                    startDate: new Date(edu.startDate),
+                    endDate: new Date(edu.endDate),
+                    projects: {
+                        create: edu.projects.map((project) => ({
+                            title: project.title
+                        }))
+                    }
+                }))
+            },
+            experience: {
+                create: resume.experience.map((work) => ({
+                    company: work.company,
+                    jobTitle: work.jobTitle,
+                    location: work.location,
+                    startDate: new Date(work.startDate),
+                    endDate: new Date(work.endDate),
+                    duties: {
+                        create: work.duties.map((duty) => ({
+                            title: duty.duty
+                        }))
+                    }
+                }))
+            }
+        }
+    })
+
+    if (!curriculumVitae) {
+        console.error('Failed to create resume')
+    }
     // Seed Users
     const users = await Promise.all(
         initialForumUsers.map((user) =>

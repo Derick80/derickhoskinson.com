@@ -35,7 +35,7 @@ const ToggleTheme = () => {
             type='button'
             variant='ghost'
             size='icon'
-            onClick={ toggleTheme }
+            onClick={toggleTheme}
             className='rounded-full'
             aria-label='Toggle Theme'
         >
