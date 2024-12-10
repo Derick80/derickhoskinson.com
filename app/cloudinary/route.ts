@@ -10,7 +10,7 @@ import { getUser } from '../actions/auth'
 //     })
 // })
 
-export async function POST(request: Request) {
+export async function POST (request: Request) {
     const userData = await getUser()
     const userId = userData?.id
 
@@ -21,6 +21,5 @@ export async function POST(request: Request) {
     if (!results) {
         return NextResponse.json({ message: 'error' })
     }
-    console.log(results, 'results from cloudinary')
     return NextResponse.json({ message: 'success' })
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import { BlogCard } from '@/components/blog/blog-card'
 import { getPostsMetaData } from '../actions/blog'
 
-export default async function Blog() {
+export default async function Blog () {
     const frontmatter = await getPostsMetaData()
     if (!frontmatter) return null
     return (
@@ -15,9 +15,9 @@ export default async function Blog() {
                 the entire post by clicking on the Read More button.
             </p>
 
-            {frontmatter.map(
-                (post) => post.slug && <BlogCard key={post.slug} {...post} />
-            )}
+            { frontmatter.map(
+                (post) => post.slug && <BlogCard key={ post.slug } { ...post } />
+            ) }
         </div>
     )
 }

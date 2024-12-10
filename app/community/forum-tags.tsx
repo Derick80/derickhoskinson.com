@@ -17,17 +17,16 @@ const UniqueTagList = ({
     }[]
 }) => {
     return (
-        console.log(tags, 'tags'),
         (
             <div className='flex flex-wrap space-x-2'>
-                {tags.map((tag) => (
+                { tags.map((tag) => (
                     <span
-                        key={tag.id}
+                        key={ tag.id }
                         className='rounded-full bg-gray-200 px-2 py-1 text-sm'
                     >
-                        {tag.title}
+                        { tag.title }
                     </span>
-                ))}
+                )) }
             </div>
         )
     )

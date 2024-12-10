@@ -6,10 +6,9 @@ const EvidenceButton = ({ experienceId }: { experienceId: string }) => {
     return (
         <Button
             type='button'
-            onClick={(event) => {
+            onClick={ (event) => {
                 event.preventDefault()
-                console.log('edit company')
-            }}
+            } }
         >
             Edit
         </Button>

@@ -202,11 +202,11 @@ export const createUserSession = async (userId: string) => {
         expires: sessionExpires
     }
 
-        // set the session cookie
-        ; (await cookies()).set('session-token', sessionData, cookieOptions)
+    // set the session cookie
+    ;(await cookies()).set('session-token', sessionData, cookieOptions)
     redirect('/')
 }
-export async function logout () {
+export async function logout() {
     deleteSession()
     redirect('/login')
 }

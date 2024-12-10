@@ -10,71 +10,41 @@ import rehypeHighlight from 'rehype-highlight'
 import * as fs from 'fs/promises'
 import readingTime from 'reading-time'
 import matter from 'gray-matter'
+import * as z from 'zod'
+import { unstable_cache } from 'next/cache'
+import prisma from '@/lib/prisma'
 
+const slugSchema = z.object({
+    slug: z.string({
+        message: 'Invalid slug'
+    })
+})
 export const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
 
-export const getPost = async ({ slug }: { slug: string }) => {
-    const mdxfile = await fs.readFile(path.join(POSTS_FOLDER, slug), 'utf8')
 
-    const { data: frontMatter, content } = matter(mdxfile)
-
-    return {
-        frontMatter,
-        slug,
-        content
-    }
-}
-
-export const getPostBySlug = async (slug: string) => {
-    const filePath = path.join(POSTS_FOLDER, `${slug}`)
-    const source = await fs.readFile(filePath, 'utf8')
-    if (!source) {
-        throw new Error('No file found')
-    }
-    const { frontmatter } = await compileMDX<MdxCompiled>({
-        source: source,
-        options: {
-            parseFrontmatter: true,
-            mdxOptions: {
-                remarkPlugins: [remarkGfm],
-                rehypePlugins: [rehypeSlug]
-            }
-        },
-        components: mdxComponents.components
-    })
-
-    if (!frontmatter) {
-        throw new Error('No frontmatter found')
-    }
-
-    frontmatter.slug = slug
-    frontmatter.readingTime = readingTime(source).text
-    frontmatter.wordCount = source.split(/\s+/g).length
-    frontmatter.content = source
-    return {
-        frontmatter
-    }
-}
 
 export const getPostsMetaData = cache(async () => {
     const files = await fs.readdir(POSTS_FOLDER)
     if (!files) {
         throw new Error('No files found')
     }
-    const posts = []
+    const posts: MdxCompiled[] = []
     for (const fileName of files) {
-        const { frontmatter } = await getPostBySlug(fileName)
-        posts.push({ ...frontmatter })
+        const post = await getPostBySlug(fileName.replace(/\.mdx$/, ''))
+        if (post && post.frontmatter) {
+            posts.push({ ...post.frontmatter })
+        }
     }
-    if (!posts) {
+    if (posts.length === 0) {
         throw new Error('No posts found')
     }
 
     return posts
 })
 
-export const getOnePost = async (slug: string) => {
-    const filePath = path.join(POSTS_FOLDER, `${slug}`)
+export const getPostBySlug = async (slug: string) => {
+    console.log(slug, 'slug getPostBySlug')
+    const filePath = path.join(POSTS_FOLDER, `${slug}.mdx`)
 
     const postFile = await fs.readFile(filePath, 'utf8')
     if (!postFile) {
@@ -103,7 +73,7 @@ export const getOnePost = async (slug: string) => {
                             ]
                         }
                     ],
-                    [rehypeSlug, { prefix: 'toc' }]
+                    [rehypeSlug]
                 ]
             }
         },
@@ -117,5 +87,46 @@ export const getOnePost = async (slug: string) => {
     return {
         frontmatter,
         compiledSource: content
+
     }
 }
+
+export const getPostData = unstable_cache(
+    async ({ slug }: { slug: string }) => {
+        const verifiedSlug = slugSchema.parse({ slug })
+        if (!verifiedSlug) {
+            throw new Error('No slug found')
+        }
+        console.log(verifiedSlug.slug, 'verifiedSlug')
+
+        return await prisma.post.findUnique({
+            where: { slug: verifiedSlug.slug },
+            select: {
+                id: true,
+                slug: true,
+                likes: {
+                    select: {
+                        user: {
+                            select: {
+                                name: true,
+                                userImages: {
+                                    where: {
+                                        userAvatar: true
+                                    }
+                                }
+                            }
+                        },
+                        postId: true
+                    }
+                },
+
+                _count: {
+                    select: {
+                        comments: true,
+                        likes: true
+                    }
+                }
+            }
+        })
+    }
+)

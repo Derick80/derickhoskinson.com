@@ -8,7 +8,7 @@ const resumeIdSchema = z.object({
     })
 })
 
-export default async function ResumeRoute (props: {
+export default async function ResumeRoute(props: {
     params: Promise<{
         id: string
     }>
@@ -38,7 +38,7 @@ export default async function ResumeRoute (props: {
                     Click on a field to edit it. Click the checkmark or press
                     enter to save. Click the x or press escape to cancel.
                 </p>
-                <ExperienceList cvId={ id } />
+                <ExperienceList cvId={id} />
             </div>
         </div>
     )
