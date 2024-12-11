@@ -11,7 +11,6 @@ export default async function Blog () {
     const frontmatter = posts
         .map((fm) => fm.frontmatter)
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    console.log('frontmatter', frontmatter)
 
     return (
         <div className='flex min-h-screen flex-col gap-4 py-2 md:gap-6'>

@@ -1,6 +1,4 @@
-import { cn } from '@/lib/utils'
 // import { codeToHtml } from 'shiki'
-import { codeToHtml } from 'shiki/bundle/full'
 import { HTMLAttributes, HtmlHTMLAttributes, PropsWithChildren } from "react";
 
 export const Table = (props: HtmlHTMLAttributes<HTMLTableElement>) => {

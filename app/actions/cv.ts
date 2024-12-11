@@ -1,10 +1,8 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { experienceSchema } from '@/lib/types'
-import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache'
+import { revalidateTag, unstable_cache } from 'next/cache'
 import { redirect } from 'next/navigation'
-import { z } from 'zod'
 
 export const getResume = unstable_cache(async () => {
     // get the user's resume
@@ -119,7 +117,7 @@ export const updateExperience = async (
 export const updateJobTitle = async (
     prevState: unknown,
     formData: FormData
-) => {}
+) => { }
 
 export const getExperienceByCvId = async ({ cvId }: { cvId: string }) => {
     const experiences = await prisma.experience.findMany({
@@ -139,9 +137,9 @@ export const getExperienceByCvId = async ({ cvId }: { cvId: string }) => {
         }),
         endDate: exp.endDate
             ? new Date(exp.endDate).toLocaleDateString('en-US', {
-                  month: 'long',
-                  year: 'numeric'
-              })
+                month: 'long',
+                year: 'numeric'
+            })
             : 'Present' // Handle ongoing experiences
     }))
 

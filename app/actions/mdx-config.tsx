@@ -9,7 +9,6 @@ import { ImageProps } from 'next/image'
 import CldImage from '@/components/shared/client-cloudinary'
 import { cn } from '@/lib/utils'
 import { Children, createElement } from "react"
-import { Code } from '@/components/mdx/code-rhp'
 
 function slugify (str: string) {
     return str
@@ -44,7 +43,6 @@ function createHeading (level: number) {
 export const MdxComponents = {
     components: {
         Figure,
-        pre: Code,
         p: Paragraph,
         h1: createHeading(1),
         h2: createHeading(2),

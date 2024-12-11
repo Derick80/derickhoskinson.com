@@ -1,19 +1,15 @@
 'use server'
 import { MdxCompiled } from '@/lib/types'
-import rehypeShiki from '@shikijs/rehype'
 import * as fs from 'fs/promises'
 import { compileMDX } from 'next-mdx-remote/rsc'
 import path from 'path'
 import readingTime from 'reading-time'
-import rehypeHighlight from 'rehype-highlight'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 import { MdxComponents } from './mdx-config'
 import MDXButton from '@/components/mdx/mdx-button'
-import rehypePrettyCode, { Options } from "rehype-pretty-code";
-import { transformerCopyButton } from '@rehype-pretty/transformers/copy-button'
+import { Options } from "rehype-pretty-code";
 import { transformerNotationDiff } from '@shikijs/transformers';
-import { rehypeCode } from '@/components/mdx/rehypeCode'
 
 const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
 
