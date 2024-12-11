@@ -12,6 +12,9 @@ const config: Config = {
 	theme: {
 		extend: {
 			fontFamily: {
+				monoL: 'var(--font-lisa-mono)',
+				monoCode: 'var(--font-ibm-plex-mono)',
+				poppins: 'var(--font-poppins-sans)',
 				sans: 'var(--font-geist-sans)',
 				mono: 'var(--font-geist-mono)'
 			},

@@ -8,17 +8,24 @@ import ErrorPage from './errors'
 import { ThemeProvider } from '@/components/theme/theme-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
 
+const lisaMono = localFont({
+    src: './fonts/0-normal.woff2',
+    variable: '--font-lisa-mono',
+    weight: '100 900'
+})
 
-const geistSans = localFont({
-    src: './fonts/GeistVF.woff',
-    variable: '--font-geist-sans',
+const ibmPlexMono = localFont({
+    src: './fonts/IBMPlexMono-Regular.woff2',
+    variable: '--front-ibm-plex-mono',
     weight: '100 900'
 })
-const geistMono = localFont({
-    src: './fonts/GeistMonoVF.woff',
-    variable: '--font-geist-mono',
-    weight: '100 900'
+
+const poppinsSans = localFont({
+    src: './fonts/poppins-medium-webfont.woff2',
+    variable: '--font-poppins-sans',
+    weight: '500'
 })
+
 
 export const metadata: Metadata = {
     title: "Derick Hoskinson's Personal Website",
@@ -39,7 +46,7 @@ export default function RootLayout ({
     return (
         <html lang='en' suppressHydrationWarning>
             <body
-                className={ `${geistSans.variable} ${geistMono.variable} gap-20 antialiased` }
+                className={ `${poppinsSans.variable}  ${lisaMono.variable} ${ibmPlexMono.variable}  gap-20 antialiased` }
             >
                 {/* <Analytics /> */ }
                 <ThemeProvider attribute='class'>
@@ -53,6 +60,6 @@ export default function RootLayout ({
                     </TooltipProvider>
                 </ThemeProvider>
             </body>
-        </html>
+        </html >
     )
 }

@@ -36,6 +36,7 @@ export default async function Home () {
 
     return (
         <>
+            <h1>Welcome H1</h1>
             <section id='Introduction'>
                 <h2 className='mb-10'>Welcome!</h2>
                 <TestLanding />

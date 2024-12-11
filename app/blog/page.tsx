@@ -13,7 +13,7 @@ export default async function Blog () {
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
     return (
-        <div className='flex min-h-screen flex-col gap-4 py-2 md:gap-6'>
+        <div className='flex  flex-col gap-4 py-2 md:gap-6'>
             <h1>Blog</h1>
             <p>
                 Welcome to my blog! This blog is a collection of thoughts and

@@ -86,3 +86,34 @@
     border: none !important;
     box-shadow: none !important;
 }
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-4xl font-bold font-poppins;
+  }
+  h2 {
+    @apply text-3xl font-bold font-poppins;
+  }
+  h3 {
+    @apply text-2xl font-bold font-poppins;
+  }
+  h4 {
+    @apply text-xl font-bold font-poppins;
+  }
+  h5 {
+    @apply text-lg font-bold font-poppins;
+  }
+  h6 {
+    @apply text-base font-bold font-poppins;
+  }
+
+  code {
+    @apply text-sm font-monoL;
+  }
+}
