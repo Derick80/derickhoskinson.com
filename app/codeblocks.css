@@ -30,11 +30,6 @@ figure[data-rehype-pretty-code-figure] {
 	@apply overflow-clip;
 }
 
-.post-main {
-	& > figure[data-rehype-pretty-code-figure] {
-		@apply mb-7;
-	}
-}
 
 figure[data-rehype-pretty-code-figure] pre {
 	@apply overflow-hidden;
@@ -43,21 +38,19 @@ figure[data-rehype-pretty-code-figure] pre {
 	@apply overflow-x-auto;
 }
 
-figure[data-rehype-pretty-code-figure] {
-	@apply post:mb-4;
-}
+
 
 figcaption[data-rehype-pretty-code-title] {
 	@apply text-sm;
 	@apply font-bold;
-	@apply font-mono dark:text-white;
-	@apply w-full;
-	@apply bg-gray-300/25 dark:bg-white/20;
+	@apply font-mono dark:text-purple-500;
+	@apply w-1/2;
+	@apply bg-red-300/25 dark:bg-red-500/20;
 	@apply px-5 py-2;
 }
 
 figure[data-rehype-pretty-code-figure] .line--highlighted {
-	@apply dark:bg-gray-400/20;
+	@apply dark:bg-red-400/20;
 	@apply rounded-md;
 }
 
@@ -65,6 +58,7 @@ code {
 	counter-reset: line;
 }
 
+/* line numbers */
 code > [data-line]::before {
 	counter-increment: line;
 	content: counter(line);
@@ -87,8 +81,8 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 
 code[data-inline-code="true"] {
 	@apply px-1 py-[0.5px];
-	@apply bg-white/50 dark:bg-white/10;
-	@apply text-black dark:text-white;
+	@apply bg-white/50 dark:bg-yellow-500/10;
+	@apply text-black dark:text-green-500;
 	@apply border border-gray-300 dark:border-gray-600;
 	@apply rounded-md;
 }

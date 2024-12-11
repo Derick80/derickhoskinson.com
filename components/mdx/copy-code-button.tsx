@@ -2,6 +2,7 @@
 
 import { CopyIcon } from 'lucide-react';
 import { useState, useCallback, useEffect } from "react";
+import { Button } from '../ui/button';
 
 export function CopyButton ({ text }: { text: string }) {
     const [copied, setCopied] = useState(false);
@@ -24,12 +25,14 @@ export function CopyButton ({ text }: { text: string }) {
     }, [copied]);
 
     return (
-        <button
-            onClick={ copy }
+        <Button
+            onClick={
+                copy
+            }
             title="Copy to clipboard"
             className={ ` rounded-sm text-sm text-gray-600 dark:text-gray-400` }
         >
             { copied ? <CopyIcon size={ 18 } /> : <CopyIcon size={ 18 } /> }
-        </button>
+        </Button>
     );
 }

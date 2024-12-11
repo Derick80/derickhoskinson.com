@@ -5,12 +5,16 @@ import tailwindcssAnimate from "tailwindcss-animate";
 const config: Config = {
 	darkMode: 'selector',
 	content: [
+		"./app/**/*.{js,ts,jsx,tsx,mdx}",
 		"./pages/**/*.{js,ts,jsx,tsx,mdx}",
 		"./components/**/*.{js,ts,jsx,tsx,mdx}",
-		"./app/**/*.{js,ts,jsx,tsx,mdx}",
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: 'var(--font-geist-sans)',
+				mono: 'var(--font-geist-mono)'
+			},
 			colors: {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
@@ -91,7 +95,8 @@ const config: Config = {
 				'accordion-up': 'accordion-up 0.2s ease-out'
 			}
 		},
-		plugins: [typography, tailwindcssAnimate],
-	}
+	},
+	plugins: [typography, tailwindcssAnimate],
+
 };
 export default config;

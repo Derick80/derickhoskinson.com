@@ -8,6 +8,12 @@ import readingTime from 'reading-time'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
+import { MdxComponents } from './mdx-config'
+import MDXButton from '@/components/mdx/mdx-button'
+import rehypePrettyCode, { Options } from "rehype-pretty-code";
+import { transformerCopyButton } from '@rehype-pretty/transformers/copy-button'
+import { transformerNotationDiff } from '@shikijs/transformers';
+import { rehypeCode } from '@/components/mdx/rehypeCode'
 
 const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
 
@@ -27,11 +33,31 @@ const getMDXFiles = async (dir: string) => {
     })
 }
 
-const rehypeHighLightOptions = {
+const rehypePrettyCodeOptions: Partial<Options> = {
     theme: {
         dark: "nord",
         light: "github-light",
     },
+    onVisitLine (element) {
+        console.log("Visited line");
+    },
+    onVisitHighlightedChars (element) {
+        console.log("Visited highlighted chars");
+    },
+    onVisitTitle (element) {
+        console.log("Visited title");
+    },
+    onVisitCaption (element) {
+        console.log("Visited caption");
+    },
+    onVisitHighlightedLine (node) {
+        node.properties.className?.push("line--highlighted");
+    },
+    transformers: [
+        transformerNotationDiff(),
+
+    ]
+
 };
 
 const parseFrontmatter = async (rawContent: string) => {
@@ -40,22 +66,20 @@ const parseFrontmatter = async (rawContent: string) => {
         options: {
             parseFrontmatter: true,
             mdxOptions: {
+                remarkPlugins: [remarkGfm],
                 rehypePlugins: [
-                    [
-                        rehypeHighlight,
-                        rehypeHighLightOptions
-
-
-
-                    ],
 
                     [rehypeSlug]
                 ],
-                remarkPlugins: [remarkGfm]
+
+                format: 'mdx'
             }
+        },
+        components: {
+            ...MdxComponents.components,
+            MDXButton
         }
     })
-
     frontmatter.slug = frontmatter.title
         .toLowerCase()
         .replace(/ /g, '-')
