@@ -210,15 +210,16 @@ export async function logout() {
     deleteSession()
     redirect('/login')
 }
-
-export const getUser = cache(async () => {
+z
+export const getUser = async () => {
     const session = await verifySession()
     if (!session) {
         return null
     }
     const { userId } = session
-
-    const isAuthenticated = userId ? true : false
+    if (!userId) {
+        return null
+    }
 
     const user = await prisma.user.findUnique({
         where: {
@@ -237,4 +238,4 @@ export const getUser = cache(async () => {
         return null
     }
     return user
-})
+}

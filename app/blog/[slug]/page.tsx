@@ -1,4 +1,3 @@
-
 import { blogPostSchema } from '@/lib/types'
 import { MdxComponents } from '@/app/actions/mdx-config'
 import MDXButton from '@/components/mdx/mdx-button'
@@ -8,21 +7,16 @@ import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote/rsc'
 import { Suspense } from 'react'
 import remarkGfm from 'remark-gfm'
 
-
-export async function generateStaticParams () {
-
+export async function generateStaticParams() {
     const posts = await getAllPosts()
     if (!posts) {
         throw new Error('Post not found')
     }
     return posts.map((post) => ({
-        params: { slug: post.frontmatter.slug }
-
-    })
-    )
-
+        params: { slug: post.slug }
+    }))
 }
-export default async function Page (props: {
+export default async function Page(props: {
     params: Promise<{
         slug: string
     }>
@@ -39,11 +33,10 @@ export default async function Page (props: {
     }
     const { content, frontmatter } = post
     return (
-        <article className="relative prose dark:prose-invert z-10 mx-auto  max-w-4xl px-2 py-4 space-y-4 align-middle md:px-0 overflow-auto">
-            <Suspense fallback={ <>Loading...</> }>
-                { content }
-                {/* @ts-iexpect-error server comp */ }
-
+        <article className='prose relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle dark:prose-invert md:px-0'>
+            <Suspense fallback={<>Loading...</>}>
+                {content}
+                {/* @ts-iexpect-error server comp */}
             </Suspense>
         </article>
     )

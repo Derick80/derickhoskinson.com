@@ -61,7 +61,28 @@ export type CategoryFilterType = {
 export const blogPostSchema = z.object({
     slug: z.string()
 })
+
 export type BlogPost = z.infer<typeof blogPostSchema>
+
+export type UserInterActionType = {
+    user: {
+        id: string
+        name?: string | null
+        email: string
+    }
+}
+export type CommentRetrievalType = {
+    id: string
+    message: string
+    author?: string | null
+    postId: string
+    userId: string | null
+    parentId: string | null
+    children?: CommentRetrievalType[] | null
+    createdAt: Date
+    updatedAt: Date
+    user?: UserInterActionType[]
+}
 
 export type AuthedUserMore = {
     id: string
@@ -85,6 +106,14 @@ export type CustomUserImageType = {
     userAvatar: boolean
 }
 
+export const initialCommentState = {
+    shield: '',
+    postId: '',
+    targetId: '',
+    userId: '',
+    message: ''
+
+}
 export const experienceSchema = z.discriminatedUnion('intent', [
     z.object({
         intent: z.literal('update-company'),

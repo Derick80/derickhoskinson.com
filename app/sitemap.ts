@@ -2,7 +2,7 @@
 import { MetadataRoute } from 'next'
 import { getAllPosts } from './actions/blog'
 
-function getSiteUrl (path = '') {
+function getSiteUrl(path = '') {
     return new URL(
         path,
         process.env.NODE_ENV === 'development'
@@ -12,7 +12,7 @@ function getSiteUrl (path = '') {
 }
 const revalidate = 60
 
-export default async function sitemap (): Promise<MetadataRoute.Sitemap> {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const staticMap = [
         {
             url: getSiteUrl('/').href,

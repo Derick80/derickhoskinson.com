@@ -14,46 +14,6 @@ categories: [Documentation]
 <MDXButton message="my button"/>
 
 
-## Testing
-| foo | bar |
-| --- | --- |
-| baz | bim |
-
-A table:
-
-| a | b |
-| - | - |
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| `name` | string | Name of the resource |
-| `path` | string | Path to the resource |
-
-| Left | Center | Right |
-| :--- | :----: | ----: |
-| Left-aligned text | Center-aligned text | Right-aligned text |
-
-
-```typescript
-export const getAllPosts = cache(async (): Promise<MdxCompiled[]> => {
-    const files = (await fs.readdir(POSTS_FOLDER)).filter(
-        (file) => path.extname(file) === '.mdx'
-    )
-
-    const posts = await Promise.all(
-        files.map(async (file) => {
-            const fileContent = await fs.readFile(
-                path.join(POSTS_FOLDER, file),
-                'utf-8'
-            )
-            const { posts } = parseTheFrontmatter(fileContent)
-
-            return posts
-        })
-    )
-    return posts
-})
-```
 ## Overview
 
 This is a living document for the continuous development of derickhoskinson.com. I have been spending most of my free time coding rather than writing extensive blog entries. For now, I will just update this document as I change the site.

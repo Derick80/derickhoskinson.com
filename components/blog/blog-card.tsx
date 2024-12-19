@@ -7,6 +7,8 @@ import { Button } from '../ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { SharePostButton } from './share-button'
 import LikeButton from './like-button'
+import BlogCardFooter from './card-footer'
+import { verifySession } from '@/app/actions/auth'
 // inspo https://www.leohuynh.dev/
 export const BlogCard = async (props: MdxCompiled) => {
     const {
@@ -21,7 +23,8 @@ export const BlogCard = async (props: MdxCompiled) => {
         slug,
         imageUrl
     } = props
-
+    const session = await verifySession()
+    const isAuth = session?.isAuthenticated || false
     return (
         <Card className='flex flex-col'>
             <CardContent className='flex-grow p-4'>
@@ -62,22 +65,25 @@ export const BlogCard = async (props: MdxCompiled) => {
                 </Button>
             </CardContent>
 
-            <CardFooter className='flex items-center justify-between border-t p-2'>
-                <LikeButton postId={ slug } onLike={ () => console.log('like') } />
-                <Button
-                    variant='ghost'
-                    size='sm'
-                    className='flex items-center space-x-1'
-                >
-                    <MessageCircle className='h-5 w-5' />
-                    <span>{ 6 }</span>
-                </Button>
-                <Button variant='ghost' size='sm'>
-                    <Bookmark
-                        className={ `h-5 w-5 ${1 ? 'fill-current' : ''}` }
+            <CardFooter>
+                { isAuth ? (
+                    <BlogCardFooter
+                        isAuth={
+                            session?.isAuthenticated
+                        }
+                        currentUserId={ session?.userId }
+                        postId={ slug }
                     />
-                </Button>
-                <SharePostButton id={ slug } />
+                ) : (
+                    <div className='flex gap-2'>
+                        <LikeButton
+                            postId={ slug }
+                            isAuth={ session?.isAuthenticated }
+                        />
+
+                        <SharePostButton id={ slug } />
+                    </div>
+                ) }
             </CardFooter>
         </Card>
     )

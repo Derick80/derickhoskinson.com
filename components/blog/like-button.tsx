@@ -2,33 +2,44 @@
 import { HeartIcon } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Tooltip, TooltipTrigger } from '../ui/tooltip'
+import { editLike, getPostInformation } from '@/app/actions/blog-user'
+import React, { useActionState } from 'react'
+import LikeCount from './like-count'
+import { cn } from '@/lib/utils'
+import { verifySession } from '@/app/actions/auth'
+import ResponseForm from './response-form'
+import ResponseUsers from './response-users'
 
 type LikeButtonProps = {
     postId: string
-    onLike: () => void
-    likes?: number
+    isAuth: boolean | undefined | null
 }
 
-const LikeButton = (props: LikeButtonProps) => {
-    const { postId, onLike } = props
+const LikeButton = async ({ postId, isAuth }: LikeButtonProps) => {
     if (!postId) {
-        return null
+        throw new Error('postId is required.')
     }
+    const session = await verifySession()
+    const authedUserId = session?.userId
+
+    const posts = await getPostInformation({ postId })
+    const likes = posts?.likes
+    if (!likes) {
+        return
+    }
+    const hasLiked = likes?.some((like) => like.userId === authedUserId)
 
     return (
-        <Tooltip>
-            <TooltipTrigger content='Login to like'
-                asChild>
-                <Button
-                    variant='ghost'
-                    className='flex items-center gap-2'
-                    disabled={ true }
-                >
-                    <HeartIcon size={ 24 } />
-                    <span>Like</span>
-                </Button>
-            </TooltipTrigger>
-        </Tooltip>
+        <>
+            <ResponseForm
+                postId={postId}
+                userLiked={hasLiked || false}
+                allLikes={likes}
+                isAuth={isAuth}
+                onResponse={editLike}
+                initialLikes={posts?.likes.length}
+            />
+        </>
     )
 }
 

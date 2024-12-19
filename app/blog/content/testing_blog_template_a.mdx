@@ -1,21 +1,12 @@
 ---
-title: Blog Architectures MDX with Database Support
+title: Blog Templating App A
 author: Derick Hoskinson PhD
-date: 2024-12-10
+date: 2024-12-02
 published: true
-description: I discuss the architecture of my blog, which uses a MDX with db support for interaction approach.
+description: I go through the motions of a written descripti9on for testing a fake blog post _a
 imageUrl: /assets/images/dnaseq.jpg
-categories: [Coding, Documentation]
+categories: [Coding, Testing, Documentation]
 ---
-
-# Blog Architecture: MDX with db support for interaction
-
-
-### Packages
-[Next-mdx-Remote](https://www.npmjs.com/package/next-mdx-remote)
-
-# Code
-
 ## Inline
 
 This is an example of inline code: `const x = 1;`
@@ -23,7 +14,8 @@ This is an example of inline code: `const x = 1;`
 ## Basic Block
 
 ```typescript {2,4}
-import { Component } from "react";
+import { Components } from "react" // [!code --]
+import { Component } from "react" // [!code ++]
 
 export default class MyComponent extends Component {
 	render() {
@@ -36,6 +28,7 @@ export default class MyComponent extends Component {
 
 ```typescript title="MyComponent.tsx" caption="look at my code block"
 import { Component } from "react";
+// [!code word:class]
 
 export default class MyComponent extends Component {
 	render() {

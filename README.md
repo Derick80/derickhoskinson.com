@@ -17,6 +17,7 @@ and create an overlay component to display the selected MDX file
 ## Tech Stack
 
 ![NextJs](https://img.shields.io/npm/v/npm.svg?logo=nextdotjs)
+![TypeScript](https://img.shields.io/npm/v/npm.svg?logo=typescript)
 
 - [Next.js](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
@@ -40,3 +41,10 @@ I wanted to create a blog section for my site and I was really interested in usi
 - [shiki](https://www.npmjs.com/package/shiki)
 
 - [mdxButton](https://gaudion.dev/blog/nextjs-mdx-blog)
+
+### Commands
+
+- `npm run seed_posts` - seed the database with posts
+- `npm run dev` - start the development server
+- `npm run build` - create a production build
+- `npm run start` - start the production server

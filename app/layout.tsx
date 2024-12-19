@@ -26,14 +26,13 @@ const poppinsSans = localFont({
     weight: '500'
 })
 
-
 export const metadata: Metadata = {
     title: "Derick Hoskinson's Personal Website",
     description:
         'A personal web app for Derick Hoskinson with a blog, curriculum vitae, and other genetic resources.'
 }
 
-export default function RootLayout ({
+export default function RootLayout({
     children,
     error
 }: Readonly<{
@@ -41,25 +40,25 @@ export default function RootLayout ({
     error?: Error
 }>) {
     if (error) {
-        return <ErrorPage error={ error } />
+        return <ErrorPage error={error} />
     }
     return (
         <html lang='en' suppressHydrationWarning>
             <body
-                className={ `${poppinsSans.variable}  ${lisaMono.variable} ${ibmPlexMono.variable}  gap-20 antialiased` }
+                className={`${poppinsSans.variable} ${lisaMono.variable} ${ibmPlexMono.variable} gap-20 antialiased`}
             >
-                {/* <Analytics /> */ }
+                {/* <Analytics /> */}
                 <ThemeProvider attribute='class'>
                     <TooltipProvider>
                         <Toaster />
 
-                        <main className='container relative mx-auto bg-background text-foreground w-full max-w-4xl space-y-6 px-4 py-2 sm:px-6 md:space-y-10 lg:px-8'>
+                        <main className='container relative mx-auto w-full max-w-4xl space-y-6 bg-background px-4 py-2 text-foreground sm:px-6 md:space-y-10 lg:px-8'>
                             <NavigationBar />
-                            { children }
+                            {children}
                         </main>
                     </TooltipProvider>
                 </ThemeProvider>
             </body>
-        </html >
+        </html>
     )
 }

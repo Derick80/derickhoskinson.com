@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     }
 }
 
-export default async function Home () {
+export default async function Home() {
     const frontmatter = await getAllPosts()
     if (!frontmatter) return null
 
@@ -49,16 +49,16 @@ export default async function Home () {
                     to my work.
                 </p>
 
-                { frontmatter.map(
+                {frontmatter.map(
                     (post) =>
-                        post.frontmatter.slug && <BlogCard key={ post.frontmatter.slug } { ...post.frontmatter } />
-                ) }
+                        post.slug && <BlogCard key={post.slug} {...post} />
+                )}
             </section>
             <section id='contact' className='space-y-6'>
                 <h2 className='mb-10'>Get in Touch</h2>
                 <ContactForm />
             </section>
-            <PageOverLayBar sectionIds={ ['Introduction', 'Blog', 'Contact'] } />
+            <PageOverLayBar sectionIds={['Introduction', 'Blog', 'Contact']} />
         </>
     )
 }

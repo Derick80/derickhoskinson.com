@@ -25,7 +25,7 @@ interface UploadResponse {
     height: number
 }
 
-export default function ImageDropZone ({
+export default function ImageDropZone({
     userImages,
     userId
 }: {
@@ -38,7 +38,7 @@ export default function ImageDropZone ({
     const [uploading, setUploading] = React.useState(false)
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
-        async onDrop (files) {
+        async onDrop(files) {
             try {
                 if (inputRef.current) {
                     inputRef.current.value = ''
@@ -80,36 +80,37 @@ export default function ImageDropZone ({
         <div className='p-4'>
             <h2>Upload Image</h2>
             <div className='mt-4 flex flex-wrap gap-4'>
-                { userImages.map((image) => (
+                {userImages.map((image) => (
                     <FileImage
-                        key={ image.fileName }
-                        cloudinaryId={ image?.cloudinaryId }
+                        key={image.fileName}
+                        cloudinaryId={image?.cloudinaryId}
                     >
                         <ImageWithPlaceholder
-                            key={ image.fileName }
-                            src={ image.imageUrl || '' }
+                            key={image.fileName}
+                            src={image.imageUrl || ''}
                             className='mt-2 h-20 w-20 rounded-lg border-2 border-white ring-2 ring-neutral-400 ring-offset-1 hover:ring-primary-foreground'
                             placeholderSrc={
                                 '/assets/images/placeholder-user.jpg'
                             }
                         />
                     </FileImage>
-                )) }
+                ))}
             </div>
 
             <div className='mt-4'>
-                {/* Dropzone */ }
+                {/* Dropzone */}
                 <form
-                    { ...getRootProps({
+                    {...getRootProps({
                         className: cn('w-full h-fit', {
                             'bg-primary-foreground': isDragActive,
                             'bg-neutral-100': !isDragActive
                         })
-                    }) }
-                    className={ `cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-colors ${isDragActive
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-300 hover:border-gray-400'
-                        }` }
+                    })}
+                    className={`cursor-pointer rounded-lg border-2 border-dashed p-8 text-center transition-colors ${
+                        isDragActive
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-300 hover:border-gray-400'
+                    }`}
                 >
                     <Label
                         htmlFor='imageField'
@@ -124,7 +125,7 @@ export default function ImageDropZone ({
                         </div>
 
                         <Input
-                            { ...getInputProps() }
+                            {...getInputProps()}
                             type='file'
                             name='imageField'
                             id='imageField'
@@ -133,7 +134,7 @@ export default function ImageDropZone ({
                         />
                     </Label>
                 </form>
-                { errorMessage && <p className='text-red-500'>{ errorMessage }</p> }
+                {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
             </div>
         </div>
     )

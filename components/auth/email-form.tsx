@@ -22,7 +22,7 @@ const EmailForm = () => {
                 <Input name='email' type='email' required />
             </Label>
             {state?.message && (
-                <p className='animate-in fade-in mt-1 border border-blue-500 text-xs font-medium text-red-500'>
+                <p className='mt-1 border border-blue-500 text-xs font-medium text-red-500 animate-in fade-in'>
                     {typeof state?.message === 'string'
                         ? state.message
                         : JSON.stringify(state?.message)}

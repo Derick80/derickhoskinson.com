@@ -8,8 +8,7 @@ import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 import { MdxComponents } from './mdx-config'
 import MDXButton from '@/components/mdx/mdx-button'
-import { Options } from "rehype-pretty-code";
-import { transformerNotationDiff } from '@shikijs/transformers';
+import prisma from '@/lib/prisma'
 
 const POSTS_FOLDER = path.join(process.cwd(), 'app/blog/content')
 
@@ -29,33 +28,6 @@ const getMDXFiles = async (dir: string) => {
     })
 }
 
-const rehypePrettyCodeOptions: Partial<Options> = {
-    theme: {
-        dark: "nord",
-        light: "github-light",
-    },
-    onVisitLine (element) {
-        console.log("Visited line");
-    },
-    onVisitHighlightedChars (element) {
-        console.log("Visited highlighted chars");
-    },
-    onVisitTitle (element) {
-        console.log("Visited title");
-    },
-    onVisitCaption (element) {
-        console.log("Visited caption");
-    },
-    onVisitHighlightedLine (node) {
-        node.properties.className?.push("line--highlighted");
-    },
-    transformers: [
-        transformerNotationDiff(),
-
-    ]
-
-};
-
 const parseFrontmatter = async (rawContent: string) => {
     const { content, frontmatter } = await compileMDX<MdxCompiled>({
         source: rawContent,
@@ -63,10 +35,7 @@ const parseFrontmatter = async (rawContent: string) => {
             parseFrontmatter: true,
             mdxOptions: {
                 remarkPlugins: [remarkGfm],
-                rehypePlugins: [
-
-                    [rehypeSlug]
-                ],
+                rehypePlugins: [[rehypeSlug]],
 
                 format: 'mdx'
             }
@@ -85,8 +54,8 @@ const parseFrontmatter = async (rawContent: string) => {
     frontmatter.content = rawContent
 
     return {
-        content,
-        frontmatter
+        ...frontmatter,
+        rawMdx: content
     }
 }
 
