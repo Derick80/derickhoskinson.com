@@ -1,15 +1,11 @@
 'use client'
-import { verifySession } from '@/app/actions/auth'
 import { editLike } from '@/app/actions/blog-user'
 import React from 'react'
-import { useActionState } from 'react'
 import { Button } from '../ui/button'
-import LikeCount from './like-count'
 import { cn } from '@/lib/utils'
-import { HeartFilledIcon, HeartIcon, Share1Icon } from '@radix-ui/react-icons'
+import { HeartFilledIcon, HeartIcon } from '@radix-ui/react-icons'
 import { Tooltip, TooltipTrigger } from '../ui/tooltip'
 
-import Form from 'next/form'
 import ResponseUsers from './response-users'
 
 const ResponseForm = ({
@@ -32,7 +28,7 @@ const ResponseForm = ({
             id: string
             name: string | null
             email: string
-        }
+        }[]
     }[]
 }) => {
     const [likes, setLikes] = React.useState(initialLikes || 0)
@@ -46,7 +42,9 @@ const ResponseForm = ({
             formData.append('postId', postId)
             formData.append('shield', '')
 
-            const result = await editLike(formData)
+            const result =
+                await // @ts-expect-error - TS doesn't like the FormData type
+                editLike(null, formData)
             if (result?.message === 'Liked') {
                 setLikes(likes + 1)
                 setHasLiked(true)
@@ -110,7 +108,7 @@ const ResponseForm = ({
 
             <ResponseUsers
                 totalLikes={likes}
-                users={allLikes?.map((like) => like?.user)}
+                users={allLikes?.map((like) => like?.userId)}
             />
         </>
     )

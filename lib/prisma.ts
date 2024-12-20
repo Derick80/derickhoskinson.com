@@ -13,8 +13,21 @@ import { PrismaClient } from '@prisma/client'
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
 
-export const prisma = globalForPrisma.prisma || new PrismaClient()
+let prisma: PrismaClient
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
-
+if (process.env.NODE_ENV === 'production') {
+    prisma = new PrismaClient()
+    prisma.$connect()
+} else {
+    if (!globalForPrisma.prisma) {
+        globalForPrisma.prisma = new PrismaClient({
+            log:
+                process.env.NODE_ENV === 'development'
+                    ? ['error', 'info']
+                    : ['error']
+        })
+        globalForPrisma.prisma.$connect()
+    }
+    prisma = globalForPrisma.prisma ?? new PrismaClient()
+}
 export default prisma

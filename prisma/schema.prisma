@@ -91,10 +91,16 @@ model Comment {
   children    Comment[] @relation("comment_children")
   Post        Post      @relation(fields: [postId], references: [slug], onDelete: Cascade)
   postId      String
-  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user        User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String?
-  Entry       Entry?    @relation(fields: [forumPostId], references: [id])
+  Entry       Entry?    @relation(fields: [forumPostId], references: [id], onDelete: Cascade)
   forumPostId String?
+
+  @@index([postId])
+  @@index([userId])
+  @@index([postId, userId])
+  @@index([forumPostId])
+  @@index([parentId])
 }
 
 model Like {

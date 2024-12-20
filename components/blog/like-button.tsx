@@ -1,43 +1,58 @@
 'use server'
-import { HeartIcon } from 'lucide-react'
-import { Button } from '../ui/button'
-import { Tooltip, TooltipTrigger } from '../ui/tooltip'
-import { editLike, getPostInformation } from '@/app/actions/blog-user'
-import React, { useActionState } from 'react'
-import LikeCount from './like-count'
-import { cn } from '@/lib/utils'
+import React from 'react'
+import { targetPostSchema } from '@/lib/types'
+import { getAllPostsSummary } from '@/app/actions/comments'
 import { verifySession } from '@/app/actions/auth'
-import ResponseForm from './response-form'
-import ResponseUsers from './response-users'
+import PostLikeButton from './like-button-beta'
+import { getPostLikes } from '@/app/actions/likes'
 
 type LikeButtonProps = {
     postId: string
-    isAuth: boolean | undefined | null
+    isAuth: boolean
 }
 
-const LikeButton = async ({ postId, isAuth }: LikeButtonProps) => {
-    if (!postId) {
-        throw new Error('postId is required.')
-    }
-    const session = await verifySession()
-    const authedUserId = session?.userId
+const LikeButton = async ({ postId,
+    isAuth
+}: LikeButtonProps) => {
+    const validatedData = targetPostSchema.safeParse({
+        postId
+    })
 
-    const posts = await getPostInformation({ postId })
-    const likes = posts?.likes
-    if (!likes) {
-        return
+    if (!validatedData.success) {
+        return {
+            message: validatedData.error.flatten().fieldErrors
+        }
     }
-    const hasLiked = likes?.some((like) => like.userId === authedUserId)
+    const associatedPostId = validatedData.data.postId
+    if (!associatedPostId) {
+        throw new Error('No post ID found')
+    }
+    // check auth status
+    const session = await verifySession()
+    const isAuthenticated = session?.isAuthenticated
+    const userId = session?.userId
+
+    const { posts } = await getAllPostsSummary()
+
+    if (!posts) {
+        return {
+            message: 'Failed to retrieve posts'
+        }
+    }
+
+    const post = posts.find((post) => post.id === associatedPostId)
+
+    const likes = post?.likes || []
 
     return (
         <>
-            <ResponseForm
-                postId={postId}
-                userLiked={hasLiked || false}
-                allLikes={likes}
-                isAuth={isAuth}
-                onResponse={editLike}
-                initialLikes={posts?.likes.length}
+            <PostLikeButton
+                incomingLikes={ await
+                    getPostLikes(associatedPostId)
+                }
+                postId={ associatedPostId }
+                isAuth={ isAuthenticated ? true : false }
+                totalLikes={ likes?.length ? likes.length : 0 }
             />
         </>
     )

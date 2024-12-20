@@ -7,6 +7,7 @@ import {
     initialPosts
 } from '../lib/resources/test-forums'
 import { resume } from '@/lib/resources/curriculum-vitae'
+import syncWithDb from '@/scripts/sync-db'
 
 // get users from db and assign them posts and Ids.
 
@@ -31,11 +32,116 @@ export const testComments = [
     }
 ]
 
+export const moreTestComments = [
+    {
+        message: 'This is a great post!'
+    },
+    {
+        message: 'I completely agree with you.'
+    },
+    {
+        message: 'Thanks for sharing this information.'
+    },
+    {
+        message: 'Interesting perspective!'
+    },
+    {
+        message: 'I learned something new today.'
+    },
+    {
+        message: 'Can you provide more details?'
+    }
+]
+
 const seed = async () => {
+    // Sync with the database
+    // clear the database
+    await prisma.entry.deleteMany()
+    await prisma.comment.deleteMany()
+    await prisma.like.deleteMany()
+    await prisma.post.deleteMany()
+    await prisma.session.deleteMany()
+
+    await prisma.tag.deleteMany()
+    await prisma.forum.deleteMany()
+    await prisma.user.deleteMany()
+    await prisma.curriculumVitae.deleteMany()
+
     // delete resume data
     await prisma.curriculumVitae.deleteMany()
     const createSkills = (skills: string[]) =>
         skills.map((skill) => ({ title: skill }))
+
+    await syncWithDb()
+
+    // Seed Users
+    const users = await Promise.all(
+        initialForumUsers.map((user) =>
+            prisma.user.upsert({
+                where: { email: user.email },
+                update: {},
+                create: {
+                    ...user,
+                    name: user.name,
+                    email: user.email,
+
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                }
+            })
+        )
+    )
+
+    const posts = await prisma.post.findMany({
+        select: {
+            id: true,
+            slug: true
+        }
+    })
+
+    const uniquePosts = new Set(posts.map((post) => post.slug))
+    console.log(`Found ${uniquePosts.size} unique posts`)
+
+    if (posts.length === 0) {
+        console.log('Something went wrong. No posts found.')
+        return
+    }
+    // use the unique posts to create comments
+    const createComments = (comments: { message: string }[], postId: string) =>
+        comments.map((comment) => ({
+            message: comment.message,
+            postId,
+            userId: users[0].id,
+            author: users[0].name
+        }))
+    // Seed Comments
+
+    for (const post of posts) {
+        const comments = await Promise.all(
+            testComments.map((comment) =>
+                prisma.comment.create({
+                    data: {
+                        author: users[0].name,
+                        message: comment.message,
+                        postId: post.slug,
+                        userId: users[0].id,
+                        parentId: null,
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        children: {
+                            create: createComments(moreTestComments, post.slug)
+                        }
+                    }
+                })
+            )
+        )
+
+        if (!comments) {
+            console.error(`Failed to create comments for post: ${post.slug}`)
+            continue
+        }
+        console.log(`Seeded ${comments.length} comments for post: ${post.slug}`)
+    }
 
     const createProjects = (projects: { title: string }[]) =>
         projects.map((project) => ({ title: project.title }))
@@ -104,21 +210,6 @@ const seed = async () => {
     if (!curriculumVitae) {
         console.error('Failed to create resume data')
     }
-
-    // Seed Users
-    const users = await Promise.all(
-        initialForumUsers.map((user) =>
-            prisma.user.upsert({
-                where: { email: user.email },
-                update: {},
-                create: {
-                    ...user,
-                    createdAt: new Date(),
-                    updatedAt: new Date()
-                }
-            })
-        )
-    )
 
     const forums = await Promise.all(
         initialForums.map((forum, index) =>

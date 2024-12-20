@@ -1,62 +1,77 @@
 'use server'
 
-import {
-    commentOnPost,
-    getPostInformation,
-    getPostsComments
-} from '@/app/actions/blog-user'
-import LikeButton from './like-button'
-import prisma from '@/lib/prisma'
 import { verifySession } from '@/app/actions/auth'
+
+import { getPostsComments } from '@/app/actions/comments'
+import { targetPostSchema } from '@/lib/types'
 import { Suspense } from 'react'
-import { Button } from '../ui/button'
 import CommentsContainer from './comment-container'
-import CommentForm from './comment-form'
-import { SharePostButton } from './share-button'
-import CommentButton from './comment-button'
+import { getPostLikes } from '@/app/actions/likes'
+import PostLikeButton from './like-button-beta'
 
 export type BlogCardFooterProps = {
     postId: string
-    isAuth: boolean | undefined | null
-    currentUserId: string
+    children: React.ReactNode
 }
-const BlogCardFooter = async ({ postId, isAuth,
-    currentUserId
-}: BlogCardFooterProps) => {
-    const postComments = await getPostsComments({ postId })
+const BlogCardFooter = async ({ postId, children }: BlogCardFooterProps) => {
     const session = await verifySession()
-    if (!postId) {
-        throw new Error('postId is required.')
+    const validatedData = targetPostSchema.safeParse({
+        postId
+    })
+
+    if (!validatedData.success) {
+        return {
+            message: validatedData.error.flatten().fieldErrors
+        }
+    }
+    const associatedPostId = validatedData.data.postId
+    if (!associatedPostId) {
+        throw new Error('No post ID found')
+    }
+    const postComments = await getPostsComments({
+        postId: associatedPostId
+    })
+
+    console.log(postComments, 'postComments')
+
+    const postLikes = await getPostLikes(associatedPostId)
+
+    console.log(postLikes, 'postLikes')
+    if (!postComments) {
+        return {
+            message: 'Failed to retrieve comments'
+        }
     }
 
-    if (!isAuth) {
-        return
+    if (!postLikes) {
+        return {
+            message: 'Failed to retrieve likes'
+        }
     }
 
     return (
         <Suspense fallback={ <div>Loading...</div> }>
-            { postId && (
-                <div className='flex w-full flex-col justify-between space-y-2'>
-                    <div className='flex items-center space-x-2'>
-                        <LikeButton postId={ postId } isAuth={ isAuth } />
-                        <SharePostButton id={ postId } />
-                        <CommentButton
-                            targetId={ postComments.postId }
-                            isAuth={ isAuth }
-                            commentCount={ postComments.comments?.length || 0 }
-                        />
-                    </div>
+            <div className='flex w-full flex-col justify-between space-y-2'>
+                <PostLikeButton
+                    postId={ postId }
+                    totalLikes={ postLikes.length
+                        ? postLikes.length
+                        : 0
+                    }
+                    isAuth={ session?.isAuthenticated ? true : false }
 
-                    <CommentsContainer
-                        comments={ postComments.comments }
-                        postId={ postId }
-                        isAuth={ isAuth }
-                        userId={ currentUserId
-                        }
+                    incomingLikes={ postLikes }
 
-                    />
-                </div>
-            ) }
+                />
+
+                { children }
+                <CommentsContainer
+                    postId={ postId }
+                    comments={ postComments.comments }
+                />
+
+                {/* <SharePostButton id={ postId } /> */ }
+            </div>
         </Suspense>
     )
 }

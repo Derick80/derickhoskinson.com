@@ -51,7 +51,23 @@ export const mdxcompiled = frontMatter.extend({
 })
 
 export type MdxCompiled = z.infer<typeof mdxcompiled>
-
+export const commentPostSchema = z.object({
+    message: z.string({
+        required_error: 'Message is required    '
+    }),
+    postId: z.string({
+        required_error: 'Post ID is required'
+    }),
+    targetId: z.string({
+        required_error: 'Target ID is required'
+    }),
+    userId: z.string({
+        required_error: 'User ID is required    '
+    }),
+    shield: z.string({
+        required_error: 'Shield is required'
+    })
+})
 export type CategoryFilterType = {
     category: string
     related: string[]
@@ -59,40 +75,31 @@ export type CategoryFilterType = {
 }
 
 export const blogPostSchema = z.object({
-    slug: z.string()
+    slug: z.string({
+        required_error: 'Slug is required'
+    })
 })
 
-export type BlogPost = z.infer<typeof blogPostSchema>
+export const targetPostSchema = z.object({
+    postId: z.string({
+        required_error: 'Post ID is required'
+    })
+})
 
-export type UserInterActionType = {
-    user: {
-        id: string
-        name?: string | null
-        email: string
-    }
-}
+export type BlogPostSlug = z.infer<typeof blogPostSchema>
+export type TargetPostId = z.infer<typeof targetPostSchema>
+
 export type CommentRetrievalType = {
     id: string
     message: string
-    author?: string | null
+    author: string | null
     postId: string
     userId: string | null
     parentId: string | null
-    children?: CommentRetrievalType[] | null
+    children: CommentRetrievalType[]
     createdAt: Date
     updatedAt: Date
-    user?: UserInterActionType[]
-}
-
-export type AuthedUserMore = {
-    id: string
-    name: string | null
-    email: string
-    emailVerified: boolean | null
-    userImages: {
-        imageUrl: string
-        userAvatar: boolean
-    }[]
+    user: UserInterActionType
 }
 
 export type CustomUserImageType = {
@@ -112,8 +119,94 @@ export const initialCommentState = {
     targetId: '',
     userId: '',
     message: ''
-
 }
+
+export type CommentStateType = typeof initialCommentState
+export type CommentFormStateType = {
+    comment: CommentStateType
+    setComment: React.Dispatch<React.SetStateAction<CommentStateType>>
+    onCommentChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+}
+
+export type CommentFormProps = {
+    postId: string
+    targetId: string
+    isAuth: boolean | undefined | null
+    comments: CommentRetrievalType[] | undefined | null
+    userId: string
+}
+
+export type CreateOrEditCommentFormProps = {
+    postId: string
+    targetId: string
+    userId: string
+    isAuth: boolean | undefined | null
+    message: string
+    setComment: (formData: FormData, prev: CommentStateType) => void
+    onCommentChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+}
+
+export type CommentsContainerProps = {
+    postId: string
+    comments: CommentRetrievalType[] | undefined | null
+}
+
+export type CommentButtonProps = {
+    targetId: string
+    isAuth: boolean | undefined | null
+    commentCount: number
+}
+
+export type CommentButtonActionType = {
+    isReplying: boolean
+    isEditing: boolean
+}
+
+export type UserInterActionType = {
+    user: {
+        id: string
+        name?: string
+        email: string
+        userId: string
+        userImages: CustomUserImageType[]
+    }
+}
+
+export const userSelectionPrisma = {
+    select: {
+        name: true,
+        email: true,
+        userImages: {
+            where: {
+                userAvatar: true
+            },
+            select: {
+                imageUrl: true,
+                userAvatar: true
+            }
+        }
+    }
+}
+
+export const commentsSelectionType = {
+    select: {
+        id: true,
+        message: true,
+        author: true,
+        userId: true,
+        postId: true,
+        parentId: true,
+        createdAt: true,
+        updatedAt: true,
+        children: true,
+        user: userSelectionPrisma.select
+    }
+}
+
+export const selectComments = {
+    select: commentsSelectionType
+}
+
 export const experienceSchema = z.discriminatedUnion('intent', [
     z.object({
         intent: z.literal('update-company'),

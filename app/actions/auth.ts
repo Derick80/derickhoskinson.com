@@ -210,7 +210,7 @@ export async function logout() {
     deleteSession()
     redirect('/login')
 }
-z
+
 export const getUser = async () => {
     const session = await verifySession()
     if (!session) {
@@ -231,7 +231,22 @@ export const getUser = async () => {
             name: true,
             email: true,
             emailVerified: true,
-            userImages: true
+            _count: {
+                select: {
+                    comments: true,
+                    likes: true
+                }
+            },
+
+            userImages: {
+                where: {
+                    userAvatar: true
+                },
+                select: {
+                    imageUrl: true,
+                    userAvatar: true
+                }
+            }
         }
     })
     if (!user) {

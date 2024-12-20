@@ -29,61 +29,61 @@ export const BlogCard = async (props: MdxCompiled) => {
         <Card className='flex flex-col'>
             <CardContent className='flex-grow p-4'>
                 <div className='mb-4 flex flex-wrap gap-2'>
-                    { categories.map((category) => (
-                        <Badge key={ category } variant='secondary'>
-                            { category }
+                    {categories.map((category) => (
+                        <Badge key={category} variant='secondary'>
+                            {category}
                         </Badge>
-                    )) }
+                    ))}
                 </div>
                 <div className='flex items-center justify-between gap-2'>
                     <div className='flex items-center space-x-2'>
                         <Avatar>
-                            <AvatarImage src={ imageUrl } alt={ author } />
+                            <AvatarImage src={imageUrl} alt={author} />
                             <AvatarFallback>NL</AvatarFallback>
                         </Avatar>
                         <div className='flex flex-col space-y-1'>
-                            <p className='text-sm font-medium'>{ author }</p>
+                            <p className='text-sm font-medium'>{author}</p>
                             <p className='text-xs text-muted-foreground'>
-                                { date }
+                                {date}
                             </p>
                         </div>
                     </div>
                     <div className='text-right text-xs text-muted-foreground'>
-                        { wordCount } words · { readingTime }
+                        {wordCount} words · {readingTime}
                     </div>
                 </div>
                 <h2 className='mb-2 mt-2 border-none pb-0 text-2xl font-bold'>
-                    { title }
+                    {title}
                 </h2>
                 <p className='mb-4 line-clamp-3 text-muted-foreground'>
-                    { description }
+                    {description}
                 </p>
                 <Button variant='outline' size='sm' asChild className='mt-auto'>
-                    <Link title={ slug } href={ `/blog/${slug}` } prefetch>
+                    <Link title={slug} href={`/blog/${slug}`} prefetch>
                         Read More
                     </Link>
                 </Button>
             </CardContent>
 
             <CardFooter>
-                { isAuth ? (
-                    <BlogCardFooter
-                        isAuth={
-                            session?.isAuthenticated
-                        }
-                        currentUserId={ session?.userId }
-                        postId={ slug }
-                    />
+                {isAuth ? (
+                    <BlogCardFooter postId={slug}>
+                        <LikeButton
+                            postId={slug}
+                            isAuth={session?.isAuthenticated}
+                        />
+                        <SharePostButton id={slug} />
+                    </BlogCardFooter>
                 ) : (
                     <div className='flex gap-2'>
                         <LikeButton
-                            postId={ slug }
-                            isAuth={ session?.isAuthenticated }
+                            postId={slug}
+                            isAuth={session?.isAuthenticated}
                         />
 
-                        <SharePostButton id={ slug } />
+                        <SharePostButton id={slug} />
                     </div>
-                ) }
+                )}
             </CardFooter>
         </Card>
     )

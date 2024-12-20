@@ -82,3 +82,8 @@ const syncWithDb = async () => {
 syncWithDb().then(console.log).catch(console.error)
 
 await syncWithDb()
+
+// Run the script with the following command
+// npm run seed_posts
+// remove the export default syncWithDb
+export default syncWithDb

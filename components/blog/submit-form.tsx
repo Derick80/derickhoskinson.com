@@ -1,63 +1,34 @@
 import Form from 'next/form'
-import { useFormStatus } from 'react-dom'
 import { Button } from '../ui/button'
-import { useActionState } from 'react'
-import { commentOnPost } from '@/app/actions/blog-user'
 import React from 'react'
 import { initialCommentState } from '@/lib/types'
-
-
+import { commentOnPost } from '@/app/actions/comments'
+import { Sub } from '@radix-ui/react-dropdown-menu'
+import SubmitButton from './submit-button'
 
 type SubmitFormProps = {
-    children: React.ReactNode
+    useCommentSubmit: (formData: FormData) => void
+    children: React.ReactNode | React.ReactNode[]
+    formRef: React.RefObject<HTMLFormElement>
 }
 
-const SubmitForm = (
-    {
-        children,
+const SubmitForm = ({
+    children,
 
-    }: SubmitFormProps
-) => {
-    const formRef = React.useRef<HTMLFormElement>(null)
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>,
-        target: HTMLFormElement) => {
-        const formData = new FormData(
-            e.currentTarget
-        )
-        await commentOnPost(initialCommentState, formData)
-
-
-    }
+    useCommentSubmit,
+    formRef
+}: SubmitFormProps) => {
     return (
-        <Form
+        <form
+            ref={formRef}
+            name='submit-form'
             id='submit-form'
-            onSubmit={
-                (e) => handleSubmit(e, formRef.current as HTMLFormElement)
-
-
-            }
-
-            ref={ formRef
-            }
-
-
-
+            action={useCommentSubmit}
         >
-            { children }
-            <Button
-                type='submit'
-                variant='ghost'
-                form='submit-form'
-
-            >
-                Submit
-            </Button>
-        </Form>
+            {children}
+            <SubmitButton />
+        </form>
     )
-
-
-
 }
 
 export default SubmitForm
