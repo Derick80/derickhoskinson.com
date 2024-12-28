@@ -27,7 +27,8 @@ const PostLikeButton = ({
         formData.append('postId', postId)
         formData.append('shield', '')
 
-        const result = await // @ts-expect-error - TS doesn't like the FormData type
+        const result =
+            await // @ts-expect-error - TS doesn't like the FormData type
             editLike(null, formData)
         if (result?.message === 'Liked') {
             setLikes(likes + 1)
@@ -39,11 +40,17 @@ const PostLikeButton = ({
         }
     }
 
-
-    return <button onClick={
-        isAuth ? handleLike : () => alert('You must be logged in to like this post')
-
-    }>{ likes } 👍</button>
+    return (
+        <button
+            onClick={
+                isAuth
+                    ? handleLike
+                    : () => alert('You must be logged in to like this post')
+            }
+        >
+            {likes} 👍
+        </button>
+    )
 }
 
 export default PostLikeButton

@@ -53,6 +53,8 @@ const DownloadResumeButton = () => {
         <Button
             variant='outline'
             size='sm'
+            title='Download resume as PDF'
+            aria-label='Download resume as PDF'
             onClick={downloadPDF}
             className='text-xs'
         >

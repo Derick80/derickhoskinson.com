@@ -1,8 +1,40 @@
 'use server'
 
 import prisma from '@/lib/prisma'
-import { revalidateTag, unstable_cache } from 'next/cache'
+import { revalidatePath, revalidateTag, unstable_cache } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
+
+const dutyTextSchema = z.object({
+    dutyId: z.string({
+        required_error: 'Duty ID is required'
+    }),
+    updatedTitle: z.string({
+        required_error: 'Title is required'
+    })
+})
+
+export const updateDutyText = async (formData: FormData) => {
+    const validatedData = dutyTextSchema.safeParse(formData)
+    if (!validatedData.success) {
+        return { success: false, error: validatedData.error }
+    }
+
+    const { dutyId, updatedTitle } = validatedData.data
+    try {
+        await prisma.duty.update({
+            where: { id: dutyId },
+            data: { title: updatedTitle }
+        })
+        revalidateTag('experience')
+        return { success: true }
+    } catch (error) {
+        console.error('Error updating duty text:', error)
+        return { success: false, error: 'Failed to update duty text' }
+    }
+
+}
+
 
 export const getResume = unstable_cache(async () => {
     // get the user's resume
@@ -18,8 +50,12 @@ export const getResume = unstable_cache(async () => {
             },
             experience: {
                 include: {
-                    duties: true
-                }
+                    duties: {
+                        orderBy: {
+                            position: 'asc'
+                        }
+                    },
+                },
             },
             skills: true
         }
@@ -68,6 +104,7 @@ export const createTemplateResume = async () => {
         data: {
             isPrimary: false,
             isCurrent: false,
+
             title: "Derick Hoskinson's CV",
             description: 'This is a template resume',
             phoneNumber: '555-555-5555',
@@ -117,7 +154,7 @@ export const updateExperience = async (
 export const updateJobTitle = async (
     prevState: unknown,
     formData: FormData
-) => {}
+) => { }
 
 export const getExperienceByCvId = async ({ cvId }: { cvId: string }) => {
     const experiences = await prisma.experience.findMany({
@@ -137,9 +174,9 @@ export const getExperienceByCvId = async ({ cvId }: { cvId: string }) => {
         }),
         endDate: exp.endDate
             ? new Date(exp.endDate).toLocaleDateString('en-US', {
-                  month: 'long',
-                  year: 'numeric'
-              })
+                month: 'long',
+                year: 'numeric'
+            })
             : 'Present' // Handle ongoing experiences
     }))
 

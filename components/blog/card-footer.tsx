@@ -32,45 +32,43 @@ const BlogCardFooter = async ({ postId, children }: BlogCardFooterProps) => {
         postId: associatedPostId
     })
 
-    console.log(postComments, 'postComments')
+    // console.log(postComments, 'postComments')
 
     const postLikes = await getPostLikes(associatedPostId)
 
-    console.log(postLikes, 'postLikes')
+    // console.log(postLikes, 'postLikes')
     if (!postComments) {
-        return {
-            message: 'Failed to retrieve comments'
-        }
+        throw new Error('No comments found')
     }
 
     if (!postLikes) {
-        return {
-            message: 'Failed to retrieve likes'
-        }
+        throw new Error('No likes found')
     }
 
     return (
-        <Suspense fallback={ <div>Loading...</div> }>
+        <Suspense fallback={<div>Loading...</div>}>
             <div className='flex w-full flex-col justify-between space-y-2'>
                 <PostLikeButton
-                    postId={ postId }
-                    totalLikes={ postLikes.length
-                        ? postLikes.length
-                        : 0
-                    }
-                    isAuth={ session?.isAuthenticated ? true : false }
-
-                    incomingLikes={ postLikes }
-
+                    postId={postId}
+                    totalLikes={postLikes.length ? postLikes.length : 0}
+                    isAuth={session?.isAuthenticated ? true : false}
+                    incomingLikes={postLikes}
                 />
 
-                { children }
+                {children}
                 <CommentsContainer
-                    postId={ postId }
-                    comments={ postComments.comments }
+                    postId={postId}
+                    comments={
+                        postComments?.comments
+                            ? postComments.comments.map((comment) => ({
+                                  ...comment,
+                                  author: comment.author || 'Anonymous'
+                              }))
+                            : []
+                    }
                 />
 
-                {/* <SharePostButton id={ postId } /> */ }
+                {/* <SharePostButton id={ postId } /> */}
             </div>
         </Suspense>
     )

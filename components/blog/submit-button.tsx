@@ -1,14 +1,19 @@
 import { useFormStatus } from 'react-dom'
 import { Button } from '../ui/button'
+import { commentOnPost } from '@/app/actions/comments'
 
-const SubmitButton = () => {
-    const { pending, data } = useFormStatus()
+const SubmitButton = ({
+    onSubmit
+}: {
+    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+}) => {
+    const { pending, data, action } = useFormStatus()
     return (
         <Button
             type='submit'
             variant='default'
-            form='submit-form'
             disabled={pending}
+            onClick={data ? action : onSubmit}
         >
             Submit
         </Button>

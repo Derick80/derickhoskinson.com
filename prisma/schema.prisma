@@ -163,6 +163,7 @@ model CurriculumVitae {
   email       String
   website     String
   location    String
+  github      String
   summary     String
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -181,7 +182,6 @@ model Education {
   field       String
   startDate   DateTime
   endDate     DateTime
-  duties      String[]
   createdAt   DateTime            @default(now())
   updatedAt   DateTime            @updatedAt
   cv          CurriculumVitae     @relation(fields: [cvId], references: [id], onDelete: Cascade)
@@ -215,6 +215,7 @@ model Experience {
 model Duty {
   id           String      @id @default(cuid())
   title        String
+  position     Int?        @default(0)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   experience   Experience? @relation(fields: [experienceId], references: [id], onDelete: Cascade)
@@ -222,11 +223,26 @@ model Duty {
 }
 
 model JobSkill {
-  id          String          @id @default(cuid())
-  title       String          @unique
-  description String?         @default("")
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
-  cv          CurriculumVitae @relation(fields: [cvId], references: [id], onDelete: Cascade)
-  cvId        String
+  id       String          @id @default(cuid())
+  category String
+  skill    String[]
+  cv       CurriculumVitae @relation(fields: [cvId], references: [id], onDelete: Cascade)
+  cvId     String
+}
+
+model Publication {
+  id          String   @id @default(cuid())
+  title       String
+  year        Int
+  journal     String
+  authors     String[]
+  edition     String
+  doi         String
+  pmid        String
+  pmcid       String
+  pdf         String?
+  description String
+  url         String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

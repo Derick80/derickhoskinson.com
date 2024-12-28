@@ -28,9 +28,7 @@ export const likePost = async (postId: string) => {
 
     if (!userId) {
         throw new Error('You must be logged in to like a post')
-
     }
-
 
     const userHasLiked = await prisma.like.findFirst({
         where: {
@@ -64,5 +62,4 @@ export const likePost = async (postId: string) => {
         })
         return true
     }
-
 }

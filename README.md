@@ -30,6 +30,7 @@ and create an overlay component to display the selected MDX file
 ## Additional Packages
 
 - [tsx](https://www.npmjs.com/package/tsx)
+- [Typography]([Typeography](https://github.com/tailwindlabs/tailwindcss-typography))
 
 ## Blog Posts
 

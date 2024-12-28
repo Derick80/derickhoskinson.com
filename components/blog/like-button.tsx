@@ -11,9 +11,7 @@ type LikeButtonProps = {
     isAuth: boolean
 }
 
-const LikeButton = async ({ postId,
-    isAuth
-}: LikeButtonProps) => {
+const LikeButton = async ({ postId, isAuth }: LikeButtonProps) => {
     const validatedData = targetPostSchema.safeParse({
         postId
     })
@@ -47,12 +45,10 @@ const LikeButton = async ({ postId,
     return (
         <>
             <PostLikeButton
-                incomingLikes={ await
-                    getPostLikes(associatedPostId)
-                }
-                postId={ associatedPostId }
-                isAuth={ isAuthenticated ? true : false }
-                totalLikes={ likes?.length ? likes.length : 0 }
+                incomingLikes={await getPostLikes(associatedPostId)}
+                postId={associatedPostId}
+                isAuth={isAuthenticated ? true : false}
+                totalLikes={likes?.length ? likes.length : 0}
             />
         </>
     )

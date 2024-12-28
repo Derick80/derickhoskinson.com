@@ -61,9 +61,6 @@ export const commentPostSchema = z.object({
     targetId: z.string({
         required_error: 'Target ID is required'
     }),
-    userId: z.string({
-        required_error: 'User ID is required    '
-    }),
     shield: z.string({
         required_error: 'Shield is required'
     })
@@ -94,7 +91,6 @@ export type CommentRetrievalType = {
     message: string
     author: string | null
     postId: string
-    userId: string | null
     parentId: string | null
     children: CommentRetrievalType[]
     createdAt: Date
@@ -118,48 +114,15 @@ export const initialCommentState = {
     postId: '',
     targetId: '',
     userId: '',
+    parentId: null as string | null,
     message: ''
 }
 
 export type CommentStateType = typeof initialCommentState
-export type CommentFormStateType = {
-    comment: CommentStateType
-    setComment: React.Dispatch<React.SetStateAction<CommentStateType>>
-    onCommentChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
-}
-
-export type CommentFormProps = {
-    postId: string
-    targetId: string
-    isAuth: boolean | undefined | null
-    comments: CommentRetrievalType[] | undefined | null
-    userId: string
-}
-
-export type CreateOrEditCommentFormProps = {
-    postId: string
-    targetId: string
-    userId: string
-    isAuth: boolean | undefined | null
-    message: string
-    setComment: (formData: FormData, prev: CommentStateType) => void
-    onCommentChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
-}
 
 export type CommentsContainerProps = {
     postId: string
-    comments: CommentRetrievalType[] | undefined | null
-}
-
-export type CommentButtonProps = {
-    targetId: string
-    isAuth: boolean | undefined | null
-    commentCount: number
-}
-
-export type CommentButtonActionType = {
-    isReplying: boolean
-    isEditing: boolean
+    comments: Comment[]
 }
 
 export type UserInterActionType = {
@@ -170,6 +133,37 @@ export type UserInterActionType = {
         userId: string
         userImages: CustomUserImageType[]
     }
+}
+
+export interface Comment {
+    id: string
+    message: string
+    author: string
+    userId: string
+    parentId: string | null
+    updatedAt: string
+    createdAt: string
+    name?: string
+    children?: Comment[]
+    user?: {
+        id: string
+        name: string
+        email: string
+        userId: string
+        userImages: {
+            imageUrl: string
+            userAvatar: boolean
+        }[]
+    }
+}
+
+export interface CommentListProps {
+    postId: string
+    initialComments: Comment[]
+}
+
+interface CommentState {
+    [id: string]: Comment
 }
 
 export const userSelectionPrisma = {
@@ -193,7 +187,6 @@ export const commentsSelectionType = {
         id: true,
         message: true,
         author: true,
-        userId: true,
         postId: true,
         parentId: true,
         createdAt: true,
@@ -255,3 +248,80 @@ export type UpdateExperienceErrorType = z.inferFlattenedErrors<
 >
 
 export type updateExperienceType = z.infer<typeof experienceSchema>
+
+
+
+/* Resume & CV types */
+
+export type Skill = {
+    skill: string
+}
+export type Education = {
+    institution: string
+    degree: string
+    field: string
+    startDate: string
+    endDate: string
+    primaryProject: string
+    duties: {
+        description: string
+    }[]
+}
+export type Publication = {
+    title: string
+    authors: string
+    journal: string
+    year: string
+    edition: string
+    type: string
+    doi: string
+    pmid: string
+    pmcid: string
+
+    pdf: string | null
+}
+
+export type ProfessionalExperience = {
+    jobTitle: string
+    company: string
+    location: string
+    startDate: string
+    endDate: string
+    duties: {
+        description: string
+    }[]
+}
+export type CV = {
+    cv: {
+        title: string
+        phoneNumber: number
+        email: string
+        website: string
+        location: string
+        github: string
+        summary: string
+        experience: ProfessionalExperience[]
+        publications: Publication[]
+        education: Education[]
+        skills: Skill[]
+    }
+}
+
+export interface Duty {
+    id: string
+    title: string
+    position: number
+
+}
+export type Experience = {
+    id: string
+    company: string
+    jobTitle: string
+    location: string
+    startDate: string
+    endDate: string
+    cvId: string
+    createdAt: Date
+    updatedAt: Date
+    duties: Duty[]
+}

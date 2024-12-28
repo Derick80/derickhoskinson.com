@@ -2,11 +2,15 @@
 import prisma from '@/lib/prisma'
 import {
     commentPostSchema,
+    CommentStateType,
     targetPostSchema,
     userSelectionPrisma
 } from '@/lib/types'
 import { CommentRetrievalType } from '@/lib/types'
 import { initialCommentState } from '@/lib/types'
+import { getUser, verifySession } from './auth'
+import { redirect } from 'next/navigation'
+import { revalidateTag } from 'next/cache'
 
 export const getPostsComments = async ({ postId }: { postId: string }) => {
     const validatedData = targetPostSchema.safeParse({
@@ -18,38 +22,16 @@ export const getPostsComments = async ({ postId }: { postId: string }) => {
         }
     }
 
+    const validatedPostId = validatedData.data.postId
+    if (!validatedPostId) {
+        return {
+            message: 'No post ID found'
+        }
+    }
+
     const comments = await prisma.comment.findMany({
         where: {
-            postId: validatedData.data.postId
-        },
-        select: {
-            id: true,
-            message: true,
-            author: true,
-            postId: true,
-            parentId: true,
-            createdAt: true,
-            updatedAt: true,
-            children: true,
-            user: {
-                select: {
-                    id: true,
-                    name: true,
-                    email: true,
-                    userImages: {
-                        where: {
-                            userAvatar: true
-                        },
-                        select: {
-                            imageUrl: true,
-                            userAvatar: true
-                        }
-                    }
-                }
-            }
-        },
-        orderBy: {
-            createdAt: 'desc'
+            postId: validatedPostId
         }
     })
 
@@ -57,37 +39,31 @@ export const getPostsComments = async ({ postId }: { postId: string }) => {
         throw new Error('No comments found')
     }
     return {
-        comments: comments.map((comment) => {
-            const { user, ...rest } = comment
-            if (!user) {
-                return {
-                    ...rest,
-                    user: initialCommentState
-                }
-            }
-            return {
-                id: comment.id,
-                message: comment.message,
-                author: comment.author,
-                postId: comment.postId,
-                parentId: comment.parentId,
-                createdAt: comment.createdAt,
-                updatedAt: comment.updatedAt,
-                children: comment.children,
-                user: comment.user
-            }
-        })
+        comments
     }
 }
 
 export const commentOnPost = async (
-    prevState: CommentRetrievalType,
-    formData: FormData
+    formData: FormData,
+    initialState: {
+        message: string
+    }
 ) => {
+    const session = await verifySession()
+    if (session?.isAuthenticated === false || !session) {
+        return {
+            message: 'You must be signed in to perform this action'
+        }
+    }
+
+    const userId = session?.userId
+    if (!userId) {
+        redirect('/login')
+    }
+
     const validData = commentPostSchema.safeParse({
         postId: formData.get('postId'),
         targetId: formData.get('targetId'),
-        userId: formData.get('userId'),
         message: formData.get('commentMessage'),
         shield: formData.get('shield')
     })
@@ -96,48 +72,39 @@ export const commentOnPost = async (
             message: validData.error.flatten().fieldErrors
         }
     }
-    const username = await prisma.user.findUnique({
+
+    const { postId, targetId, message } = validData.data
+    const user = await prisma.user.findFirst({
         where: {
-            id: validData.data.userId
-        },
-        select: {
-            name: true
+            id: userId
         }
     })
+    try {
+        const created = await prisma.comment.create({
+            data: {
+                message,
+                postId,
+                author: user?.name || 'Anonymous',
+                parentId: targetId === postId ? null : targetId,
+                userId: userId
+            }
+        })
 
-    const comments = await prisma.comment.create({
-        data: {
-            message: validData.data.message,
-            postId: validData.data.postId,
-            userId: validData.data.userId,
-            author: username?.name || 'Anonymous',
-            parentId:
-                validData.data.targetId === validData.data.postId
-                    ? null
-                    : validData.data.targetId
-        },
-        select: {
-            id: true,
-            message: true,
-            author: true,
-            postId: true,
-            parentId: true,
-            createdAt: true,
-            updatedAt: true,
-            children: true,
-            user: userSelectionPrisma
+        if (!created) {
+            return {
+                success: false
+            }
         }
-    })
-
-    if (!comments) {
+        revalidateTag('comments')
         return {
-            message: 'Comment not created'
+            success: true
         }
-    }
-    // revalidateTag('comments')
-
-    return {
-        message: 'Commented'
+    } catch (error) {
+        console.error('Error creating comment:', error)
+        return {
+            message: 'Failed to create comment',
+            error: error
+        }
     }
 }
 
@@ -185,7 +152,6 @@ export const getAllPostsSummary = async () => {
                                         }
                                     }
                                 }
-
                             }
                         },
                         user: {
@@ -212,7 +178,6 @@ export const getAllPostsSummary = async () => {
             }
         })
 
-
         if (!posts) {
             return {
                 message: 'Failed to retrieve posts'
@@ -233,25 +198,123 @@ export const getAllPostsSummary = async () => {
                             message: comment.message,
                             user: post.comments.map
                         }
-                    }
-                    )
+                    })
                 }
-
             })
         }
-
-    } catch (
-    error: unknown
-    ) {
-        const err = error as Error;
+    } catch (error: unknown) {
+        const err = error as Error
         console.error(
             `Error occurred while trying to retrieve posts: ${err.message}`
-
         )
 
         return {
             error: err.message
-
         }
+    }
+}
+
+export const updateComment = async (formData: FormData, initialState: null) => {
+    const session = await verifySession()
+    if (session?.isAuthenticated === false || !session) {
+        return {
+            message: 'You must be signed in to perform this action'
+        }
+    }
+
+    const validData = commentPostSchema.safeParse({
+        postId: formData.get('postId'),
+        targetId: formData.get('targetId'),
+        userId: formData.get('userId'),
+        message: formData.get('commentMessage'),
+        shield: formData.get('shield')
+    })
+    if (!validData.success) {
+        return {
+            message: validData.error.flatten().fieldErrors
+        }
+    }
+    const commentId = validData.data.targetId
+    const message = validData.data.message.trim()
+    const parentId =
+        validData.data.postId === validData.data.targetId
+            ? null
+            : validData.data.targetId
+    const userId = session?.userId
+    if (!userId) {
+        redirect('/login')
+    }
+
+    const updatedComment = await prisma.comment.upsert({
+        where: {
+            id: commentId
+        },
+        update: {
+            message,
+            parentId
+        },
+        create: {
+            message,
+            parentId,
+            userId: userId,
+            postId: validData.data.postId
+        }
+    })
+
+    if (!updatedComment) {
+        return {
+            success: false
+        }
+    }
+
+    return {
+        success: true
+    }
+}
+
+export const deleteComment = async (commentId: string) => {
+    const session = await verifySession()
+    if (session?.isAuthenticated === false || !session) {
+        return {
+            message: 'You must be signed in to perform this action'
+        }
+    }
+
+    const deletedComment = await prisma.comment.delete({
+        where: {
+            id: commentId
+        }
+    })
+
+    if (!deletedComment) {
+        return {
+            success: false
+        }
+    }
+
+    return {
+        success: true
+    }
+}
+
+export const getComment = async (commentId: string) => {
+    const comment = await prisma.comment.findUnique({
+        where: {
+            id: commentId
+        },
+        select: {
+            id: true,
+            message: true
+        }
+    })
+
+    if (!comment) {
+        return {
+            success: false
+        }
+    }
+
+    return {
+        success: true
     }
 }

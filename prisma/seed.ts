@@ -6,49 +6,64 @@ import {
     initialForums,
     initialPosts
 } from '../lib/resources/test-forums'
-import { resume } from '@/lib/resources/curriculum-vitae'
+import { curriculumVitae } from '../lib/resources/cv-for-prisma'
 import syncWithDb from '@/scripts/sync-db'
 
 // get users from db and assign them posts and Ids.
 
 export const testComments = [
     {
+        postId: 'continuous-dhdotcom-development',
         message: 'This is a great post!'
     },
     {
+        postId: 'continuous-dhdotcom-development',
         message: 'I completely agree with you.'
     },
     {
+        postId: 'blog-templating-app-a',
         message: 'Thanks for sharing this information.'
     },
     {
+        postId: 'blog-templating-app-a',
         message: 'Interesting perspective!'
     },
     {
+        postId: 'blog-templating-app-b',
+
         message: 'I learned something new today.'
     },
+
     {
+        postId: 'blog-templating-app-b',
         message: 'Can you provide more details?'
     }
 ]
 
 export const moreTestComments = [
     {
+        postId: 'blog-templating',
         message: 'This is a great post!'
     },
     {
+        postId: 'blog-templating',
         message: 'I completely agree with you.'
     },
     {
+        postId: 'blog-templating-app-a',
         message: 'Thanks for sharing this information.'
     },
     {
+        postId: 'blog-templating-app-a',
+
         message: 'Interesting perspective!'
     },
     {
+        postId: 'blog-templating-app-b',
         message: 'I learned something new today.'
     },
     {
+        postId: 'blog-templating-app-b',
         message: 'Can you provide more details?'
     }
 ]
@@ -56,6 +71,7 @@ export const moreTestComments = [
 const seed = async () => {
     // Sync with the database
     // clear the database
+    await prisma.comment.deleteMany()
     await prisma.entry.deleteMany()
     await prisma.comment.deleteMany()
     await prisma.like.deleteMany()
@@ -65,32 +81,16 @@ const seed = async () => {
     await prisma.tag.deleteMany()
     await prisma.forum.deleteMany()
     await prisma.user.deleteMany()
-    await prisma.curriculumVitae.deleteMany()
 
     // delete resume data
     await prisma.curriculumVitae.deleteMany()
+
     const createSkills = (skills: string[]) =>
         skills.map((skill) => ({ title: skill }))
 
+    // sync MY posts with the database
+
     await syncWithDb()
-
-    // Seed Users
-    const users = await Promise.all(
-        initialForumUsers.map((user) =>
-            prisma.user.upsert({
-                where: { email: user.email },
-                update: {},
-                create: {
-                    ...user,
-                    name: user.name,
-                    email: user.email,
-
-                    createdAt: new Date(),
-                    updatedAt: new Date()
-                }
-            })
-        )
-    )
 
     const posts = await prisma.post.findMany({
         select: {
@@ -106,108 +106,74 @@ const seed = async () => {
         console.log('Something went wrong. No posts found.')
         return
     }
-    // use the unique posts to create comments
-    const createComments = (comments: { message: string }[], postId: string) =>
-        comments.map((comment) => ({
-            message: comment.message,
-            postId,
-            userId: users[0].id,
-            author: users[0].name
-        }))
-    // Seed Comments
-
-    for (const post of posts) {
-        const comments = await Promise.all(
-            testComments.map((comment) =>
-                prisma.comment.create({
-                    data: {
-                        author: users[0].name,
-                        message: comment.message,
-                        postId: post.slug,
-                        userId: users[0].id,
-                        parentId: null,
-                        createdAt: new Date(),
-                        updatedAt: new Date(),
-                        children: {
-                            create: createComments(moreTestComments, post.slug)
-                        }
+    // Seed Users
+    const users = await Promise.all(
+        initialForumUsers.map((user) =>
+            prisma.user.upsert({
+                where: { email: user.email },
+                update: {},
+                create: {
+                    ...user,
+                    name: user.name,
+                    email: user.email,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    comments: {
+                        create: testComments
                     }
-                })
-            )
+                }
+            })
         )
-
-        if (!comments) {
-            console.error(`Failed to create comments for post: ${post.slug}`)
-            continue
-        }
-        console.log(`Seeded ${comments.length} comments for post: ${post.slug}`)
-    }
+    )
 
     const createProjects = (projects: { title: string }[]) =>
         projects.map((project) => ({ title: project.title }))
 
-    interface Education {
-        institution: string
-        description: string
-        degree: string
-        field: string
-        startDate: string
-        endDate: string
-        projects: { title: string }[]
-    }
+    const skills = curriculumVitae.skills.map((skill) => ({ skill }))
 
-    const createEducation = (education: Education[]) =>
-        education.map((edu) => ({
-            institution: edu.institution,
-            description: edu.description,
-            degree: edu.degree,
-            field: edu.field,
-            startDate: new Date(edu.startDate),
-            endDate: new Date(edu.endDate),
-            projects: { create: createProjects(edu.projects) }
-        }))
-
-    const createDuties = (duties: { duty: string }[]) =>
-        duties.map((duty) => ({ title: duty.duty }))
-
-    interface Experience {
-        company: string
-        jobTitle: string
-        location: string
-        startDate: string
-        endDate: string
-        duties: { duty: string }[]
-    }
-
-    const createExperience = (experience: Experience[]) =>
-        experience.map((work) => ({
-            company: work.company,
-            jobTitle: work.jobTitle,
-            location: work.location,
-            startDate: new Date(work.startDate),
-            endDate: new Date(work.endDate),
-            duties: { create: createDuties(work.duties) }
-        }))
-
-    const curriculumVitae = await prisma.curriculumVitae.create({
+    const cv = await prisma.curriculumVitae.create({
         data: {
-            title: resume.basics.title,
-            phoneNumber: resume.basics.phoneNumber,
-            email: resume.basics.email,
-            website: resume.basics.website,
-            location: resume.basics.location,
-            summary: resume.basics.summary,
-            createdAt: new Date(),
-            description: 'initial resume',
-            isCurrent: true,
-            isPrimary: true,
-            skills: { create: createSkills(resume.skills) },
-            education: { create: createEducation(resume.education) },
-            experience: { create: createExperience(resume.experience) }
+            title: curriculumVitae.title,
+            isCurrent: curriculumVitae.isCurrent,
+            isPrimary: curriculumVitae.isPrimary,
+            description: curriculumVitae.description,
+            phoneNumber: curriculumVitae.phoneNumber,
+            email: curriculumVitae.email,
+            website: curriculumVitae.website,
+            location: curriculumVitae.location,
+            github: curriculumVitae.github,
+            summary: curriculumVitae.summary,
+            skills: {
+                create: curriculumVitae.skills.map((skill) => ({
+                    category: skill.category,
+                    skill: skill.skill.map((s) => (s))
+                }))
+
+            },
+            education: {
+                create: curriculumVitae.education.map((education) => ({
+                    ...education,
+                    startDate: new Date(education.startDate),
+                    endDate: new Date(education.endDate),
+                    projects: {
+                        create: createProjects(education.projects)
+                    }
+                }))
+            },
+            experience: {
+                create: curriculumVitae.experience.map((experience) => ({
+                    ...experience,
+                    startDate: new Date(experience.startDate),
+                    endDate: new Date(experience.endDate),
+                    duties: {
+                        create: experience.duties
+                    }
+                }))
+            }
         }
     })
 
-    if (!curriculumVitae) {
+    if (!cv) {
         console.error('Failed to create resume data')
     }
 
