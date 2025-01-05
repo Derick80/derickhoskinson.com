@@ -169,6 +169,19 @@ const seed = async () => {
                         create: experience.duties
                     }
                 }))
+            },
+            publications: {
+                create: curriculumVitae.publications.map((pub) => ({
+                    title: pub.title,
+                    year: Number(pub.year),
+                    journal: pub.journal,
+                    authors: pub.authors.split(', '),
+                    edition: pub.edition,
+                    doi: pub.doi,
+                    pmid: pub.pmid,
+                    pmcid: pub.pmcid,
+                    pdf: pub.pdf
+                }))
             }
         }
     })

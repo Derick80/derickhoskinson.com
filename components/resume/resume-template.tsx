@@ -11,6 +11,7 @@ import { DownloadIcon, ExternalLinkIcon } from 'lucide-react'
 import { Badge } from '../ui/badge'
 import DownloadResumeButton from './resume-download'
 import { CV } from '@/lib/types'
+
 const ResumeCard = ({ cv }: CV) => {
     // write a functrion that searches for my name in the authors. it appears as Hoskinson, D. C. or Hoskinson, D, or Hoskinson D.
 
@@ -94,7 +95,7 @@ const ResumeCard = ({ cv }: CV) => {
                             </CardHeader>
 
                             <CardContent className='pb-2 pl-1'>
-                                { authorHighlight(pub.authors) }
+                                {/* { authorHighlight(pub.authors) } */ }
                                 <div className='flex gap-2'>
                                     <Link
                                         href={ pub.doi }
