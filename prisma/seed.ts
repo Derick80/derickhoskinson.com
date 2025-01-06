@@ -146,9 +146,8 @@ const seed = async () => {
             skills: {
                 create: curriculumVitae.skills.map((skill) => ({
                     category: skill.category,
-                    skill: skill.skill.map((s) => (s))
+                    skill: skill.skill.map((s) => s)
                 }))
-
             },
             education: {
                 create: curriculumVitae.education.map((education) => ({

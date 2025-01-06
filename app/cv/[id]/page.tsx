@@ -1,13 +1,19 @@
 import { getResumeById } from '@/app/actions/cv'
 import { z } from 'zod'
 import { ResumeType } from '@/lib/types/cv-resume'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { scrollToSection } from '@/lib/utils'
 import ResumeStats from './resume-stats-box'
 import { DynamicExperience } from './resume-form'
+import { InlineEditableExperience } from './inline-editible-form'
 
 const resumeIdSchema = z.object({
     id: z.string({
@@ -15,7 +21,7 @@ const resumeIdSchema = z.object({
     })
 })
 
-export default async function ResumeRoute (props: {
+export default async function ResumeRoute(props: {
     params: Promise<{
         cvId: string
     }>
@@ -31,31 +37,35 @@ export default async function ResumeRoute (props: {
         throw new Error('No resume found')
     }
     const { experience, education, skills, publications } = resume
-    console.log(resume.experience, 'experience')
-
 
     return (
-        <div className='mt-4 flex min-h-screen flex-col gap-4 items-center py-2 space-y-2'>
+        <div className='mt-4 flex min-h-screen flex-col items-center gap-4 space-y-2 py-2'>
             <ResumeStats
-                countOfExperience={ experience.length }
-                countOfEducation={ education.length }
-                countOfSkills={ skills.length }
-                countOfPublications={ publications.length }
-                countOfDuties={ experience.reduce((acc, cur) => acc + cur.duties.length, 0) }
-                countOfProjects={ education.reduce((acc, cur) => acc + cur.projects.length, 0) }
-
+                countOfExperience={experience.length}
+                countOfEducation={education.length}
+                countOfSkills={skills.length}
+                countOfPublications={publications.length}
+                countOfDuties={experience.reduce(
+                    (acc, cur) => acc + cur.duties.length,
+                    0
+                )}
+                countOfProjects={education.reduce(
+                    (acc, cur) => acc + cur.projects.length,
+                    0
+                )}
             />
             <Separator />
 
-            {
-                experience.map((exp) => (
-                    <DynamicExperience initialData={ exp } key={ exp.id } />
-                ))
-            }
-
-
+            {resume.experience.map((exp) => (
+                <InlineEditableExperience
+                    type='text'
+                    id={exp.id}
+                    field='company'
+                    value={exp.company}
+                    key={exp.id}
+                    experience={exp}
+                />
+            ))}
         </div>
     )
 }
-
-

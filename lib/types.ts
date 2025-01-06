@@ -249,8 +249,6 @@ export type UpdateExperienceErrorType = z.inferFlattenedErrors<
 
 export type updateExperienceType = z.infer<typeof experienceSchema>
 
-
-
 /* Resume & CV types */
 
 export type Skill = {

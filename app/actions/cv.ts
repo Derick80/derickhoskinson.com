@@ -2,7 +2,9 @@
 
 import prisma from '@/lib/prisma'
 import { ExperienceSchema } from '@/lib/types/cv-resume'
+import { Duty, Experience } from '@prisma/client'
 import { revalidateTag, unstable_cache } from 'next/cache'
+import toast from 'react-hot-toast'
 import { z } from 'zod'
 
 export const getResume = unstable_cache(async () => {
@@ -23,8 +25,8 @@ export const getResume = unstable_cache(async () => {
                         orderBy: {
                             position: 'asc'
                         }
-                    },
-                },
+                    }
+                }
             },
             publications: true,
             skills: true
@@ -38,20 +40,13 @@ export const getResume = unstable_cache(async () => {
     return resume
 })
 
-
-
-
-
-export const getResumeById = unstable_cache(async (id: string) => {
-
-
+export const getResumeById = async (id: string) => {
     // get the user's resume
     return await prisma.curriculumVitae.findFirst({
         where: {
             id: id
         },
         include: {
-
             education: {
                 include: {
                     projects: true
@@ -59,7 +54,6 @@ export const getResumeById = unstable_cache(async (id: string) => {
             },
             experience: {
                 include: {
-
                     duties: {
                         orderBy: {
                             position: 'asc'
@@ -69,7 +63,6 @@ export const getResumeById = unstable_cache(async (id: string) => {
                 orderBy: {
                     startDate: 'desc'
                 }
-
             },
             publications: true,
             skills: true,
@@ -80,76 +73,72 @@ export const getResumeById = unstable_cache(async (id: string) => {
                     publications: true,
                     skills: true
                 }
-            },
+            }
         }
     })
+}
+
+const ExperienceFieldSchema = z.object({
+    field: z.string({
+        required_error: 'Field is required'
+    }),
+    value: z.string(
+        {
+            required_error: 'Value is required'
+        }
+    )
 })
 
-const Schema = z.discriminatedUnion('intent', [
-    z.object({
-        intent: z.literal('delete'),
-        id: z.string()
+const ExperienceUpdateSchema = z.object({
+    id: z.string({
+        required_error: 'Id is required'
     }),
-    z.object({
-        intent: z.literal('edit-company'),
-        id: z.string(),
-        content: z.string()
-    }),
-    z.object({
-        intent: z.literal('edit-jobTitle'),
-        id: z.string(),
-        content: z.string()
-    }),
-]);
-
-
-
-const UpdateSchema = z.object({
-    id: z.string(),
-    field: z.string(),
-    value: z.string()
-
+    content: z.string({
+        required_error: 'Field is required'
+    })
 })
+export async function updateExperience (formData: FormData) {
 
-export type UpdateType = z.infer<typeof UpdateSchema>
-export async function updateExperience (data: UpdateType) {
-    try {
-        // Validate the data
-        const validatedData = UpdateSchema.safeParse(data)
-        if (!validatedData.success) {
-            return {
-                message: validatedData.error?.flatten().fieldErrors
-            }
+    const validatedData = ExperienceUpdateSchema.safeParse(
+        {
+            id: formData.get('id'),
+            content: formData.get('content'),
+
+
         }
-
-        const { id, field, value, ...rest } = validatedData.data
-        if (!id) {
-            throw new Error('ID is required')
+    )
+    if (!validatedData.success) {
+        return {
+            success: false,
+            error: validatedData.error
         }
-        // Update the experience
-        const updated = prisma.experience.update({
-            where: { id },
-            data: {
-                [field]: value
-
-            }
-        })
-
-        console.log('Updating experience:', validatedData)
-        if (!updated) {
-            throw new Error('Update failed')
+    }
+    console.log(validatedData.data, 'validatedData')
+    const { id, content } = validatedData.data
+    const value = formData.get(content)
+    console.log(value, 'value')
+    const updated = await prisma.experience.update({
+        where: {
+            id
+        },
+        data: {
+            [content]: value
         }
-        return { success: true, data: updated }
-    } catch (error) {
-        console.error('Validation error:', error)
-        return { success: false, error: 'Validation failed' }
+    })
+    if (!updated) {
+        throw new Error('Experience not found')
+    }
+    // revalidateTag('resume')
+    return {
+        validatedData,
+        value,
+        success: true
     }
 }
 
-export async function updateDuty (id: string, data: { title: string }) {
-    return prisma.duty.update({
+export async function updateDuty (id: string, data: Partial<Duty>) {
+    await prisma.duty.update({
         where: { id },
-        data,
+        data
     })
 }
-

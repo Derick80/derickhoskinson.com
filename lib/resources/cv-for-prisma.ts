@@ -25,7 +25,6 @@ export const curriculumVitae = {
                 {
                     title: 'Contributed to the development and submission of the xT CDx assay to the FDA by curating and analyzing gene data to rank evidence per gene, ensuring accurate and effective clinical use.',
                     position: 2
-
                 },
                 {
                     title: 'Played a vital role in the development and application of a new hereditary genetic testing panel, Tempus, xGv3 to identify germline variants in genes associated with hereditary cancer syndromes and incidental findings.',
@@ -38,7 +37,6 @@ export const curriculumVitae = {
                 {
                     title: 'Spearheaded the development and implementation of a reportable bed file solution for the Tempus xF assay, allowing for targeted reporting of specific genomic regions and improving the overall quality of data analysis.',
                     position: 5
-
                 },
                 {
                     title: 'Used R programming language to design and implement a regions of interest bed file for reporting insertions and deletions for Tempus xF assay.',
@@ -121,7 +119,6 @@ export const curriculumVitae = {
                 {
                     title: 'Wrote evidence-based summaries of clinical trials aimed at serving as a resource for physicians and other health care professionals at the point of care.',
                     position: 1
-
                 },
                 {
                     title: 'Wrote evidence-based point-of-care references for a number of clinically important disease topics.',
@@ -147,42 +144,26 @@ export const curriculumVitae = {
         }
     ],
     skills: [
-
         {
             category: 'Core Expertise',
             skill: [
                 'Clinical Genetics',
                 'Variant Curation and Analysis',
                 'Bioinformatics',
-                'FDA Submissions',
+                'FDA Submissions'
             ]
         },
         {
             category: 'Programming Languages',
-            skill: [
-                'R',
-                'Python',
-                'JavaScript',
-                'HTML',
-                'CSS'
-            ]
+            skill: ['R', 'Python', 'JavaScript', 'HTML', 'CSS']
         },
         {
             category: 'Tools & Databases',
-            skill: [
-                'gnomAD',
-                'ClinVar',
-                'HGMD',
-                'Pubmed API'
-            ]
+            skill: ['gnomAD', 'ClinVar', 'HGMD', 'Pubmed API']
         },
         {
             category: 'Project Management',
-            skill: [
-                'Team Building',
-                'Workflow Development',
-                'SOP Development'
-            ]
+            skill: ['Team Building', 'Workflow Development', 'SOP Development']
         }
     ],
     education: [

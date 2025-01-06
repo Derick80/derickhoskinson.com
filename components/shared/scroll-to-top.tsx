@@ -15,26 +15,23 @@ const ScrollToTopButton = () => {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
-
-
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
     }
     return (
         <div className='right-0 flex items-center gap-2'>
-            { showScrollTop && (
+            {showScrollTop && (
                 <Button
                     variant='ghost'
                     size='icon'
-                    onClick={ scrollToTop }
+                    onClick={scrollToTop}
                     className='ml-2'
                 >
                     <ChevronUp className='h-4 w-4' />
                 </Button>
-            ) }
+            )}
         </div>
     )
-
 }
 
 export default ScrollToTopButton

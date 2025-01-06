@@ -14,7 +14,6 @@ const ResumeNavBar = () => {
     useEffect(() => {
         const handleScroll = () => {
             setShowScrollTop(window.scrollY > 300)
-
         }
 
         window.addEventListener('scroll', handleScroll)
@@ -42,7 +41,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={ () => scrollToSection('summary') }
+                        onClick={() => scrollToSection('summary')}
                         className='text-xs'
                     >
                         Summary
@@ -50,7 +49,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={ () => scrollToSection('experience') }
+                        onClick={() => scrollToSection('experience')}
                         className='text-xs'
                     >
                         Experience
@@ -59,7 +58,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={ () => scrollToSection('publications') }
+                        onClick={() => scrollToSection('publications')}
                         className='text-xs'
                     >
                         Publications
@@ -67,7 +66,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={ () => scrollToSection('education') }
+                        onClick={() => scrollToSection('education')}
                         className='text-xs'
                     >
                         Education
@@ -75,7 +74,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={ () => scrollToSection('skills') }
+                        onClick={() => scrollToSection('skills')}
                         className='text-xs'
                     >
                         Skills
@@ -85,7 +84,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={ () => scrollToSection('summary') }
+                        onClick={() => scrollToSection('summary')}
                         className='text-xs'
                         asChild
                     >
@@ -93,16 +92,16 @@ const ResumeNavBar = () => {
                             <HomeIcon className='h-4 w-4' />
                         </Link>
                     </Button>
-                    { showScrollTop && (
+                    {showScrollTop && (
                         <Button
                             variant='ghost'
                             size='icon'
-                            onClick={ scrollToTop }
+                            onClick={scrollToTop}
                             className='ml-2'
                         >
                             <ChevronUp className='h-4 w-4' />
                         </Button>
-                    ) }
+                    )}
                 </div>
             </div>
         </div>

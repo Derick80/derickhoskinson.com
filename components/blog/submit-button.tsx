@@ -12,8 +12,8 @@ const SubmitButton = ({
         <Button
             type='submit'
             variant='default'
-            disabled={ pending }
-            onClick={ data ? action : onSubmit }
+            disabled={pending}
+            onClick={data ? action : onSubmit}
         >
             Submit
         </Button>
