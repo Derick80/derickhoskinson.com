@@ -16,7 +16,7 @@ import {
     CardTitle
 } from '@/components/ui/card'
 
-export function InlineEditableExperience({
+export function InlineEditableExperience ({
     experience
 }: {
     experience: ExperienceSchema & {
@@ -59,63 +59,62 @@ export function InlineEditableExperience({
                 <EditableField
                     label='Job Title'
                     type='text'
-                    id={exp.id}
-                    value={exp.jobTitle}
-                    onUpdate={(value) => updateField('jobTitle', value)}
+                    id={ exp.id }
+                    value={ exp.jobTitle }
+                    onUpdate={ (value) => updateField('jobTitle', value) }
                 />
 
                 <EditableField
                     label='Company'
-                    id={exp.id}
+                    id={ exp.id }
                     type='text'
-                    value={exp.company}
-                    onUpdate={(value) => updateField('company', value)}
+                    value={ exp.company }
+                    onUpdate={ (value) => updateField('company', value) }
                 />
 
                 <EditableField
                     label='Location'
-                    id={exp.id}
+                    id={ exp.id }
                     type='text'
-                    value={exp.location}
-                    onUpdate={(value) => updateField('location', value)}
+                    value={ exp.location }
+                    onUpdate={ (value) => updateField('location', value) }
                 />
 
                 <div className='flex flex-col gap-2'>
                     <p className='text-lg font-bold'>Employment range</p>
-                    <div className='flex gap-2 space-x-2'>
-                        <EditableField
-                            label='Start Date'
-                            id={exp.id}
-                            type='date'
-                            value={formatDate(exp.startDate)}
-                            onUpdate={(value) =>
-                                updateField('startDate', value)
-                            }
-                        />{' '}
-                        -
-                        <EditableField
-                            label='End Date'
-                            id={exp.id}
-                            type='date'
-                            value={formatDate(exp.endDate)}
-                            onUpdate={(value) => updateField('endDate', value)}
-                        />
-                    </div>
+
+                    <EditableField
+                        label='Start Date'
+                        id={ exp.id }
+                        type='date'
+                        value={ formatDate(exp.startDate) }
+                        onUpdate={ (value) =>
+                            updateField('startDate', value)
+                        }
+                    />{ ' ' }
+                    -
+                    <EditableField
+                        label='End Date'
+                        id={ exp.id }
+                        type='date'
+                        value={ formatDate(exp.endDate) }
+                        onUpdate={ (value) => updateField('endDate', value) }
+                    />
                 </div>
                 <ul>
-                    {exp.duties.map((duty) => (
-                        <li key={duty.id}>
+                    { exp.duties.map((duty) => (
+                        <li key={ duty.id }>
                             <EditableField
                                 label='Duty'
-                                id={duty.id}
+                                id={ duty.id }
                                 type='textarea'
-                                value={duty.title}
-                                onUpdate={(value) =>
+                                value={ duty.title }
+                                onUpdate={ (value) =>
                                     updateDutyField(duty.id, value)
                                 }
                             />
                         </li>
-                    ))}
+                    )) }
                 </ul>
             </CardContent>
         </Card>

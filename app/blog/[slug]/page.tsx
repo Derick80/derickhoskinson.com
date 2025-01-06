@@ -6,8 +6,10 @@ import { serialize } from 'next-mdx-remote/serialize'
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote/rsc'
 import { Suspense } from 'react'
 import remarkGfm from 'remark-gfm'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import PostInformation from './post-information'
 
-export async function generateStaticParams() {
+export async function generateStaticParams () {
     const posts = await getAllPosts()
     if (!posts) {
         throw new Error('Post not found')
@@ -16,7 +18,7 @@ export async function generateStaticParams() {
         params: { slug: post.slug }
     }))
 }
-export default async function Page(props: {
+export default async function Page (props: {
     params: Promise<{
         slug: string
     }>
@@ -31,12 +33,17 @@ export default async function Page(props: {
     if (!post) {
         throw new Error('Post not found')
     }
-    const { content, frontmatter } = post
+    console.log(post, 'post')
+    const { rawMdx, ...rest } = post
+
     return (
         <article className='prose relative z-10 mx-auto max-w-4xl space-y-4 overflow-auto px-2 py-4 align-middle dark:prose-invert md:px-0'>
-            <Suspense fallback={<>Loading...</>}>
-                {content}
-                {/* @ts-iexpect-error server comp */}
+            <Suspense fallback={ <>Loading...</> }>
+                <PostInformation
+                    { ...rest }
+                />
+                {/* @ts-iexpect-error server comp */ }
+                { rawMdx }
             </Suspense>
         </article>
     )

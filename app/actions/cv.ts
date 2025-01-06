@@ -95,7 +95,7 @@ const ExperienceUpdateSchema = z.object({
         required_error: 'Field is required'
     })
 })
-export async function updateExperience(formData: FormData) {
+export async function updateExperience (formData: FormData) {
     const validatedData = ExperienceUpdateSchema.safeParse({
         id: formData.get('id'),
         content: formData.get('content')
@@ -108,28 +108,28 @@ export async function updateExperience(formData: FormData) {
     }
     console.log(validatedData.data, 'validatedData')
     const { id, content } = validatedData.data
-    const value = formData.get(content)
-    console.log(value, 'value')
-    const updated = await prisma.experience.update({
-        where: {
-            id
-        },
-        data: {
-            [content]: value
+    const value = formData.get(content) as string
+
+    if (content === 'startDate' || content === 'endDate') {
+        await prisma.experience.update({
+            where: {
+                id
+            },
+            data: {
+                [content]: new Date(value)
+            }
+        })
+
+        return {
+            validatedData,
+            value,
+            success: true
         }
-    })
-    if (!updated) {
-        throw new Error('Experience not found')
-    }
-    // revalidateTag('resume')
-    return {
-        validatedData,
-        value,
-        success: true
     }
 }
 
-export async function updateDuty(id: string, data: Partial<Duty>) {
+
+export async function updateDuty (id: string, data: Partial<Duty>) {
     await prisma.duty.update({
         where: { id },
         data
