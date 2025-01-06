@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { updateExperience, updateDuty } from '@/app/actions/cv'
 import { formatDate } from '@/lib/utils'
 import React from 'react'
@@ -8,61 +7,23 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { ExperienceSchema } from '@/lib/types/cv-resume'
+import EditableField from './editable-item'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle
+} from '@/components/ui/card'
 
-const EditableField = ({
-    value,
-    id,
-    type,
-    onUpdate
-}: {
-    value: string
-    id: string
-    type: string | undefined
-    onUpdate: (value: string) => void
-}) => {
-    const [editing, setEditing] = React.useState(false)
-    const [currentValue, setCurrentValue] = React.useState(value)
-
-    const handleUpdate = () => {
-        onUpdate(currentValue)
-        setEditing(false)
-    }
-
-    if (editing) {
-        return (
-            <>
-                { type === 'textarea' ? (
-                    <Textarea
-                        value={ currentValue }
-                        id={ id }
-                        onChange={ (e) => setCurrentValue(e.target.value) }
-                    />
-                ) : (
-                    <Input
-                        type={ type }
-                        id={ id }
-                        value={ currentValue }
-                        onChange={ (e) => setCurrentValue(e.target.value) }
-                        onBlur={ handleUpdate }
-                        onKeyDown={ (e) => e.key === 'Enter' && handleUpdate() }
-                        autoFocus
-                    />
-                ) }
-            </>
-        )
-    }
-
-    return <span onClick={ () => setEditing(true) }>{ value }</span>
-}
-
-export function InlineEditableExperience ({
+export function InlineEditableExperience({
     experience
 }: {
     experience: ExperienceSchema & {
         duties: ExperienceSchema['duties']
     }
 }) {
-    const [exp, setExp] = useState(experience)
+    const [exp, setExp] = React.useState(experience)
 
     const updateField = async (field: string, value: string) => {
         const formData = new FormData()
@@ -86,61 +47,77 @@ export function InlineEditableExperience ({
     }
 
     return (
-        <div className='flex w-full flex-col gap-2'>
-            <input type='hidden' name='id' value={ exp.id } />
-            <Label htmlFor='jobTitle'>Job Title</Label>
+        <Card className='flex w-full flex-col gap-2'>
+            <CardHeader>
+                <CardTitle>Experience</CardTitle>
+                <CardDescription>
+                    You can edit the fields below by clicking on them. Press
+                    Enter or click outside the field to save.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <EditableField
+                    label='Job Title'
+                    type='text'
+                    id={exp.id}
+                    value={exp.jobTitle}
+                    onUpdate={(value) => updateField('jobTitle', value)}
+                />
 
-            <EditableField
-                type='text'
-                id={ exp.id }
-                value={ exp.jobTitle }
-                onUpdate={ (value) => updateField('jobTitle', value) }
-            />
-            <p>
                 <EditableField
-                    id={ exp.id }
+                    label='Company'
+                    id={exp.id}
                     type='text'
-                    value={ exp.company }
-                    onUpdate={ (value) => updateField('company', value) }
+                    value={exp.company}
+                    onUpdate={(value) => updateField('company', value)}
                 />
-            </p>
-            <p>
+
                 <EditableField
-                    id={ exp.id }
+                    label='Location'
+                    id={exp.id}
                     type='text'
-                    value={ exp.location }
-                    onUpdate={ (value) => updateField('location', value) }
+                    value={exp.location}
+                    onUpdate={(value) => updateField('location', value)}
                 />
-            </p>
-            <p>
-                <EditableField
-                    id={ exp.id }
-                    type='date'
-                    value={ formatDate(exp.startDate) }
-                    onUpdate={ (value) => updateField('startDate', value) }
-                />{ ' ' }
-                -
-                <EditableField
-                    id={ exp.id }
-                    type='date'
-                    value={ formatDate(exp.endDate) }
-                    onUpdate={ (value) => updateField('endDate', value) }
-                />
-            </p>
-            <ul>
-                { exp.duties.map((duty) => (
-                    <li key={ duty.id }>
+
+                <div className='flex flex-col gap-2'>
+                    <p className='text-lg font-bold'>Employment range</p>
+                    <div className='flex gap-2 space-x-2'>
                         <EditableField
-                            id={ duty.id }
-                            type='textarea'
-                            value={ duty.title }
-                            onUpdate={ (value) =>
-                                updateDutyField(duty.id, value)
+                            label='Start Date'
+                            id={exp.id}
+                            type='date'
+                            value={formatDate(exp.startDate)}
+                            onUpdate={(value) =>
+                                updateField('startDate', value)
                             }
+                        />{' '}
+                        -
+                        <EditableField
+                            label='End Date'
+                            id={exp.id}
+                            type='date'
+                            value={formatDate(exp.endDate)}
+                            onUpdate={(value) => updateField('endDate', value)}
                         />
-                    </li>
-                )) }
-            </ul>
-        </div>
+                    </div>
+                </div>
+                <ul>
+                    {exp.duties.map((duty) => (
+                        <li key={duty.id}>
+                            <EditableField
+                                label='Duty'
+                                id={duty.id}
+                                type='textarea'
+                                value={duty.title}
+                                onUpdate={(value) =>
+                                    updateDutyField(duty.id, value)
+                                }
+                            />
+                        </li>
+                    ))}
+                </ul>
+            </CardContent>
+        </Card>
     )
 }

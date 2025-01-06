@@ -1,6 +1,6 @@
 import { getResumeById } from '@/app/actions/cv'
 import { z } from 'zod'
-import { ResumeType } from '@/lib/types/cv-resume'
+import { ExperienceSchema, ResumeType } from '@/lib/types/cv-resume'
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -58,12 +58,12 @@ export default async function ResumeRoute(props: {
 
             {resume.experience.map((exp) => (
                 <InlineEditableExperience
-                    type='text'
-                    id={exp.id}
-                    field='company'
-                    value={exp.company}
                     key={exp.id}
-                    experience={exp}
+                    experience={
+                        exp as ExperienceSchema & {
+                            duties: ExperienceSchema['duties']
+                        }
+                    }
                 />
             ))}
         </div>

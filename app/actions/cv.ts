@@ -82,11 +82,9 @@ const ExperienceFieldSchema = z.object({
     field: z.string({
         required_error: 'Field is required'
     }),
-    value: z.string(
-        {
-            required_error: 'Value is required'
-        }
-    )
+    value: z.string({
+        required_error: 'Value is required'
+    })
 })
 
 const ExperienceUpdateSchema = z.object({
@@ -97,16 +95,11 @@ const ExperienceUpdateSchema = z.object({
         required_error: 'Field is required'
     })
 })
-export async function updateExperience (formData: FormData) {
-
-    const validatedData = ExperienceUpdateSchema.safeParse(
-        {
-            id: formData.get('id'),
-            content: formData.get('content'),
-
-
-        }
-    )
+export async function updateExperience(formData: FormData) {
+    const validatedData = ExperienceUpdateSchema.safeParse({
+        id: formData.get('id'),
+        content: formData.get('content')
+    })
     if (!validatedData.success) {
         return {
             success: false,
@@ -136,7 +129,7 @@ export async function updateExperience (formData: FormData) {
     }
 }
 
-export async function updateDuty (id: string, data: Partial<Duty>) {
+export async function updateDuty(id: string, data: Partial<Duty>) {
     await prisma.duty.update({
         where: { id },
         data
