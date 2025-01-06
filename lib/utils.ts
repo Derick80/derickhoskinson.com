@@ -2,11 +2,23 @@ import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { CommentRetrievalType } from './types'
 
-export function cn(...inputs: ClassValue[]) {
+export function cn (...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }
 
-export function labelLikes(likes: number | undefined | null) {
+
+export const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId)
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' })
+    }
+}
+export function formatDate (date: Date) {
+    // return as Month/year July 2019
+    const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long" };
+    return new Intl.DateTimeFormat("en-US", options).format()
+}
+export function labelLikes (likes: number | undefined | null) {
     if (likes === undefined || likes === null) {
         return 'Loading...'
     }
@@ -14,11 +26,11 @@ export function labelLikes(likes: number | undefined | null) {
     return likes === 0
         ? 'Be the first to like'
         : likes === 1
-          ? '1 Like'
-          : `${likes} Likes`
+            ? '1 Like'
+            : `${likes} Likes`
 }
 
-export function labelCommentCounts(comments: number | undefined | null) {
+export function labelCommentCounts (comments: number | undefined | null) {
     if (comments === 0 || !comments) {
         return `${comments} comments `
     }
@@ -36,7 +48,7 @@ type CommentType = CommentRetrievalType & {
     children: CommentType[] | null
 }
 
-export function reorganizeComments(comments: CommentType[]) {
+export function reorganizeComments (comments: CommentType[]) {
     if (!comments) {
         return
     }

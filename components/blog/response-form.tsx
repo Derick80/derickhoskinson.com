@@ -1,5 +1,5 @@
 'use client'
-import { editLike } from '@/app/actions/blog-user'
+
 import React from 'react'
 import { Button } from '../ui/button'
 import { cn } from '@/lib/utils'
@@ -44,7 +44,7 @@ const ResponseForm = ({
 
             const result =
                 await // @ts-expect-error - TS doesn't like the FormData type
-                editLike(null, formData)
+                    editLike(null, formData)
             if (result?.message === 'Liked') {
                 setLikes(likes + 1)
                 setHasLiked(true)
@@ -60,26 +60,26 @@ const ResponseForm = ({
 
     return (
         <>
-            {isAuth ? (
+            { isAuth ? (
                 <Button
                     type='submit'
                     variant='ghost'
-                    className={cn(
+                    className={ cn(
                         'h-4 w-4 transition-transform',
                         hasLiked && 'scale-110 fill-current text-pink-500',
                         isPending && 'animate-pulse'
-                    )}
-                    onClick={(e) => {
+                    ) }
+                    onClick={ (e) => {
                         e.preventDefault()
                         handleLike(e)
-                    }}
-                    disabled={isPending}
+                    } }
+                    disabled={ isPending }
                 >
-                    {hasLiked ? (
-                        <HeartFilledIcon className={cn('text-red-500')} />
+                    { hasLiked ? (
+                        <HeartFilledIcon className={ cn('text-red-500') } />
                     ) : (
                         <HeartIcon />
-                    )}
+                    ) }
                 </Button>
             ) : (
                 <Tooltip>
@@ -87,28 +87,28 @@ const ResponseForm = ({
                         <Button
                             type='button'
                             disabled
-                            className={cn(
+                            className={ cn(
                                 'h-4 w-4 transition-transform',
                                 hasLiked &&
-                                    'scale-110 fill-current text-pink-500',
+                                'scale-110 fill-current text-pink-500',
                                 isPending && 'animate-pulse'
-                            )}
+                            ) }
                         >
                             <HeartIcon
-                                className={cn(
+                                className={ cn(
                                     'flex items-center space-x-2 transition-colors',
                                     hasLiked &&
-                                        'bg-pink-100 text-pink-500 hover:bg-pink-200 hover:text-pink-600'
-                                )}
+                                    'bg-pink-100 text-pink-500 hover:bg-pink-200 hover:text-pink-600'
+                                ) }
                             />
                         </Button>
                     </TooltipTrigger>
                 </Tooltip>
-            )}
+            ) }
 
             <ResponseUsers
-                totalLikes={likes}
-                users={allLikes?.map((like) => like?.userId)}
+                totalLikes={ likes }
+                users={ allLikes?.map((like) => like?.userId) }
             />
         </>
     )

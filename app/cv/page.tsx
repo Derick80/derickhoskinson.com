@@ -1,10 +1,8 @@
 import ResumeNavBar from '@/components/resume/resume-nav-bar'
 import { getResume } from '../actions/cv'
 import { verifySession } from '../actions/auth'
-
-import CreateResumeButton from '@/components/resume/new-resume-button'
-import ExperienceForm from '@/components/resume/experience-form'
-import ResumeCard from '@/components/resume/resume-template'
+import ResumeCard from '@/components/resume/resume-card'
+import Link from 'next/link'
 
 
 export default async function ResumeRoute () {
@@ -17,9 +15,15 @@ export default async function ResumeRoute () {
     const session = await verifySession()
 
     const isAuthorized = session?.isAuthenticated
-
     return (
         <div className='mt-4 flex min-h-screen flex-col items-center py-2'>
+            {
+                isAuthorized && <Link
+                    href={ `cv/${resume.id}` }
+                >
+                    Edit
+                </Link>
+            }
             <ResumeCard
                 cv={ resume
 

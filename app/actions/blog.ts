@@ -18,7 +18,7 @@ export const getAllPosts = async () => {
 
 export const getPostBySlug = async (slug: string) => {
     return await getAllPosts().then((posts) => {
-        return posts.find((post) => post.frontmatter.slug === slug)
+        return posts.find((post) => post.slug === slug)
     })
 }
 

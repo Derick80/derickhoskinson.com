@@ -5,13 +5,16 @@ import { Button } from '@/components/ui/button'
 import { ChevronUp, HomeIcon } from 'lucide-react'
 import DownloadResumeButton from './resume-download'
 import Link from 'next/link'
+import scrollToTop from '../shared/scroll-to-top'
 
 const ResumeNavBar = () => {
     const [showScrollTop, setShowScrollTop] = useState(false)
+    const [isCurrentSection, setIsCurrentSection] = useState()
 
     useEffect(() => {
         const handleScroll = () => {
             setShowScrollTop(window.scrollY > 300)
+
         }
 
         window.addEventListener('scroll', handleScroll)
@@ -32,14 +35,14 @@ const ResumeNavBar = () => {
     return (
         <div
             id='resume-nav-bar'
-            className='fixed bottom-4 left-1/2 z-50 -translate-x-1/2 transform'
+            className='sticky bottom-4 left-1/2 z-20 -translate-x-1/2 transform'
         >
             <div className='flex flex-col items-center rounded-full bg-background/80 p-2 shadow-lg backdrop-blur-sm print:hidden'>
                 <div className='flex gap-1 md:gap-2'>
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={() => scrollToSection('summary')}
+                        onClick={ () => scrollToSection('summary') }
                         className='text-xs'
                     >
                         Summary
@@ -47,7 +50,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={() => scrollToSection('experience')}
+                        onClick={ () => scrollToSection('experience') }
                         className='text-xs'
                     >
                         Experience
@@ -56,7 +59,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={() => scrollToSection('publications')}
+                        onClick={ () => scrollToSection('publications') }
                         className='text-xs'
                     >
                         Publications
@@ -64,7 +67,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={() => scrollToSection('education')}
+                        onClick={ () => scrollToSection('education') }
                         className='text-xs'
                     >
                         Education
@@ -72,7 +75,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={() => scrollToSection('skills')}
+                        onClick={ () => scrollToSection('skills') }
                         className='text-xs'
                     >
                         Skills
@@ -82,7 +85,7 @@ const ResumeNavBar = () => {
                     <Button
                         variant='ghost'
                         size='sm'
-                        onClick={() => scrollToSection('summary')}
+                        onClick={ () => scrollToSection('summary') }
                         className='text-xs'
                         asChild
                     >
@@ -90,16 +93,16 @@ const ResumeNavBar = () => {
                             <HomeIcon className='h-4 w-4' />
                         </Link>
                     </Button>
-                    {showScrollTop && (
+                    { showScrollTop && (
                         <Button
                             variant='ghost'
                             size='icon'
-                            onClick={scrollToTop}
+                            onClick={ scrollToTop }
                             className='ml-2'
                         >
                             <ChevronUp className='h-4 w-4' />
                         </Button>
-                    )}
+                    ) }
                 </div>
             </div>
         </div>

@@ -1,6 +1,13 @@
 import { getResumeById } from '@/app/actions/cv'
 import { z } from 'zod'
-import ExperienceList from '../experience-list'
+import { ResumeType } from '@/lib/types/cv-resume'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Separator } from '@/components/ui/separator'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { scrollToSection } from '@/lib/utils'
+import ResumeStats from './resume-stats-box'
+import { DynamicExperience } from './resume-form'
 
 const resumeIdSchema = z.object({
     id: z.string({
@@ -8,9 +15,9 @@ const resumeIdSchema = z.object({
     })
 })
 
-export default async function ResumeRoute(props: {
+export default async function ResumeRoute (props: {
     params: Promise<{
-        id: string
+        cvId: string
     }>
 }) {
     const params = await props.params
@@ -19,27 +26,36 @@ export default async function ResumeRoute(props: {
         throw new Error('No id provided')
     }
 
-    const resume = await getResumeById({ id })
+    const resume = await getResumeById(id)
     if (!resume) {
         throw new Error('No resume found')
     }
+    const { experience, education, skills, publications } = resume
+    console.log(resume.experience, 'experience')
+
 
     return (
-        <div className='mt-4 flex min-h-screen flex-col items-center py-2'>
-            {/* {
-                skills && (
-                    <ResumeSkills skills={ skills } />
-                )
-            } */}
+        <div className='mt-4 flex min-h-screen flex-col gap-4 items-center py-2 space-y-2'>
+            <ResumeStats
+                countOfExperience={ experience.length }
+                countOfEducation={ education.length }
+                countOfSkills={ skills.length }
+                countOfPublications={ publications.length }
+                countOfDuties={ experience.reduce((acc, cur) => acc + cur.duties.length, 0) }
+                countOfProjects={ education.reduce((acc, cur) => acc + cur.projects.length, 0) }
 
-            <div className='mt-4 flex w-full flex-col gap-4 border-2 border-purple-500 p-4'>
-                <h3>Experience</h3>
-                <p>
-                    Click on a field to edit it. Click the checkmark or press
-                    enter to save. Click the x or press escape to cancel.
-                </p>
-                <ExperienceList cvId={id} />
-            </div>
+            />
+            <Separator />
+
+            {
+                experience.map((exp) => (
+                    <DynamicExperience initialData={ exp } key={ exp.id } />
+                ))
+            }
+
+
         </div>
     )
 }
+
+

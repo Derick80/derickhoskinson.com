@@ -291,37 +291,3 @@ export type ProfessionalExperience = {
         description: string
     }[]
 }
-export type CV = {
-    cv: {
-        title: string
-        phoneNumber: number
-        email: string
-        website: string
-        location: string
-        github: string
-        summary: string
-        experience: ProfessionalExperience[]
-        publications: Publication[]
-        education: Education[]
-        skills: Skill[]
-    }
-}
-
-export interface Duty {
-    id: string
-    title: string
-    position: number
-
-}
-export type Experience = {
-    id: string
-    company: string
-    jobTitle: string
-    location: string
-    startDate: string
-    endDate: string
-    cvId: string
-    createdAt: Date
-    updatedAt: Date
-    duties: Duty[]
-}
