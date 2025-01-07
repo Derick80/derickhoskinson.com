@@ -30,9 +30,9 @@ const CommentList = ({ postId, initialComments }: CommentListProps) => {
             if (sortBy === 'date') {
                 return sortOrder === 'asc'
                     ? new Date(a.createdAt).getTime() -
-                    new Date(b.createdAt).getTime()
+                          new Date(b.createdAt).getTime()
                     : new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime()
+                          new Date(a.createdAt).getTime()
             } else {
                 return sortOrder === 'asc'
                     ? a.author.localeCompare(b.author)
@@ -75,28 +75,28 @@ const CommentList = ({ postId, initialComments }: CommentListProps) => {
         depth = 0
     ) => (
         <Card
-            key={ comment.id }
-            className={ `mb-4 ${depth > 0 ? 'ml-6 border-l-4 border-l-primary' : ''}` }
+            key={comment.id}
+            className={`mb-4 ${depth > 0 ? 'ml-6 border-l-4 border-l-primary' : ''}`}
         >
             <CardHeader className='pb-2'>
                 <CardTitle className='flex items-center text-sm font-medium'>
                     <User className='mr-2 h-4 w-4 text-primary' />
-                    { comment.author }
+                    {comment.author}
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <p className='mb-2 text-sm'>{ comment.message }</p>
+                <p className='mb-2 text-sm'>{comment.message}</p>
                 <div className='flex items-center text-xs text-muted-foreground'>
                     <Calendar className='mr-1 h-3 w-3' />
-                    { new Date(comment.createdAt).toLocaleString() }
+                    {new Date(comment.createdAt).toLocaleString()}
                 </div>
-                { comment.replies && (
+                {comment.replies && (
                     <div className='mt-4 space-y-4'>
-                        { comment.replies.map((reply) =>
+                        {comment.replies.map((reply) =>
                             renderComment(reply, depth + 1)
-                        ) }
+                        )}
                     </div>
-                ) }
+                )}
             </CardContent>
         </Card>
     )
@@ -129,7 +129,7 @@ const CommentList = ({ postId, initialComments }: CommentListProps) => {
         <div className='space-y-4'>
             <div className='flex justify-end space-x-4'>
                 <Select
-                    onValueChange={ (value: 'date' | 'author') =>
+                    onValueChange={(value: 'date' | 'author') =>
                         setSortBy(value)
                     }
                 >
@@ -142,7 +142,7 @@ const CommentList = ({ postId, initialComments }: CommentListProps) => {
                     </SelectContent>
                 </Select>
                 <Select
-                    onValueChange={ (value: 'asc' | 'desc') =>
+                    onValueChange={(value: 'asc' | 'desc') =>
                         setSortOrder(value)
                     }
                 >
@@ -155,20 +155,20 @@ const CommentList = ({ postId, initialComments }: CommentListProps) => {
                     </SelectContent>
                 </Select>
                 <Button
-                    variant={ viewMode === 'flat' ? 'default' : 'outline' }
-                    onClick={ () => setViewMode('flat') }
+                    variant={viewMode === 'flat' ? 'default' : 'outline'}
+                    onClick={() => setViewMode('flat')}
                 >
                     Flat
                 </Button>
                 <Button
-                    variant={ viewMode === 'nested' ? 'default' : 'outline' }
-                    onClick={ () => setViewMode('nested') }
+                    variant={viewMode === 'nested' ? 'default' : 'outline'}
+                    onClick={() => setViewMode('nested')}
                 >
                     Nested
                 </Button>
             </div>
             <div className='space-y-4'>
-                { organizedComments.map((comment) => renderComment(comment)) }
+                {organizedComments.map((comment) => renderComment(comment))}
             </div>
         </div>
     )

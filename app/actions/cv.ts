@@ -61,7 +61,7 @@ export const getResumeById = async (id: string) => {
                     }
                 },
                 orderBy: {
-                    startDate: 'desc'
+                    endDate: 'desc'
                 }
             },
             publications: true,
@@ -95,7 +95,7 @@ const ExperienceUpdateSchema = z.object({
         required_error: 'Field is required'
     })
 })
-export async function updateExperience (formData: FormData) {
+export async function updateExperience(formData: FormData) {
     const validatedData = ExperienceUpdateSchema.safeParse({
         id: formData.get('id'),
         content: formData.get('content')
@@ -106,30 +106,55 @@ export async function updateExperience (formData: FormData) {
             error: validatedData.error
         }
     }
-    console.log(validatedData.data, 'validatedData')
+
     const { id, content } = validatedData.data
+
     const value = formData.get(content) as string
 
-    if (content === 'startDate' || content === 'endDate') {
-        await prisma.experience.update({
+    if (content === 'startDate') {
+        const date = new Date(value)
+        const updated = prisma.experience.update({
             where: {
                 id
             },
             data: {
-                [content]: new Date(value)
+                startDate: date
             }
         })
+        if (!updated) {
+            return {
+                success: false,
+                error: 'Failed to update experience'
+            }
+        }
 
         return {
-            validatedData,
-            value,
-            success: true
+            success: true,
+            data: updated
+        }
+    } else {
+        const updated = prisma.experience.update({
+            where: {
+                id
+            },
+            data: {
+                [content]: value
+            }
+        })
+        if (!updated) {
+            return {
+                success: false,
+                error: 'Failed to update experience'
+            }
+        }
+
+        return {
+            success: true,
+            data: updated
         }
     }
 }
-
-
-export async function updateDuty (id: string, data: Partial<Duty>) {
+export async function updateDuty(id: string, data: Partial<Duty>) {
     await prisma.duty.update({
         where: { id },
         data

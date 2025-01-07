@@ -3,9 +3,6 @@
 import { updateExperience, updateDuty } from '@/app/actions/cv'
 import { formatDate } from '@/lib/utils'
 import React from 'react'
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { ExperienceSchema } from '@/lib/types/cv-resume'
 import EditableField from './editable-item'
 import {
@@ -15,6 +12,11 @@ import {
     CardHeader,
     CardTitle
 } from '@/components/ui/card'
+import MonthPicker from '@/components/shared/month-picker'
+import YearPicker from '@/components/shared/year-picker'
+import WorkPeriod from '@/components/shared/work-period'
+import { Label } from '@/components/ui/label'
+import { Separator } from '@/components/ui/separator'
 
 export function InlineEditableExperience ({
     experience
@@ -80,26 +82,29 @@ export function InlineEditableExperience ({
                     onUpdate={ (value) => updateField('location', value) }
                 />
 
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-2 border-2 border-indigo-500 p-2'>
                     <p className='text-lg font-bold'>Employment range</p>
-
-                    <EditableField
-                        label='Start Date'
-                        id={ exp.id }
-                        type='date'
-                        value={ formatDate(exp.startDate) }
-                        onUpdate={ (value) =>
-                            updateField('startDate', value)
-                        }
-                    />{ ' ' }
-                    -
-                    <EditableField
-                        label='End Date'
-                        id={ exp.id }
-                        type='date'
-                        value={ formatDate(exp.endDate) }
-                        onUpdate={ (value) => updateField('endDate', value) }
-                    />
+                    <p className='text-sm text-gray-500'>
+                        Select the month and year you started and ended working
+                        at this job.
+                    </p>
+                    <div className='relative flex items-center justify-between gap-2'>
+                        <Label htmlFor='start-date'>Start Date</Label>{ ' ' }
+                        <Label htmlFor='start-date'>End Date</Label>
+                    </div>
+                    <div className='relative flex items-center justify-between gap-2'>
+                        <WorkPeriod
+                            value={ exp.startDate.toString() }
+                            onChange={ (value) =>
+                                updateField('startDate', value)
+                            }
+                        />
+                        <p>|</p>
+                        <WorkPeriod
+                            value={ exp.startDate.toString() }
+                            onChange={ (value) => updateField('endDate', value) }
+                        />
+                    </div>
                 </div>
                 <ul>
                     { exp.duties.map((duty) => (

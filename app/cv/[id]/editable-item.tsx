@@ -23,103 +23,78 @@ const EditableField = ({
     const [editing, setEditing] = React.useState(false)
     const [currentValue, setCurrentValue] = React.useState(value)
 
-    const handleUpdate = (
-
-    ) => {
+    const handleUpdate = () => {
         onUpdate(currentValue)
         setEditing(false)
     }
-    const handleDateUpdate = (
-
-    ) => {
+    const handleDateUpdate = () => {
         onUpdate(new Date(currentValue).toISOString())
         setEditing(false)
     }
-
 
     const handleCancel = () => {
         setCurrentValue(value)
         setEditing(false)
     }
     const inputField = () => {
-        return (<div className='flex flex-col  gap-2 relative w-full
-                    '>
-            <Label htmlFor={ label }>{ label }</Label>
-            <Input
-                id={ id }
-                value={ currentValue }
-                onChange={ (e) => setCurrentValue(e.target.value) }
-                onBlur={ handleUpdate }
-                onKeyDown={ (e) => {
-                    if (e.key === 'Enter') handleUpdate()
-                    if (e.key === 'Escape') handleCancel()
-                } }
-            />
-            <div
-                className='absolute bottom-0 right-0  flex items-center'>
-                <Button
-                    variant='ghost'
-                    onClick={ handleUpdate }
-                    title='Cancel'
-                >
-                    <CircleCheck
-                        className='text-green-500'
-                    />
-                </Button>
-                <Button
-                    type='button'
-                    variant='ghost'
-                    onClick={ handleCancel }
-                    title='Cancel'
-                >
-                    <CircleX
-                        className='text-red-500'
-                    />
-                </Button>
-            </div>
-        </div >)
-    }
-
-    const textareaField = () => {
         return (
-            <div className='flex flex-col  gap-2 relative w-full
-                    '>
-                <Label htmlFor={ label }>{ label }</Label>
-                <Textarea
-                    className='pr-28 w-full flex items-center'
-                    id={ id }
-                    rows={ 3 }
-
-                    value={ currentValue }
-                    onChange={ (e) => setCurrentValue(e.target.value)
-
-
-                    }
-                    onBlur={ handleUpdate }
-                    onKeyDown={ (e) =>
-                        e.key === 'Enter' && handleUpdate()
-                    }
+            <div className='relative flex w-full flex-col gap-2'>
+                <Label htmlFor={label}>{label}</Label>
+                <Input
+                    id={id}
+                    value={currentValue}
+                    onChange={(e) => setCurrentValue(e.target.value)}
+                    onBlur={handleUpdate}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') handleUpdate()
+                        if (e.key === 'Escape') handleCancel()
+                    }}
                 />
-                <div
-                    className='absolute bottom-0 top-0 right-0  flex items-center'>
+                <div className='absolute bottom-0 right-0 flex items-center'>
                     <Button
                         variant='ghost'
-                        onClick={ handleUpdate }
-                        title='save'
+                        onClick={handleUpdate}
+                        title='Cancel'
                     >
-                        <CircleCheck
-                            className='text-green-500'
-                        />
+                        <CircleCheck className='text-green-500' />
                     </Button>
                     <Button
                         type='button'
                         variant='ghost'
-                        onClick={ handleCancel }
+                        onClick={handleCancel}
                         title='Cancel'
                     >
-                        <CircleX
-                            className='text-red-500'
-                        />
+                        <CircleX className='text-red-500' />
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+
+    const textareaField = () => {
+        return (
+            <div className='relative flex w-full flex-col gap-2'>
+                <Label htmlFor={label}>{label}</Label>
+                <Textarea
+                    className='flex w-full items-center pr-28'
+                    id={id}
+                    rows={3}
+                    value={currentValue}
+                    onChange={(e) => setCurrentValue(e.target.value)}
+                    onBlur={handleUpdate}
+                    onKeyDown={(e) => e.key === 'Enter' && handleUpdate()}
+                />
+                <div className='absolute bottom-0 right-0 top-0 flex items-center'>
+                    <Button variant='ghost' onClick={handleUpdate} title='save'>
+                        <CircleCheck className='text-green-500' />
+                    </Button>
+                    <Button
+                        type='button'
+                        variant='ghost'
+                        onClick={handleCancel}
+                        title='Cancel'
+                    >
+                        <CircleX className='text-red-500' />
                     </Button>
                 </div>
             </div>
@@ -128,45 +103,32 @@ const EditableField = ({
     const dateField = () => {
         console.log('currentValue', currentValue)
         return (
-            <div className='flex flex-col  gap-2 relative
-                    '>
-                <Label htmlFor={ label }>{ label }</Label>
+            <div className='relative flex flex-col gap-2'>
+                <Label htmlFor={label}>{label}</Label>
                 <Input
-                    className='pr-28  flex items-center'
-                    id={ id }
+                    className='flex items-center pr-28'
+                    id={id}
                     type='date'
-                    value={ formatDateTime(currentValue) }
-                    onChange={ (e) => setCurrentValue(
-                        e.target.value
-                    )
-
-
-                    }
-                    onBlur={ handleDateUpdate }
-                    onKeyDown={ (e) =>
-                        e.key === 'Enter' && handleDateUpdate()
-                    }
+                    value={formatDateTime(currentValue)}
+                    onChange={(e) => setCurrentValue(e.target.value)}
+                    onBlur={handleDateUpdate}
+                    onKeyDown={(e) => e.key === 'Enter' && handleDateUpdate()}
                 />
-                <div
-                    className='absolute bottom-0 top-0 right-0  flex items-center'>
+                <div className='absolute bottom-0 right-0 top-0 flex items-center'>
                     <Button
                         variant='ghost'
-                        onClick={ handleDateUpdate }
+                        onClick={handleDateUpdate}
                         title='save'
                     >
-                        <CircleCheck
-                            className='text-green-500'
-                        />
+                        <CircleCheck className='text-green-500' />
                     </Button>
                     <Button
                         type='button'
                         variant='ghost'
-                        onClick={ handleCancel }
+                        onClick={handleCancel}
                         title='Cancel'
                     >
-                        <CircleX
-                            className='text-red-500'
-                        />
+                        <CircleX className='text-red-500' />
                     </Button>
                 </div>
             </div>
@@ -174,19 +136,18 @@ const EditableField = ({
     }
     return (
         <>
-            { editing ? (
-                type === 'textarea' && textareaField()
-                || type === 'text' && inputField()
-                || type === 'date' && dateField()
+            {editing ? (
+                (type === 'textarea' && textareaField()) ||
+                (type === 'text' && inputField()) ||
+                (type === 'date' && dateField())
             ) : (
                 <>
-                    <Label htmlFor={ label }>{ label }</Label>
-                    <p onClick={ () => setEditing(true) }>{ currentValue }</p>
+                    <Label htmlFor={label}>{label}</Label>
+                    <p onClick={() => setEditing(true)}>{currentValue}</p>
                 </>
-            ) }
+            )}
         </>
     )
 }
 
 export default EditableField
-
